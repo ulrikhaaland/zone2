@@ -1,3 +1,4 @@
+import { observer } from "mobx-react";
 import React from "react";
 
 interface WebMenuProps {
@@ -13,10 +14,10 @@ function WebMenu({ router, authStore }: WebMenuProps) {
   return (
     <div
       className={`hidden lg:flex lg:gap-x-12 ${
-        isHome ? "text-white" : "text-title2"
+        isHome ? "text-white" : "text-white"
       } `}
       style={{
-        textShadow: isHome ? "10px 10px 10px rgba(0,0,0,1)" : "",
+        textShadow: "10px 10px 10px rgba(0,0,0,1)",
       }}
     >
       <p
@@ -53,4 +54,4 @@ function WebMenu({ router, authStore }: WebMenuProps) {
   );
 }
 
-export default WebMenu;
+export default observer(WebMenu);

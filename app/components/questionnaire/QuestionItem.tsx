@@ -205,6 +205,16 @@ export default function QuestionItem(props: QuestionItemProps) {
   };
   const toggleUnit = (newUnit: string) => {
     /// todo: make sure answer is converted once unit is changed with old value
+    if (newUnit === "cm") {
+      user.usesCM = true;
+    } else if (newUnit === "kg") {
+      user.usesKG = true;
+    } else if (newUnit === "feet") {
+      user.usesCM = false;
+    } else if (newUnit === "lbs") {
+      user.usesKG = false;
+    }
+
     setUnit(newUnit);
   };
 
@@ -228,7 +238,7 @@ export default function QuestionItem(props: QuestionItemProps) {
               <input
                 // Input field for feet
                 ref={inputRef}
-                className="shadow appearance-none border rounded w-1/3 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-2"
+                className="shadow appearance-none border rounded w-1/3 py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline mr-2"
                 placeholder="Feet"
                 type="number"
                 value={feet}
@@ -244,7 +254,7 @@ export default function QuestionItem(props: QuestionItemProps) {
               <input
                 // Input field for inches
                 ref={inchesInputRef}
-                className="shadow appearance-none border rounded w-1/3 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-2"
+                className="shadow appearance-none border rounded w-1/3 py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline mr-2"
                 placeholder="Inches"
                 type="number"
                 value={inches}
@@ -258,9 +268,9 @@ export default function QuestionItem(props: QuestionItemProps) {
             <input
               // Input field for cm or kg
               ref={inputRef}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-2"
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline mr-2"
               placeholder={isHeight ? "Height" : "Weight"}
-              type={"number"}
+              type="number"
               value={
                 isHeight ? answer : unit === "kg" ? question.answer : answer
               }
@@ -301,7 +311,7 @@ export default function QuestionItem(props: QuestionItemProps) {
         // text input field
         return (
           <textarea
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline"
             id="teamName"
             placeholder={question.placeholder}
             value={answer}
@@ -320,7 +330,7 @@ export default function QuestionItem(props: QuestionItemProps) {
           <>
             <input
               ref={inputRef}
-              className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${errorClass}`}
+              className={`shadow appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline ${errorClass}`}
               id="teamName"
               type="number"
               placeholder={question.placeholder}
@@ -406,18 +416,25 @@ export default function QuestionItem(props: QuestionItemProps) {
       <div className="mb-4">
         <div className="grid grid-cols-[auto_1fr] items-start gap-x-2 mb-2">
           <label
-            className="block text-gray-700 text-sm font-bold"
+            className="block text-white text-sm font-bold"
             htmlFor="teamName"
           >
             {getQuestion()}
           </label>
           <AiOutlineInfoCircle
-            className="text-gray-500 cursor-pointer justify-self-end"
+            className="text-white cursor-pointer justify-self-end"
             onClick={handleInfoClick}
           />
         </div>
         {showDescription && (
-          <p className="text-gray-600 text-sm mb-2">{question.description}</p>
+          <p
+            className="text-white text-sm mb-2"
+            style={{
+              textShadow: "10px 10px 10px rgba(0,0,0,1)",
+            }}
+          >
+            {question.description}
+          </p>
         )}
         {getAnswerType(question)}
         {question.canSkip && showSkipButton && (

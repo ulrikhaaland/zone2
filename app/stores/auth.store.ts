@@ -234,6 +234,7 @@ export default class AuthStore {
           subscribed: true,
         });
 
+        console.log("Successfully signed in with email link!");
         return true; // Sign-in successful
       }
       return false; // Not a valid sign-in link

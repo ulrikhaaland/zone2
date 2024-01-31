@@ -59,17 +59,20 @@ export default function UserInfoConfirmationPage(
   };
 
   return (
-    <div className="md:min-h-[77.5dvh] md:max-h-[77.5dvh] min-h-[72.5dvh] max-h-[72.5dvh]">
+    <div
+      className="text-white md:min-h-[77.5dvh] md:max-h-[77.5dvh] min-h-[72.5dvh] max-h-[72.5dvh]"
+      style={{
+        textShadow: "10px 10px 10px rgba(0,0,0,1)",
+      }}
+    >
       {/* Header */}
-      <div className="relative p-4 ">
-        <h1 className="text-3xl font-bold text-title">
-          Confirm your information
-        </h1>
+      <div className="relative p-6 ">
+        <h1 className="text-3xl font-bold">Confirm your information</h1>
       </div>
 
       {/* Content */}
       <div
-        className="overflow-y-auto p-6 text-gray-700"
+        className="overflow-y-auto p-6"
         style={{ minHeight: "65dvh", maxHeight: "65dvh" }}
       >
         {/* Display each piece of fitness data */}

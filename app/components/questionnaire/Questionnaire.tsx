@@ -222,7 +222,7 @@ export default function Questionnaire(props: QuestionnaireProps) {
   };
 
   return (
-    <div className="md:min-h-[77.5dvh] md:max-h-[77.5dvh] min-h-[72.5dvh] max-h-[72.5dvh]">
+    <div className="md:min-h-[77.5dvh] text-white md:max-h-[77.5dvh] min-h-[72.5dvh] max-h-[72.5dvh]">
       {/* Header with progress bar */}
       <div
         className={`relative md:p-4 pb-1 px-4 ${
@@ -230,9 +230,9 @@ export default function Questionnaire(props: QuestionnaireProps) {
         }`}
       >
         {/* Progress Bar */}
-        <div className="h-1 bg-gray-200 md:mt-0 mb-4">
+        <div className="h-1 bg-gray-600 md:mt-0 mb-4">
           <div
-            className="h-full bg-primary-button"
+            className="h-full bg-white"
             style={{ width: `${progressPercentage}%` }}
           ></div>
         </div>
@@ -245,7 +245,12 @@ export default function Questionnaire(props: QuestionnaireProps) {
         onScroll={handleScroll}
         ref={questionsRef} // Assign the ref to this div
       >
-        <p className="text-3xl font-bold text-title px-6">
+        <p
+          className="text-3xl font-bold text-white px-6"
+          style={{
+            textShadow: "10px 10px 10px rgba(0,0,0,1)",
+          }}
+        >
           Provide some information about yourself
         </p>
         <div className="p-6">

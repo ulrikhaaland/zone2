@@ -16,11 +16,7 @@ function Header() {
   const isHome = router.pathname === "/";
 
   return (
-    <header
-      className={`${
-        isHome ? "bg-transparent" : "bg-third-bg"
-      } fixed top-0 left-0 w-full z-50`}
-    >
+    <header className={`${"bg-transparent"} fixed top-0 left-0 w-full z-50`}>
       <nav
         className="flex justify-between items-center py-6 lg:px-12"
         aria-label="Global"

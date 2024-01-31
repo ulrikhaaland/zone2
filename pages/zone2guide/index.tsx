@@ -117,19 +117,60 @@ const HomePage: NextPageWithLayout = () => {
   };
 
   return (
-    <div className="bg-third-bg w-full font-custom md:h-screen min-h-[100dvh]">
-      <h1 className="text-3xl text-center font-bold text-title2 pt-4 mb-4">
+    <div className="w-full font-custom md:h-screen min-h-[100dvh] relative">
+      {/* Background Image */}
+      {/* Container for Background Image and Black Overlay */}
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          zIndex: 0, // Adjust zIndex as needed
+        }}
+      >
+        {/* Background Image */}
+        <div
+          style={{
+            backgroundImage: "url('/assets/images/runner4.png')",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+          }}
+        ></div>
+
+        {/* Black Overlay with Opacity */}
+        <div
+          style={{
+            backgroundColor: "rgba(0, 0, 0, 0.5)", // Black with 50% opacity
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+          }}
+        ></div>
+      </div>
+
+      {/* Page Content */}
+      <h1
+        className="text-5xl text-white text-center font-bold pt-6 mb-4 relative z-10"
+        style={{
+          textShadow: "10px 10px 10px rgba(0,0,0,1)",
+        }}
+      >
         Zone 2 Guide Creation
       </h1>
-      <div className="flex overflow-hidden flex-col items-center min-h-max md:bg-secondary-bg bg-secondary-bg p-4 relative">
-        <div
-          className="w-full md:overflow-hidden max-w-md md:shadow-md md:rounded md:bg-primary-bg bg-secondary-bg
-         md:min-h-[87.5dvh] md:max-h-[87.5dvh] min-h-[86.5dvh] max-h-[86.5dvh] 
-        "
-        >
+      <div className="flex overflow-hidden md:rounded flex-col items-center min-h-max p-4 relative">
+        <div className="w-full bg-black bg-opacity-60 rounded-lg md:overflow-hidden max-w-md md:shadow-md md:min-h-[83.5dvh] md:max-h-[87.5dvh] min-h-[86.5dvh] max-h-[86.5dvh]">
           {/* Overlays for animation */}
-          <div className="absolute top-0 bottom-0 left-0 w-6 md:bg-secondary-bg z-10"></div>
-          <div className="absolute top-0 bottom-0 right-0 w-6 md:bg-secondary-bg z-10"></div>
+          {/* <div className="absolute top-0 bottom-0 left-0 w-6 md:bg-third-bg z-10"></div>
+          <div className="absolute top-0 bottom-0 right-0 w-6 md:bg-third-bg z-10"></div> */}
           <AnimatePresence mode="wait">
             <motion.div
               className="relative z-0" // Ensure content is below the overlays
@@ -167,7 +208,7 @@ const HomePage: NextPageWithLayout = () => {
           <div className="flex justify-between items-center md:px-6 relative pt-12 md:pt-2 md-pb-0 pb-4">
             {pageIndex !== 0 ? (
               <button
-                className="flex items-center bg-subtitle hover:bg-secondary-button-dark text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-150 ease-in-out"
+                className="flex items-center bg-gray-400 hover:bg-white text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-150 ease-in-out"
                 type="button"
                 onClick={() => onBack(forward)}
               >
@@ -190,7 +231,7 @@ const HomePage: NextPageWithLayout = () => {
                 <span
                   key={index}
                   className={`h-2 w-2 mx-1 rounded-full ${
-                    pageIndex === index ? "bg-primary-button" : "bg-gray-300"
+                    pageIndex === index ? "bg-white" : "bg-gray-600"
                   }`}
                 ></span>
               ))}

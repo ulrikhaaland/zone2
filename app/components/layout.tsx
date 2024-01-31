@@ -6,6 +6,7 @@ import LoggedIn from "./Login/LoggedIn";
 import { useStore } from "../../RootStoreProvider";
 import { AppProps } from "next/app";
 import { useState, useEffect } from "react";
+import { NextRouter, useRouter } from "next/router";
 
 function Layout({ children }: { children: React.ReactNode }) {
   const { authStore } = useStore();
@@ -13,6 +14,11 @@ function Layout({ children }: { children: React.ReactNode }) {
 
   // State to store the calculated content height
   const [contentHeightVh, setContentHeightVh] = useState(100);
+
+  const router: NextRouter = useRouter(); // Update the type of router
+
+  // Check if the current route is '/zone2guide'
+  const isHome = router.pathname === "/";
 
   useEffect(() => {
     // Convert the header height from pixels to vh
@@ -24,7 +30,9 @@ function Layout({ children }: { children: React.ReactNode }) {
     <>
       <Header></Header>
       <div
-        className="pt-18 bg-black text-black w-full overflow-auto" // pt-18 provides padding top to account for the fixed header
+        className={`pt-18 font-custom ${
+          isHome ? "bg-black" : "bg-third-bg"
+        } text-black w-full overflow-auto`} // pt-18 provides padding top to account for the fixed header
         style={{
           height: `100vh`,
           display: "flex",
@@ -39,7 +47,6 @@ function Layout({ children }: { children: React.ReactNode }) {
         sx={{ color: "#fff", zIndex: 100 }}
         open={open}
         onClick={() => {
-          
           setOpen(false);
           authStore.setFromPath(undefined);
         }}

@@ -21,36 +21,39 @@ const CheckoutPage = (props: CheckoutPageProps) => {
   };
 
   return (
-    <div className="md:min-h-[77.5dvh] md:max-h-[77.5dvh] min-h-[72.5dvh] max-h-[72.5dvh]">
+    <div
+      className="text-white md:min-h-[77.5dvh] md:max-h-[77.5dvh] min-h-[72.5dvh] max-h-[72.5dvh]"
+      style={{
+        textShadow: "10px 10px 10px rgba(0,0,0,1)",
+      }}
+    >
       {/* Header */}
-      <div className="relative md:p-4 px-4">
-        <h1 className="text-3xl font-bold text-title">
+      <div className="relative md:p-6 px-6">
+        <h1 className="text-3xl font-bold"
+        >
           Your Personalised Zone 2 Training Guide
         </h1>
       </div>
 
       {/* Content */}
       <div
-        className="overflow-y-auto px-4 pt-2 text-gray-700"
+        className="overflow-y-auto px-6 pt-2"
         style={{ minHeight: "65dvh", maxHeight: "65dvh" }}
       >
-        <div className="text-black flex flex-col mb-4">
+        <div className="flex flex-col mb-4">
           <span className="text-1xl font-semibold">One Time Purchase</span>
           <div className="flex items-start mt-2">
-            <span className="text-3xl font-bold">$10.00</span>
+            <span className="text-3xl font-bold">$9.99</span>
           </div>
         </div>
-        <h2
-          className="text-xl font-bold text-title2"
-          style={{ marginBottom: "1rem" }}
-        >
+        <h2 className="text-xl font-bold" style={{ marginBottom: "1rem" }}>
           Includes:
         </h2>
         <ul className="list-disc list-inside">
           <li className="md:mb-2 mb-0 md:text-lg">Expected Benefits</li>
           <li className="md:mb-2 mb-0 md:text-lg">
             Effective Exercise Doses
-            <ul className="list-disc list-inside md:mt-2 pl-6 border-dashed border-gray-300 text-gray-700">
+            <ul className="list-disc list-inside md:mt-2 pl-6 border-dashed border-gray-300">
               <li className="md:mb-2 mb-0 text-sm">Duration</li>
               <li className="md:mb-2 mb-0 text-sm">Frequency</li>
             </ul>
@@ -67,7 +70,7 @@ const CheckoutPage = (props: CheckoutPageProps) => {
           <li className="md:mb-2 mb-0 md:text-lg">Incorporating Flexibility</li>
           <li className="md:mb-2 mb-0 md:text-lg">
             Realistic Goals & Expectations
-            <ul className="list-disc list-inside md:mt-2 pl-6  border-dashed border-gray-300 text-gray-700">
+            <ul className="list-disc list-inside md:mt-2 pl-6  border-dashed border-gray-300">
               <li className="md:mb-2 mb-0 text-sm">Assessing Progress</li>
               <li className="md:mb-2 mb-0 text-sm">
                 When To Adjust Duration & Frequency

@@ -117,7 +117,7 @@ const HomePage: NextPageWithLayout = () => {
   };
 
   return (
-    <div className="bg-grey w-full font-custom md:h-screen min-h-[100dvh]">
+    <div className="bg-third-bg w-full font-custom md:h-screen min-h-[100dvh]">
       <h1 className="text-3xl text-center font-bold text-title2 pt-4 mb-4">
         Zone 2 Guide Creation
       </h1>

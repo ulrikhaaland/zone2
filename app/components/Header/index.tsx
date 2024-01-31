@@ -16,7 +16,11 @@ function Header() {
   const isHome = router.pathname === "/";
 
   return (
-    <header className="bg-transparent fixed top-0 left-0 w-full z-50">
+    <header
+      className={`${
+        isHome ? "bg-transparent" : "bg-third-bg"
+      } fixed top-0 left-0 w-full z-50`}
+    >
       <nav
         className="flex justify-between items-center py-6 lg:px-12"
         aria-label="Global"
@@ -30,10 +34,10 @@ function Header() {
           >
             <h1
               className={`text-3xl font-semibold leading-6 ${
-                isHome ? "text-white" : "text-title2"
+                isHome ? "text-white" : "text-white"
               } group-hover:text-title2`}
               style={{
-                textShadow: isHome ? "10px 10px 10px rgba(0,0,0,1)" : " ",
+                textShadow: "10px 10px 10px rgba(0,0,0,1)",
               }}
             >
               Zone 2 Guide

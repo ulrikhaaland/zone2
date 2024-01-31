@@ -82,10 +82,15 @@ const HomePage: NextPageWithLayout = () => {
     }
   }, [router]);
 
+  const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    e.stopPropagation(); // This stops the click event from bubbling up to the parent div
+    togglePlay();
+  };
+
   return (
     <div
       className="relative h-screen w-full overflow-hidden"
-      onClick={togglePlay}
+      onClick={handleClick}
       tabIndex={0}
       onKeyDown={(e) => {
         if (e.code === "Space") {
@@ -103,7 +108,10 @@ const HomePage: NextPageWithLayout = () => {
           muted={isMuted}
           className="absolute inset-0 w-full h-full object-cover"
         >
-          <source src="https://firebasestorage.googleapis.com/v0/b/zone2program-a24ce.appspot.com/o/zone4.mp4?alt=media&token=50bcc0b5-9d9b-4863-93c9-9901ae9ecffd" type="video/mp4" />
+          <source
+            src="https://firebasestorage.googleapis.com/v0/b/zone2program-a24ce.appspot.com/o/zone4.mp4?alt=media&token=50bcc0b5-9d9b-4863-93c9-9901ae9ecffd"
+            type="video/mp4"
+          />
         </video>
         <div className="absolute inset-0 bg-black opacity-50" />
       </div>
@@ -118,9 +126,9 @@ const HomePage: NextPageWithLayout = () => {
         <div className="text-white mb-6 py-4 rounded-lg">
           <h2 className="text-3xl font-bold">Tailored To Your Fitness Level</h2>
           <p className="mt-2">
-            We have compiled the recommendations of Dr. Peter Attia and Dr.
-            Iñigo San Millán to offer you a comprehensive guide to Zone 2
-            training.
+            To offer you a comprehensive guide to Zone 2 training, we have
+            compiled the recommendations of Dr. Peter Attia and Dr. Iñigo San
+            Millán.
           </p>
         </div>
 
@@ -139,7 +147,7 @@ const HomePage: NextPageWithLayout = () => {
             <h2 className="text-2xl font-bold text-white mb-2">Includes:</h2>
             <ul className="list-disc list-inside mb-6 text-white">
               <li>Your Expected Benefits</li>
-              <li>Effective Exercise Doses</li>
+              <li>Effective Exercise Duration, Frequency & Dose</li>
               <li>Methods For Determining Zone 2 Intensity</li>
               <li>What To Think About During Zone 2 Training</li>
               <li>Realistic Goals & Expectations</li>
@@ -175,9 +183,11 @@ const HomePage: NextPageWithLayout = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 autoFocus={true}
+                onClick={(e) => e.stopPropagation()}
               />
               <button
                 type="submit"
+                onClick={(e) => e.stopPropagation()}
                 className="bg-blue-600 hover:bg-blue-800 text-white p-3 rounded-lg transition duration-300"
               >
                 Start Training

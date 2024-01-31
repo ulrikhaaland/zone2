@@ -26,6 +26,7 @@ const config: Config = {
         "secondary-button": "#e2f1e4",
         "primary-bg": "#ffffff",
         "secondary-bg": "#fafbfc",
+        "third-bg": "#616263",
       },
     },
   },

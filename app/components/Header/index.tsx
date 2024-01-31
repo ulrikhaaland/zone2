@@ -2,30 +2,30 @@ import { useState } from "react";
 import { Dialog, Popover } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { observer } from "mobx-react";
-import { useRouter, NextRouter } from "next/router"; // Import NextRouter
+import { useRouter } from "next/router";
 import { useStore } from "@/RootStoreProvider";
 import WebMenu from "./WebMenu";
 import MobileMenu from "./MobileMenu";
+import Image from "next/image";
 
 function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const router: NextRouter = useRouter(); // Update the type of router
+  const router = useRouter();
   const { authStore } = useStore();
 
-  // Check if the current route is '/zone2guide'
   const isHome = router.pathname === "/";
 
   return (
-    <header className={`${"bg-transparent"} fixed top-0 left-0 w-full z-50`}>
+    <header className="bg-transparent fixed top-0 left-0 w-full z-50">
       <nav
         className="flex justify-between items-center py-6 lg:px-12"
         aria-label="Global"
       >
         <div className="flex">
-          {/* Title Container */}
+          {/* Logo and Title Container */}
           <div
             style={{ cursor: "pointer" }}
-            className="fixed left-6 lg:left-12 top-6" // Adjusted left spacing for larger screens
+            className="flex fixed left-6 lg:left-12 top-6" // Adjusted for flex container
             onClick={() => router.push("/")}
           >
             <h1

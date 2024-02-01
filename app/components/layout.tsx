@@ -35,7 +35,7 @@ function Layout({ children }: { children: React.ReactNode }) {
         setShowLogin(false);
       }
     }
-  }, [open]);
+  }, [open, user]);
 
   return (
     <>
@@ -58,7 +58,7 @@ function Layout({ children }: { children: React.ReactNode }) {
         sx={{ zIndex: 100 }}
         open={open && showLogin}
         onClick={() => {
-          if (isGuide) return;
+          if (isGuide && !user) return;
           setOpen(false);
           authStore.setFromPath(undefined);
         }}

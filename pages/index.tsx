@@ -9,6 +9,7 @@ import Image from "next/image";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import PauseIcon from "@mui/icons-material/Pause";
 import { observer } from "mobx-react";
+import { a } from "react-spring";
 
 const HomePage: NextPageWithLayout = () => {
   const { authStore } = useStore();
@@ -41,6 +42,16 @@ const HomePage: NextPageWithLayout = () => {
   };
 
   useEffect(() => {
+    if (!authStore.user) {
+      authStore.setUser({
+        questions: [],
+        guideItems: [],
+        usesCM: true,
+        usesKG: true,
+        uid: "",
+        credits: 0,
+      });
+    }
     const timer = setTimeout(() => {
       if (videoRef.current && !videoRef.current.paused) {
         videoRef.current.pause();

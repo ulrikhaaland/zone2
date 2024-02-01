@@ -72,9 +72,6 @@ const UserProfile: NextPageWithLayout = () => {
       </h1>
       <div className="flex overflow-hidden md:rounded flex-col items-center min-h-max p-4 relative">
         <div className="w-full bg-black bg-opacity-60 rounded-lg md:overflow-hidden max-w-md md:shadow-md md:min-h-[83.5dvh] md:max-h-[87.5dvh] min-h-[86.5dvh] max-h-[86.5dvh]">
-          {/* Overlays for animation */}
-          {/* <div className="absolute top-0 bottom-0 left-0 w-6 md:bg-third-bg z-10"></div>
-          <div className="absolute top-0 bottom-0 right-0 w-6 md:bg-third-bg z-10"></div> */}
           <AnimatePresence mode="wait">
             <motion.div
               className="relative z-0" // Ensure content is below the overlays

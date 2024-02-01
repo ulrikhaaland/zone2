@@ -2,7 +2,6 @@ import { Backdrop } from "@mui/material";
 import Header from "./Header";
 import Login from "./Login";
 import { observer } from "mobx-react";
-import LoggedIn from "./Login/LoggedIn";
 import { useStore } from "../../RootStoreProvider";
 import { AppProps } from "next/app";
 import { useState, useEffect } from "react";

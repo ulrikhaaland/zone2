@@ -55,10 +55,10 @@ function Layout({ children }: { children: React.ReactNode }) {
         {showLogin && <Login />}
       </div>
       <Backdrop
-        sx={{zIndex: 100 }}
+        sx={{ zIndex: 100 }}
         open={open && showLogin}
         onClick={() => {
-          if(isGuide) return;
+          if (isGuide) return;
           setOpen(false);
           authStore.setFromPath(undefined);
         }}

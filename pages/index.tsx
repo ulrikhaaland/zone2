@@ -8,6 +8,7 @@ import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import Image from "next/image";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import PauseIcon from "@mui/icons-material/Pause";
+import { observer } from "mobx-react";
 
 const HomePage: NextPageWithLayout = () => {
   const { authStore } = useStore();
@@ -17,6 +18,7 @@ const HomePage: NextPageWithLayout = () => {
   const [isMuted, setIsMuted] = useState(true);
   const [isPlaying, setIsPlaying] = useState(true); // State to manage video play/pause
   const videoRef = useRef<HTMLVideoElement>(null);
+  const emailInputRef = useRef<HTMLInputElement>(null);
 
   const toggleSound = () => {
     if (videoRef.current) {
@@ -86,6 +88,13 @@ const HomePage: NextPageWithLayout = () => {
     e.stopPropagation(); // This stops the click event from bubbling up to the parent div
     togglePlay();
   };
+
+  useEffect(() => {
+    if (authStore.open) {
+      emailInputRef.current?.focus();
+      authStore.setOpen(false); // Focus the email input
+    }
+  }, [authStore, authStore.open]);
 
   return (
     <div
@@ -177,6 +186,7 @@ const HomePage: NextPageWithLayout = () => {
               <input
                 type="email"
                 id="email"
+                ref={emailInputRef}
                 className="border-2 text-black border-gray-300 p-3 rounded-lg focus:outline-none focus:border-blue-500 transition duration-300"
                 placeholder="Enter your email to start..."
                 value={email}
@@ -247,4 +257,4 @@ HomePage.getLayout = function getLayout(page: ReactElement) {
   return <>{page}</>;
 };
 
-export default HomePage;
+export default observer(HomePage);

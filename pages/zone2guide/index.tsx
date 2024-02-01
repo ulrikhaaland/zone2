@@ -1,7 +1,7 @@
 "use client";
 import "../../app/globals.css";
 import React, { ReactElement, useEffect, useState } from "react";
-import { User, fitnessDataToJson } from "../../app/model/user";
+import { FitnessData, User, fitnessDataToJson } from "../../app/model/user";
 import { Question, questToFitnessData } from "../../app/model/questionaire";
 import Questionnaire from "../../app/components/questionnaire/Questionnaire";
 import { Elements } from "@stripe/react-stripe-js";
@@ -21,10 +21,9 @@ const HomePage: NextPageWithLayout = () => {
   const [user, setUser] = useState<User>({
     usesCM: true,
     usesKG: true,
-    fitnessData: undefined,
     guideItems: [],
+    questions: [],
     uid: "",
-    email: "",
     credits: 1000,
   });
 
@@ -33,15 +32,17 @@ const HomePage: NextPageWithLayout = () => {
   const [questions, setQuestions] = useState<Question[] | undefined>();
   const [canSubmit, setCanSubmit] = useState(false);
   const [forward, setForward] = useState(false);
+  const [fitnessData, setFitnessData] = useState<FitnessData | undefined>();
 
   const handleOnQuestCompleted = (questions: Question[]) => {
     const fitnessData = questToFitnessData(questions);
+    setFitnessData(fitnessData);
     setCanSubmit(true);
     setQuestions(questions);
     setUser({
       ...user,
-      fitnessData,
       guideItems: [],
+      questions: questions,
     });
   };
 
@@ -133,7 +134,7 @@ const HomePage: NextPageWithLayout = () => {
         {/* Background Image */}
         <div
           style={{
-            backgroundImage: "url('/assets/images/runner6.png')",
+            backgroundImage: "url('/assets/images/runner8.png')",
             backgroundSize: "cover",
             backgroundPosition: "center",
             position: "absolute",
@@ -168,9 +169,6 @@ const HomePage: NextPageWithLayout = () => {
       </h1>
       <div className="flex overflow-hidden md:rounded flex-col items-center min-h-max p-4 relative">
         <div className="w-full bg-black bg-opacity-60 rounded-lg md:overflow-hidden max-w-md md:shadow-md md:min-h-[83.5dvh] md:max-h-[87.5dvh] min-h-[86.5dvh] max-h-[86.5dvh]">
-          {/* Overlays for animation */}
-          {/* <div className="absolute top-0 bottom-0 left-0 w-6 md:bg-third-bg z-10"></div>
-          <div className="absolute top-0 bottom-0 right-0 w-6 md:bg-third-bg z-10"></div> */}
           <AnimatePresence mode="wait">
             <motion.div
               className="relative z-0" // Ensure content is below the overlays
@@ -189,11 +187,12 @@ const HomePage: NextPageWithLayout = () => {
                   user={user}
                   questions={questions}
                   canSubmit={setCanSubmit}
+                  isProfile={false}
                 />
               )}
-              {pageIndex === 1 && user.fitnessData && (
+              {pageIndex === 1 && fitnessData && (
                 <UserInfoConfirmationPage
-                  fitnessData={user.fitnessData}
+                  fitnessData={fitnessData}
                   user={user}
                 />
               )}
@@ -262,7 +261,7 @@ const HomePage: NextPageWithLayout = () => {
         <Guide
           onLoadGuideItems={(items) => setUser({ ...user, guideItems: items })}
           guideItems={user.guideItems}
-          fitnessData={user?.fitnessData!}
+          fitnessData={questToFitnessData(user.questions)}
         />
       )}
     </div>

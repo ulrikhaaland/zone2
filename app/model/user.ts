@@ -2,20 +2,20 @@
 import * as firebaseAuth from "firebase/auth";
 import { HeartRateZone } from "../utils/HRZonesCalculator";
 import { GuideItem } from "./guide";
-import { cardioFrequencyAnswers, zone2FrequencyAnswers } from "./questionaire";
+import {
+  Question,
+  cardioFrequencyAnswers,
+  zone2FrequencyAnswers,
+} from "./questionaire";
 
 export interface User {
   firebaseUser?: firebaseAuth.User;
-  fitnessData?: FitnessData;
   guideItems: GuideItem[];
+  questions: Question[];
   usesKG: boolean;
   usesCM: boolean;
   uid: string;
-  email: string;
-  displayName?: string | null;
-  photoURL?: string | null;
   credits: number;
-  subscribed?: boolean;
 }
 
 export interface FitnessData {

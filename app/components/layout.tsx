@@ -11,7 +11,7 @@ import { NextRouter, useRouter } from "next/router";
 function Layout({ children }: { children: React.ReactNode }) {
   const { authStore } = useStore();
   const { open, setOpen, user } = authStore;
-
+  const [showLogin, setShowLogin] = useState(false);
   // State to store the calculated content height
   const [contentHeightVh, setContentHeightVh] = useState(100);
 
@@ -25,6 +25,16 @@ function Layout({ children }: { children: React.ReactNode }) {
     const headerHeightVh = (72 / window.innerHeight) * 100;
     setContentHeightVh(100 - headerHeightVh);
   }, []);
+
+  useEffect(() => {
+    if (!user) {
+      if (open && !isHome) {
+        setShowLogin(true);
+      } else {
+        setShowLogin(false);
+      }
+    }
+  }, [open]);
 
   return (
     <>
@@ -41,11 +51,11 @@ function Layout({ children }: { children: React.ReactNode }) {
         }}
       >
         {children}
-        {open ? user ? <LoggedIn /> : <Login /> : null}
+        {showLogin && <Login />}
       </div>
       <Backdrop
         sx={{ color: "#fff", zIndex: 100 }}
-        open={open}
+        open={open && showLogin}
         onClick={() => {
           setOpen(false);
           authStore.setFromPath(undefined);

@@ -52,15 +52,11 @@ export default class AuthStore {
     this.user = auth?.currentUser
       ? {
           uid: auth.currentUser.uid!,
-          email: auth.currentUser.email!,
-          displayName: auth.currentUser.displayName ?? undefined,
-          photoURL: auth.currentUser.photoURL ?? undefined,
           credits: 0,
-          fitnessData: undefined,
           guideItems: [],
+          questions: [],
           usesKG: true,
           usesCM: true,
-          subscribed: true,
         }
       : undefined;
   };
@@ -72,15 +68,18 @@ export default class AuthStore {
   setFromPath = (fromPath: string | undefined) => {
     this.fromPath = fromPath;
   };
-
-  updateUserData = (name: string, subscribed: boolean) => {
+  updateUserData = () => {
     if (this.user) {
-      this.user.displayName = name;
-      this.user.subscribed = subscribed;
-      updateDoc(doc(db, "users", this.user!.uid), {
-        name: name,
-        subscribed: subscribed,
-      });
+      const userData = {
+        guideItems: this.user.guideItems,
+        questions: this.user.questions,
+        usesKG: this.user.usesKG,
+        usesCM: this.user.usesCM,
+        credits: this.user.credits,
+      };
+
+      // Here, userData contains all fields from the User object.
+      updateDoc(doc(db, "users", this.user.uid), userData);
     }
   };
 
@@ -95,15 +94,11 @@ export default class AuthStore {
       this.getUserOrCreateIfNotExists(firebaseUser!.uid);
       this.user = {
         uid: firebaseUser.uid!,
-        email: firebaseUser.email!,
-        displayName: firebaseUser.displayName ?? undefined,
-        photoURL: firebaseUser.photoURL ?? undefined,
         credits: 0,
-        fitnessData: undefined,
         guideItems: [],
+        questions: [],
         usesKG: true,
         usesCM: true,
-        subscribed: true,
       };
     } else this.user = undefined;
   };
@@ -223,15 +218,11 @@ export default class AuthStore {
         // Update the user observable with the signed-in user's information
         this.setUser({
           uid: result.user.uid,
-          email: result.user.email!,
-          displayName: result.user.displayName ?? null,
-          photoURL: result.user.photoURL ?? null,
           credits: 0, // Or any default value
-          fitnessData: undefined, // Set as per your logic
           guideItems: [],
+          questions: [],
           usesKG: true,
           usesCM: true,
-          subscribed: true,
         });
 
         console.log("Successfully signed in with email link!");
@@ -278,12 +269,9 @@ export default class AuthStore {
       if (!data) {
         const userData: User = {
           uid: uid,
-          displayName: this.user!.displayName ?? null,
-          email: this.user!.email,
-          photoURL: this.user?.photoURL ?? null,
           credits: 1000,
-          subscribed: true,
           guideItems: [],
+          questions: [],
           usesKG: false,
           usesCM: false,
         };
@@ -294,12 +282,9 @@ export default class AuthStore {
       } else {
         const user: User = {
           uid: data?.uid,
-          email: data?.email,
-          displayName: data?.name,
-          photoURL: data?.photoURL,
           credits: data?.credits,
-          subscribed: data?.subscribed,
           guideItems: [],
+          questions: [],
           usesKG: false,
           usesCM: false,
         };

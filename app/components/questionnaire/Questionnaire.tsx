@@ -14,11 +14,12 @@ interface QuestionnaireProps {
   onQuestCompleted: (questions: Question[]) => void;
   questions?: Question[];
   user: User;
-  canSubmit: (canSubmit: boolean) => void;
+  canSubmit?: (canSubmit: boolean) => void;
+  isProfile: boolean;
 }
 
 export default function Questionnaire(props: QuestionnaireProps) {
-  const { onQuestCompleted, user, canSubmit } = props;
+  const { onQuestCompleted, user, canSubmit, isProfile } = props;
 
   const [questions, setQuestions] = useState<Question[]>(
     props.questions ?? [questionsFull[0]]
@@ -50,7 +51,9 @@ export default function Questionnaire(props: QuestionnaireProps) {
         questionsFull[questionsFull.length - 1]
     ) {
       setCompleted(true);
-      canSubmit(true);
+      if (canSubmit) {
+        canSubmit(true);
+      }
       handleSubmit(new Event("submit"));
     }
   }, [questions]);
@@ -214,7 +217,9 @@ export default function Questionnaire(props: QuestionnaireProps) {
         behavior: "instant",
       });
       setHasError(true);
-      canSubmit(false);
+      if (canSubmit) {
+        canSubmit(false);
+      }
       return;
     }
     event.preventDefault();
@@ -251,7 +256,9 @@ export default function Questionnaire(props: QuestionnaireProps) {
             textShadow: "10px 10px 10px rgba(0,0,0,1)",
           }}
         >
-          Provide some information about yourself
+          {isProfile
+            ? "Fitness Data"
+            : "Provide some information about yourself"}
         </p>
         <div className="p-6">
           {questions.map((question, index) => (

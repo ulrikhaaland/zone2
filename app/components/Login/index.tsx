@@ -3,21 +3,19 @@ import { FiEye, FiEyeOff } from "react-icons/fi";
 import CircularProgress from "@mui/material/CircularProgress";
 import CloseIcon from "@mui/icons-material/Close";
 import { IconButton, useMediaQuery } from "@mui/material";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 import { useStore } from "@/RootStoreProvider";
+import { isSignInWithEmailLink } from "firebase/auth";
+import { auth } from "@/pages/_app";
 
 export default function Login() {
   const { authStore } = useStore();
 
   const router = useRouter();
 
-  const [register, setRegister] = useState(false);
+  const isGuide = router.pathname === "/zone2guide";
 
-  const [showPassword, setShowPassword] = useState(false);
-
-  const [forgotPassword, setForgotPassword] = useState(false);
-
-  const [resetPasswordSuccess, setResetPasswordSuccess] = useState(false);
+  const [emailSent, setEmailSent] = useState(false);
 
   const [loading, setLoading] = useState(false);
 
@@ -36,13 +34,42 @@ export default function Login() {
   const handleSendLink = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     e.stopPropagation();
+    setLoading(true); // Start loading
     try {
-      await authStore.sendSignInLink(email);
-      setMessage("Check your email for the sign-in link.");
+      const path = router.pathname;
+      await authStore.sendSignInLink(email, path);
+      setEmailSent(true);
+      setMessage(
+        "We've sent a sign-in link to your email. Please check your inbox and follow the instructions to complete the sign-up process."
+      );
     } catch (error: any) {
       setMessage("Error sending email: " + error.message);
+    } finally {
+      setLoading(false); // Stop loading regardless of the outcome
     }
   };
+
+  useEffect(() => {
+    const currentUrl = window.location.href;
+    if (isSignInWithEmailLink(auth, currentUrl)) {
+      let email = window.localStorage.getItem("emailForSignIn");
+      if (!email) {
+        email = window.prompt("Please provide your email for confirmation");
+      }
+      if (email) {
+        authStore
+          .confirmSignInWithEmailLink(email, currentUrl)
+          .then((isSignedIn) => {
+            if (isSignedIn) {
+              authStore.setOpen(false);
+            }
+          })
+          .catch((error) => {
+            setMessage("Error signing in: " + error.message);
+          });
+      }
+    }
+  }, [router]);
 
   return (
     <div
@@ -52,7 +79,6 @@ export default function Login() {
         top: "50%",
         left: "50%",
         transform: "translate(-50%, -50%)",
-        // center the modal
         minWidth: 448,
         maxHeight: 524,
         zIndex: 10001,
@@ -71,39 +97,52 @@ export default function Login() {
             zIndex: 10001,
           }}
           onClick={() => {
+            if (router.pathname !== "/") return;
             authStore.setOpen(false);
             authStore.setFromPath(undefined);
           }}
         >
           <CloseIcon className="my-2" />
         </IconButton>
-        <div className="bg-black bg-opacity-60 p-8 rounded-lg text-white">
+        <div className="bg-black bg-opacity-80 p-8 rounded-lg text-white">
           <div className="px-5 pt-7">
-            <h2 className="text-3xl font-bold mb-6">Sign in</h2>
-            <form onSubmit={handleSendLink} className="flex flex-col gap-6">
-              <input
-                type="email"
-                id="email"
-                className="border-2 text-black border-gray-300 p-3 rounded-lg focus:outline-none focus:border-blue-500 transition duration-300"
-                placeholder="Enter your email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                autoFocus={true}
-                onClick={(e) => e.stopPropagation()}
-              />
-              <button
-                type="submit"
-                onClick={(e) => e.stopPropagation()}
-                className="bg-blue-600 hover:bg-blue-800 text-white p-3 rounded-lg transition duration-300"
-              >
-                Send Email
-              </button>
-              <p className="text-sm">
-                If you already have an account, we&apos;ll log you in
-              </p>
-            </form>
-            {message && <p className="mt-4 text-red-500">{message}</p>}
+            <h2 className="text-3xl font-bold mb-6">
+              {emailSent
+                ? "Email Sent!"
+                : `Please sign up ${isGuide ? "to get your guide" : ""}`}
+            </h2>
+            {!message ? (
+              <form onSubmit={handleSendLink} className="flex flex-col gap-6">
+                <input
+                  type="email"
+                  id="email"
+                  className="border-2 text-black border-gray-300 p-3 rounded-lg focus:outline-none focus:border-blue-500 transition duration-300"
+                  placeholder="Enter your email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  autoFocus={true}
+                  onClick={(e) => e.stopPropagation()}
+                />
+                <button
+                  type="submit"
+                  className="bg-blue-600 hover:bg-blue-800 text-white p-3 rounded-lg transition duration-300 flex justify-center items-center"
+                >
+                  {loading ? (
+                    <CircularProgress size={24} color="inherit" />
+                  ) : (
+                    "Send Email"
+                  )}
+                </button>
+                <p className="text-sm">
+                  If you already have an account, we&apos;ll log you in
+                </p>
+              </form>
+            ) : (
+              <div className="mt-4">
+                <p className="text-green-500">{message}</p>
+              </div>
+            )}
           </div>
         </div>
         {errorMessage && (

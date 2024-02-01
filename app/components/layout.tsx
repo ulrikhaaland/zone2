@@ -18,6 +18,8 @@ function Layout({ children }: { children: React.ReactNode }) {
   const router: NextRouter = useRouter(); // Update the type of router
 
   // Check if the current route is '/zone2guide'
+  const isGuide = router.pathname === "/zone2guide";
+
   const isHome = router.pathname === "/";
 
   useEffect(() => {
@@ -54,9 +56,10 @@ function Layout({ children }: { children: React.ReactNode }) {
         {showLogin && <Login />}
       </div>
       <Backdrop
-        sx={{ color: "#fff", zIndex: 100 }}
+        sx={{zIndex: 100 }}
         open={open && showLogin}
         onClick={() => {
+          if(isGuide) return;
           setOpen(false);
           authStore.setFromPath(undefined);
         }}

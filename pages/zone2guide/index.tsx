@@ -12,20 +12,26 @@ import CheckoutPage from "../../app/pages/CheckoutForm";
 import Guide from "../../app/pages/GuidePage";
 import UserInfoConfirmationPage from "../../app/pages/UserInfoConfirmationPage";
 import { NextPageWithLayout } from "@/pages/_app";
+import { useStore } from "@/RootStoreProvider";
+import { observer } from "mobx-react";
 
 const stripePromise = loadStripe(
   "pk_test_51Oc6ntFwAwE234wG9Lu3IfmZQXEv7nHPJx7alrzq00EzVaO74jpv7RifR5iRrkjvTS8BSv67QvoQJz2W2ccTt2bC00gLDhFGLf"
 );
 
 const HomePage: NextPageWithLayout = () => {
-  const [user, setUser] = useState<User>({
-    usesCM: true,
-    usesKG: true,
-    guideItems: [],
-    questions: [],
-    uid: "",
-    credits: 1000,
-  });
+  const { authStore } = useStore();
+
+  const [user, setUser] = useState<User>(
+    authStore.user ?? {
+      questions: [],
+      guideItems: [],
+      usesCM: true,
+      usesKG: true,
+      uid: "",
+      credits: 0,
+    }
+  );
 
   const [pageIndex, setPageIndex] = useState(0);
   const [previousPageIndex, setPreviousPageIndex] = useState(0);
@@ -34,13 +40,19 @@ const HomePage: NextPageWithLayout = () => {
   const [forward, setForward] = useState(false);
   const [fitnessData, setFitnessData] = useState<FitnessData | undefined>();
 
+  useEffect(() => {
+    if (authStore.user) {
+      setUser(authStore.user);
+    }
+  }, [authStore.user]);
+
   const handleOnQuestCompleted = (questions: Question[]) => {
     const fitnessData = questToFitnessData(questions);
     setFitnessData(fitnessData);
     setCanSubmit(true);
     setQuestions(questions);
     setUser({
-      ...user,
+      ...user!,
       guideItems: [],
       questions: questions,
     });
@@ -91,6 +103,12 @@ const HomePage: NextPageWithLayout = () => {
       returnUrl
     )}&client_reference_id=asd12343`;
   };
+
+  useEffect(() => {
+    if (!authStore.user) {
+      authStore.setOpen(true);
+    }
+  }, [user, authStore.user, authStore]);
 
   const getExit = () => {
     // If we are moving to a higher pageIndex, slide out to the left (-100)
@@ -272,4 +290,4 @@ HomePage.getLayout = function getLayout(page: ReactElement) {
   return <>{page}</>;
 };
 
-export default HomePage;
+export default observer(HomePage);

@@ -55,7 +55,7 @@ const HomePage: NextPageWithLayout = () => {
     e.preventDefault();
     e.stopPropagation();
     try {
-      await authStore.sendSignInLink(email);
+      await authStore.sendSignInLink(email, router.pathname);
       setMessage("Check your email for the sign-in link.");
     } catch (error: any) {
       setMessage("Error sending email: " + error.message);

@@ -10,11 +10,15 @@ import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import PauseIcon from "@mui/icons-material/Pause";
 import { observer } from "mobx-react";
 import { a } from "react-spring";
+import { set } from "mobx";
+import { CircularProgress } from "@mui/material";
 
 const HomePage: NextPageWithLayout = () => {
   const { authStore } = useStore();
   const router = useRouter();
   const [email, setEmail] = useState("");
+  const [emailSent, setEmailSent] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [isMuted, setIsMuted] = useState(true);
   const [isPlaying, setIsPlaying] = useState(true); // State to manage video play/pause
@@ -48,7 +52,7 @@ const HomePage: NextPageWithLayout = () => {
         guideItems: [],
         usesCM: true,
         usesKG: true,
-        uid: "",
+        uid: "123",
         credits: 0,
       });
     }
@@ -64,12 +68,16 @@ const HomePage: NextPageWithLayout = () => {
 
   const handleSendLink = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setLoading(true);
     e.stopPropagation();
     try {
       await authStore.sendSignInLink(email, router.pathname);
+      setEmailSent(true);
       setMessage("Check your email for the sign-in link.");
     } catch (error: any) {
       setMessage("Error sending email: " + error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -191,33 +199,59 @@ const HomePage: NextPageWithLayout = () => {
           </div>
 
           {/* Right side sign-up box */}
-          <div className="bg-black bg-opacity-60 p-8 rounded-lg text-white">
-            <h2 className="text-3xl font-bold mb-6">Get Your Guide Now</h2>
-            <form onSubmit={handleSendLink} className="flex flex-col gap-6">
-              <input
-                type="email"
-                id="email"
-                ref={emailInputRef}
-                className="border-2 text-black border-gray-300 p-3 rounded-lg focus:outline-none focus:border-blue-500 transition duration-300"
-                placeholder="Enter your email to start..."
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                autoFocus={true}
-                onClick={(e) => e.stopPropagation()}
-              />
-              <button
-                type="submit"
-                onClick={(e) => e.stopPropagation()}
-                className="bg-blue-600 hover:bg-blue-800 text-white p-3 rounded-lg transition duration-300"
-              >
-                Start Training
-              </button>
-              <p className="text-sm">
-                If you already have an account, we&apos;ll log you in
-              </p>
-            </form>
-            {message && <p className="mt-4 text-red-500">{message}</p>}
+          <div className="bg-black bg-opacity-60 p-8 rounded-lg text-white max-w-[357px]">
+            {emailSent ? (
+              <div>
+                <h2 className="text-3xl font-bold mb-6">Check Your Email</h2>
+                <p className="mt-4 text-green-500">
+                  We&apos;ve sent a sign-up link to your email. Please check
+                  your inbox and follow the instructions to complete the sign-up
+                  process.
+                </p>
+              </div>
+            ) : (
+              <>
+                <h2 className="text-3xl font-bold mb-6">Get Your Guide Now</h2>
+                <form onSubmit={handleSendLink} className="flex flex-col gap-6">
+                  <input
+                    type="email"
+                    id="email"
+                    ref={emailInputRef}
+                    className="border-2 text-black border-gray-300 p-3 rounded-lg focus:outline-none focus:border-blue-500 transition duration-300"
+                    placeholder="Enter your email to start..."
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    autoFocus={true}
+                    onClick={(e) => e.stopPropagation()}
+                  />
+                  <button
+                    type="submit"
+                    onClick={(e) => e.stopPropagation()}
+                    className="bg-blue-600 hover:bg-blue-800 text-white p-3 rounded-lg transition duration-300 flex justify-center items-center"
+                    disabled={loading} // Disable button while loading
+                  >
+                    {loading ? (
+                      <CircularProgress size={24} color="inherit" />
+                    ) : (
+                      "Start Training"
+                    )}
+                  </button>
+                  <p className="text-sm">
+                    If you already have an account, we&apos;ll log you in
+                  </p>
+                </form>
+                {message && (
+                  <p
+                    className={`mt-4 ${
+                      emailSent ? "text-green-500" : "text-red-500"
+                    }`}
+                  >
+                    {message}
+                  </p>
+                )}
+              </>
+            )}
           </div>
         </div>
       </div>

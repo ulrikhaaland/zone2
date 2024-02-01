@@ -68,8 +68,11 @@ export default class AuthStore {
   setFromPath = (fromPath: string | undefined) => {
     this.fromPath = fromPath;
   };
-  updateUserData = () => {
+
+  updateUserData = async () => {
     if (this.user) {
+      const exists = await this.getUserOrCreateIfNotExists(this.user.uid);
+
       const userData = {
         guideItems: this.user.guideItems,
         questions: this.user.questions,

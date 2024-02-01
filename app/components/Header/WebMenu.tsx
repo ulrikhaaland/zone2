@@ -1,9 +1,11 @@
+import AuthStore from "@/app/stores/auth.store";
 import { observer } from "mobx-react";
+import { NextRouter } from "next/router";
 import React from "react";
 
 interface WebMenuProps {
-  router: any;
-  authStore: any;
+  router: NextRouter;
+  authStore: AuthStore;
 }
 
 function WebMenu({ router, authStore }: WebMenuProps) {
@@ -43,13 +45,22 @@ function WebMenu({ router, authStore }: WebMenuProps) {
       >
         Zone 2 Content
       </p> */}
-      <p
-        className="text-lg font-semibold leading-6 group-hover:text-secondary-button"
-        onClick={() => authStore.setOpen(true)}
-        style={{ cursor: "pointer" }}
-      >
-        {!user ? "Log in" : "Personal Info"}
-      </p>
+
+      {!user ||
+        (user?.guideItems && user.guideItems.length > 0 && (
+          <p
+            className="text-lg font-semibold leading-6 group-hover:text-secondary-button"
+            onClick={() => {
+              if (!user) {
+                authStore.setOpen(true);
+                return;
+              } else router.push("/profile");
+            }}
+            style={{ cursor: "pointer" }}
+          >
+            {!user ? "Log in" : "Profile"}
+          </p>
+        ))}
     </div>
   );
 }

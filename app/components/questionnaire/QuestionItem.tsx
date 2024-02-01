@@ -281,22 +281,33 @@ export default function QuestionItem(props: QuestionItemProps) {
           {/* Unit toggle buttons */}
           <div className="flex">
             <button
-              className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-20 mr-1 ${
-                unit === firstUnit ? "opacity-100" : "opacity-50"
+              className={`text-white font-bold py-2 px-4 rounded w-20 mr-1 ${
+                unit === firstUnit
+                  ? "bg-blue-500 hover:bg-blue-700"
+                  : "bg-blue-500/50 hover:bg-blue-700/50"
               }`}
               onClick={() => toggleUnit(firstUnit)}
+              style={{
+                color: unit === firstUnit ? "#FFF" : "rgba(255, 255, 255, 0.7)",
+              }}
             >
               {firstUnit}
             </button>
             <button
-              className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-20 ${
-                unit === secondUnit ? "opacity-100" : "opacity-50"
+              className={`text-white font-bold py-2 px-4 rounded w-20 ${
+                unit === secondUnit
+                  ? "bg-blue-500 hover:bg-blue-700"
+                  : "bg-blue-500/50 hover:bg-blue-700/50"
               }`}
               onClick={() => {
                 if (unit === "kg") {
                   convertKgToLbs();
                 }
                 toggleUnit(secondUnit);
+              }}
+              style={{
+                color:
+                  unit === secondUnit ? "#FFF" : "rgba(255, 255, 255, 0.7)",
               }}
             >
               {secondUnit}
@@ -418,6 +429,9 @@ export default function QuestionItem(props: QuestionItemProps) {
           <label
             className="block text-white text-sm font-bold"
             htmlFor="teamName"
+            style={{
+              textShadow: "10px 10px 10px rgba(0,0,0,1)",
+            }}
           >
             {getQuestion()}
           </label>

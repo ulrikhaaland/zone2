@@ -14,6 +14,7 @@ import UserInfoConfirmationPage from "../../app/pages/UserInfoConfirmationPage";
 import { NextPageWithLayout } from "@/pages/_app";
 import { useStore } from "@/RootStoreProvider";
 import { observer } from "mobx-react";
+import { a } from "react-spring";
 
 const stripePromise = loadStripe(
   "pk_test_51Oc6ntFwAwE234wG9Lu3IfmZQXEv7nHPJx7alrzq00EzVaO74jpv7RifR5iRrkjvTS8BSv67QvoQJz2W2ccTt2bC00gLDhFGLf"
@@ -51,11 +52,16 @@ const HomePage: NextPageWithLayout = () => {
     setFitnessData(fitnessData);
     setCanSubmit(true);
     setQuestions(questions);
-    setUser({
+
+    const newUser = {
       ...user!,
       guideItems: [],
       questions: questions,
-    });
+    };
+    authStore.setUser(newUser);
+    authStore.updateUserData();
+
+    setUser(newUser);
   };
 
   const onBack = (isForward: boolean) => {

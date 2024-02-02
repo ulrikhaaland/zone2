@@ -1,0 +1,11 @@
+.scrollable-container::-webkit-scrollbar-thumb {
+  background: #ffffff !important;
+}
+
+.scrollable-container::-webkit-scrollbar-thumb:hover {
+  background: #cccccc !important;
+}
+
+.scrollable-container {
+  scrollbar-color: #ffffff #f1f1f1 !important;
+}

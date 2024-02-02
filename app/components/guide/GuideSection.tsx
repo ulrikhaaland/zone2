@@ -13,20 +13,22 @@ function GuideSection({ item }: GuideSectionProps) {
 
   return (
     <li
-      className={`mb-4 last:mb-0 ${
-        isNote ? "bg-secondary-button p-2 opacity-70" : ""
-      }`}
+      className={`mb-4 last:mb-0`}
+      // ${
+      //   isNote ? "bg-secondary-button p-2 opacity-70" : ""
+      // }
     >
       <h2
-        className={`text-xl font-semibold ${
-          isNote ? "text-title2" : "text-title"
-        }`}
+        className={`text-xl font-semibold`}
+        // ${
+        //   isNote ? "text-title2" : "text-title"
+        // }
       >
         {item.title}
       </h2>
       <p
         className={`mt-2 ${
-          isNote ? "text-sm text-subtitle" : "text-base text-gray-700"
+          isNote ? "text-sm" : "text-base"
         }`}
       >
         {item.explanation.replace(/\【\d+†source】/g, "").trim()}
@@ -34,7 +36,7 @@ function GuideSection({ item }: GuideSectionProps) {
       {item.subItems && item.subItems.length > 0 && (
         <ul
           className={`list-none p-0 ml-4 mt-4 ${
-            !hasOnlyNoteSubItems ? "bg-secondary-bg p-4" : ""
+            !hasOnlyNoteSubItems ? "p-4" : ""
           }`}
         >
           {item.subItems.map((subItem) => (

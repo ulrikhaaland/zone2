@@ -9,6 +9,7 @@ import { Question, questToFitnessData } from "@/app/model/questionaire";
 import { set } from "mobx";
 import { observer } from "mobx-react";
 import { a } from "react-spring";
+import { GuideItem } from "@/app/model/guide";
 
 const UserProfile: NextPageWithLayout = () => {
   const { authStore } = useStore();
@@ -22,8 +23,8 @@ const UserProfile: NextPageWithLayout = () => {
   // generate guide
   const [genGuide, setGenGuide] = useState(false);
 
-  const updateUser = (questions: Question[]) => {
-    setUser({ ...user!, questions: questions });
+  const updateUser = (questions: Question[], guideItems: GuideItem[]) => {
+    setUser({ ...user!, questions: questions, guideItems: guideItems });
     authStore.updateUserData();
   };
 
@@ -94,7 +95,7 @@ const UserProfile: NextPageWithLayout = () => {
         Zone 2 Guide Creation
       </h1>
       <div className="flex overflow-hidden md:rounded flex-col items-center min-h-max p-4 relative">
-        <div className="w-full bg-black bg-opacity-60 rounded-lg md:overflow-hidden max-w-md md:shadow-md md:min-h-[83.5dvh] md:max-h-[87.5dvh] min-h-[86.5dvh] max-h-[86.5dvh]">
+        <div className="w-full bg-black bg-opacity-60 rounded-lg md:overflow-hidden md:shadow-md md:min-h-[83.5dvh] md:max-h-[87.5dvh] min-h-[86.5dvh] max-h-[86.5dvh]">
           <AnimatePresence mode="wait">
             <motion.div
               className="relative z-0" // Ensure content is below the overlays
@@ -109,7 +110,9 @@ const UserProfile: NextPageWithLayout = () => {
             >
               {pageIndex === 0 && user && (
                 <Questionnaire
-                  onQuestCompleted={updateUser}
+                  onQuestCompleted={(questions) => {
+                    updateUser(questions, user.guideItems);
+                  }}
                   user={user}
                   questions={user.questions}
                   canSubmit={() => null}
@@ -119,7 +122,7 @@ const UserProfile: NextPageWithLayout = () => {
               {pageIndex === 1 && user && (
                 <Guide
                   onLoadGuideItems={(items) =>
-                    setUser({ ...user, guideItems: items })
+                    updateUser(user.questions, items)
                   }
                   guideItems={user.guideItems}
                   fitnessData={questToFitnessData(user.questions)}

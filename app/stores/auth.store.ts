@@ -1,14 +1,10 @@
 import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  signInWithPopup,
-  GoogleAuthProvider,
   signOut,
-  sendPasswordResetEmail,
   User as FirebaseUser,
   isSignInWithEmailLink,
   sendSignInLinkToEmail,
   signInWithEmailLink,
+  onAuthStateChanged,
 } from "firebase/auth";
 import {
   collection,
@@ -34,11 +30,7 @@ export default class AuthStore {
       fromPath: observable,
       setOpen: action,
       signOut: action,
-      signInWithEmailAndPassword: action,
-      createUserWithEmailAndPassword: action,
-      signInWithGoogle: action,
       checkAuth: action,
-      sendPasswordResetEmail: action,
       setUser: action,
       updateUserData: action,
       deleteAccount: action,
@@ -48,17 +40,23 @@ export default class AuthStore {
     });
   }
 
+  initAuthListener = () => {
+    onAuthStateChanged(auth, async (firebaseUser) => {
+      if (firebaseUser) {
+        // User is signed in, see docs for a list of available properties
+        // https://firebase.google.com/docs/reference/js/firebase.User
+        const user = await this.getUserOrCreateIfNotExists(firebaseUser.uid);
+        this.setUser(user, firebaseUser);
+      } else {
+        // User is signed out
+        this.setUser(undefined);
+        console.log("User is signed out");
+      }
+    });
+  };
+
   checkAuth = () => {
-    this.user = auth?.currentUser
-      ? {
-          uid: auth.currentUser.uid!,
-          credits: 0,
-          guideItems: [],
-          questions: [],
-          usesKG: true,
-          usesCM: true,
-        }
-      : undefined;
+    this.initAuthListener();
   };
 
   setOpen = (open: boolean) => {
@@ -71,8 +69,6 @@ export default class AuthStore {
 
   updateUserData = async () => {
     if (this.user) {
-      const exists = await this.getUserOrCreateIfNotExists(this.user.uid);
-
       const userData = {
         guideItems: this.user.guideItems,
         questions: this.user.questions,
@@ -91,6 +87,7 @@ export default class AuthStore {
     firebaseUser?: FirebaseUser | undefined
   ) => {
     if (user) {
+      console.log("User is signed in");
       this.user = user;
     } else if (firebaseUser) {
       this.setOpen(false);
@@ -130,63 +127,18 @@ export default class AuthStore {
     }
   };
 
-  signInWithEmailAndPassword = (
-    email: string,
-    password: string
-  ): Promise<string | undefined> => {
-    return signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed in
-        this.setUser(undefined, userCredential.user);
-        this.setOpen(false);
-        return;
-        // ...
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        return error.message;
-      });
-  };
-
-  createUserWithEmailAndPassword = (
-    email: string,
-    password: string
-  ): Promise<string | undefined> => {
-    return createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed in
-        this.setUser(undefined, userCredential.user);
-        this.setOpen(false);
-        return;
-        // ...
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        return error.message;
-        // ..
-      });
-  };
-
-  sendPasswordResetEmail = (email: string): Promise<string | undefined> => {
-    return sendPasswordResetEmail(auth, email)
-      .then((userCredential) => {
-        // Signed in
-        return;
-        // ...
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        return error.message;
-        // ..
-      });
-  };
-
   // Method to send sign-in link to email
-  sendSignInLink = async (email: string, path: string): Promise<void> => {
+  sendSignInLink = async (
+    email: string,
+    path: string,
+    isLocal: boolean = false
+  ): Promise<void> => {
     const actionCodeSettings = {
       // URL you want to redirect back to. The domain (www.example.com) for this
       // URL must be in the authorized domains list in the Firebase Console.
-      url: `https://zone2-liard.vercel.app${path}`, // change this to your desired URL
+      url: `${
+        isLocal ? "http://localhost:3000" : "https://zone2-liard.vercel.app"
+      }${path}`, // change this to your desired URL
       handleCodeInApp: true,
     };
 
@@ -220,6 +172,7 @@ export default class AuthStore {
 
         // Update the user observable with the signed-in user's information
         this.setUser({
+          firebaseUser: result.user,
           uid: result.user.uid,
           credits: 0, // Or any default value
           guideItems: [],
@@ -238,33 +191,7 @@ export default class AuthStore {
     }
   };
 
-  signInWithGoogle = () => {
-    signInWithPopup(auth, provider)
-      .then((result) => {
-        // This gives you a Google Access Token. You can use it to access the Google API.
-        const credential = GoogleAuthProvider.credentialFromResult(result);
-        const token = credential?.accessToken;
-        // The signed-in user info.
-        this.setUser(undefined, result.user);
-
-        this.setOpen(false);
-
-        // IdP data available using getAdditionalUserInfo(result)
-        // ...
-      })
-      .catch((error) => {
-        // Handle Errors here.
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // The email of the user's account used.
-        const email = error.customData.email;
-        // The AuthCredential type that was used.
-        const credential = GoogleAuthProvider.credentialFromError(error);
-        // ...
-      });
-  };
-
-  async getUserOrCreateIfNotExists(uid: string): Promise<void> {
+  async getUserOrCreateIfNotExists(uid: string): Promise<User> {
     const userDocSnapshot = await getDoc(doc(db, "users/" + uid));
 
     const data = userDocSnapshot.data();
@@ -275,26 +202,28 @@ export default class AuthStore {
           credits: 1000,
           guideItems: [],
           questions: [],
-          usesKG: false,
-          usesCM: false,
+          usesKG: true,
+          usesCM: true,
         };
-        this.setUser(userData);
         await setDoc(doc(db, "users", uid), userData);
-
         console.log("User document created successfully.");
+
+        return userData;
       } else {
         const user: User = {
           uid: data?.uid,
           credits: data?.credits,
-          guideItems: [],
-          questions: [],
-          usesKG: false,
-          usesCM: false,
+          guideItems: data?.guideItems,
+          questions: data?.questions,
+          usesKG: data?.usesKG,
+          usesCM: data?.usesCM,
+          hasPaid: data?.hasPaid,
         };
-        this.setUser(user);
+        return user;
       }
     } catch (error) {
       console.error("Error checking/creating user document: ", error);
+      throw error;
     }
   }
 }

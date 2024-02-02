@@ -12,7 +12,6 @@ function Layout({ children }: { children: React.ReactNode }) {
   const { open, setOpen, user } = authStore;
   const [showLogin, setShowLogin] = useState(false);
   // State to store the calculated content height
-  const [contentHeightVh, setContentHeightVh] = useState(100);
 
   const router: NextRouter = useRouter(); // Update the type of router
 
@@ -22,20 +21,16 @@ function Layout({ children }: { children: React.ReactNode }) {
   const isHome = router.pathname === "/";
 
   useEffect(() => {
-    // Convert the header height from pixels to vh
-    const headerHeightVh = (72 / window.innerHeight) * 100;
-    setContentHeightVh(100 - headerHeightVh);
-  }, []);
-
-  useEffect(() => {
     if (!user) {
       if (open && !isHome) {
         setShowLogin(true);
       } else {
         setShowLogin(false);
       }
+    } else {
+      setShowLogin(false);
     }
-  }, [open, user]);
+  }, [open, user, isHome]);
 
   return (
     <>

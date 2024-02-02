@@ -22,14 +22,16 @@ export default function Questionnaire(props: QuestionnaireProps) {
   const { onQuestCompleted, user, canSubmit, isProfile } = props;
 
   const [questions, setQuestions] = useState<Question[]>(
-    props.questions ?? [questionsFull[0]]
+    props.questions && props.questions?.length !== 0
+      ? props.questions
+      : [questionsFull[0]]
   );
   const [completed, setCompleted] = useState(props.questions ? true : false);
   const [chosenExercise, setChosenExercise] = useState<string | undefined>();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isScrolling, setIsScrolling] = useState(false); // New state to track scrolling
   const [currentQuestionID, setCurrentQuestionID] = useState<number>(
-    questions[questions.length - 1].id
+    questions[questions.length - 1]?.id ?? 0
   );
   const [focusQuestionId, setFocusQuestionId] = useState(0);
   const [hasError, setHasError] = useState(false);
@@ -44,7 +46,15 @@ export default function Questionnaire(props: QuestionnaireProps) {
   const progressPercentage = (currentQuestionID / totalQuestions) * 100;
 
   useEffect(() => {
-    setCurrentQuestionID(questions[questions.length - 1].id);
+    if (!questions[questions.length - 1]) return;
+
+    const currentId = questions[questions.length - 1].id;
+    setCurrentQuestionID(currentId);
+
+    if (currentId === questionsFull[questionsFull.length - 1].id) {
+      handleOnQuestionAnswered(currentId);
+    }
+
     if (
       !completed &&
       questions[questions.length - 1] ===
@@ -188,6 +198,7 @@ export default function Questionnaire(props: QuestionnaireProps) {
       }
       if (completed) {
         setCompleted(false);
+        canSubmit!(false);
       }
       nextQuestion.hasSkipped = false;
       setQuestions([...currentQuestions, nextQuestion]);

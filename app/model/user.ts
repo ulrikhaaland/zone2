@@ -16,6 +16,7 @@ export interface User {
   usesCM: boolean;
   uid: string;
   credits: number;
+  hasPaid?: boolean;
 }
 
 export interface FitnessData {

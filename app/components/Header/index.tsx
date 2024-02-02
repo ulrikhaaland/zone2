@@ -50,6 +50,7 @@ function Header() {
             <Bars3Icon className="h-6 w-6" aria-hidden="true" />
           </button>
         </div>
+
         <WebMenu router={router} authStore={authStore} />
       </nav>
       <MobileMenu

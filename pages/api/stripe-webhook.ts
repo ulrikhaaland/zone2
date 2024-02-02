@@ -1,6 +1,8 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import Stripe from "stripe";
 import { buffer } from "micro";
+import { doc, updateDoc } from "firebase/firestore";
+import { db } from "../_app";
 
 const stripe = new Stripe(process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY!);
 
@@ -42,10 +44,11 @@ export default async function handler(
       case "payment_intent.succeeded": {
         const paymentIntent = event.data.object as Stripe.PaymentIntent;
         const customerId = paymentIntent.customer;
-        const referenceId = paymentIntent.metadata.referenceId;
+        const userId = paymentIntent.metadata.referenceId;
 
         console.log(paymentIntent);
-        console.log(referenceId);
+        console.log(userId);
+
         if (typeof customerId === "string") {
           try {
             const response = await stripe.customers.retrieve(customerId);
@@ -69,6 +72,12 @@ export default async function handler(
         const paymentStatus = checkoutSession.payment_status;
 
         if (paymentStatus === "paid" && clientReferenceId) {
+          const userRef = doc(db, "users", clientReferenceId); // Create a reference to the user's document in Firestore
+          console.log("userRef" + userRef);
+          await updateDoc(userRef, {
+            hasPaid: true, // Update the document field
+          });
+          console.log("User document updated with hasPaid = true");
           console.log("Payment completed");
           console.log(customerEmail);
           console.log(clientReferenceId);

@@ -36,7 +36,9 @@ const HomePage: NextPageWithLayout = () => {
 
   const [pageIndex, setPageIndex] = useState(0);
   const [previousPageIndex, setPreviousPageIndex] = useState(0);
-  const [questions, setQuestions] = useState<Question[] | undefined>();
+  const [questions, setQuestions] = useState<Question[] | undefined>(
+    user.questions
+  );
   const [canSubmit, setCanSubmit] = useState(false);
   const [forward, setForward] = useState(false);
   const [fitnessData, setFitnessData] = useState<FitnessData | undefined>();
@@ -100,14 +102,15 @@ const HomePage: NextPageWithLayout = () => {
 
   const redirectToStripe = () => {
     const stripeUrl = "https://buy.stripe.com/test_4gwaII0gpc3QfDy7ss";
-    const prefilledEmail = "ulrikhaland@gmail.com";
-    const returnUrl = `${window.location.origin}/your-return-url?userId=${123}`;
+    console.log(user.firebaseUser);
+    const prefilledEmail = user.firebaseUser?.email ?? "";
+    const returnUrl = `${window.location.origin}/profile?userId=${user.uid}`;
 
     window.location.href = `${stripeUrl}?prefilled_email=${encodeURIComponent(
       prefilledEmail
-    )}&redirect_to=${encodeURIComponent(
-      returnUrl
-    )}&client_reference_id=asd12343`;
+    )}&redirect_to=${encodeURIComponent(returnUrl)}&client_reference_id=${
+      user.uid
+    }`;
   };
 
   useEffect(() => {

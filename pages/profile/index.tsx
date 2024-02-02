@@ -1,5 +1,5 @@
-import { ReactElement, useState } from "react";
-import { NextPageWithLayout } from "../_app";
+import { ReactElement, useEffect, useState } from "react";
+import { NextPageWithLayout, auth } from "../_app";
 import { useStore } from "@/RootStoreProvider";
 import { User } from "@/app/model/user";
 import Guide from "@/app/pages/GuidePage";
@@ -7,18 +7,41 @@ import { AnimatePresence, motion } from "framer-motion";
 import Questionnaire from "@/app/components/questionnaire/Questionnaire";
 import { Question, questToFitnessData } from "@/app/model/questionaire";
 import { set } from "mobx";
+import { observer } from "mobx-react";
+import { a } from "react-spring";
 
 const UserProfile: NextPageWithLayout = () => {
   const { authStore } = useStore();
 
-  const [user, setUser] = useState<User>(authStore.user!);
+  const [user, setUser] = useState<User | undefined>(
+    authStore.user ?? undefined
+  );
 
   const [pageIndex, setPageIndex] = useState(0);
 
+  // generate guide
+  const [genGuide, setGenGuide] = useState(false);
+
   const updateUser = (questions: Question[]) => {
-    setUser({ ...user, questions: questions });
+    setUser({ ...user!, questions: questions });
     authStore.updateUserData();
   };
+
+  useEffect(() => {
+    if (!authStore.user) {
+      authStore.checkAuth();
+    } else {
+      console.log("user has paid: ", authStore.user);
+      if (authStore.user.hasPaid && authStore.user.guideItems.length === 0) {
+        console.log("setting page index to 1");
+        setPageIndex(1);
+
+        setGenGuide(true);
+      }
+
+      setUser(authStore.user);
+    }
+  }, [authStore, authStore.user]);
 
   return (
     <div className="w-full font-custom md:h-screen min-h-[100dvh] relative">
@@ -84,7 +107,7 @@ const UserProfile: NextPageWithLayout = () => {
               }}
               transition={{ duration: 0.25 }}
             >
-              {pageIndex === 0 && (
+              {pageIndex === 0 && user && (
                 <Questionnaire
                   onQuestCompleted={updateUser}
                   user={user}
@@ -93,7 +116,7 @@ const UserProfile: NextPageWithLayout = () => {
                   isProfile={true}
                 />
               )}
-              {pageIndex === 1 && (
+              {pageIndex === 1 && user && (
                 <Guide
                   onLoadGuideItems={(items) =>
                     setUser({ ...user, guideItems: items })
@@ -114,4 +137,4 @@ UserProfile.getLayout = function getLayout(page: ReactElement) {
   return <>{page}</>;
 };
 
-export default UserProfile;
+export default observer(UserProfile);

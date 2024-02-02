@@ -45,17 +45,17 @@ const HomePage: NextPageWithLayout = () => {
     }
   };
 
-  useEffect(() => {
-    if (!authStore.user) {
-      authStore.setUser({
-        questions: [],
-        guideItems: [],
-        usesCM: true,
-        usesKG: true,
-        uid: "123",
-        credits: 0,
-      });
+  const getUser = async () => {
+    const user = await authStore.getUserOrCreateIfNotExists("123");
+    if (user) {
+      authStore.setUser(user);
     }
+  };
+
+  useEffect(() => {
+    // if (!authStore.user) {
+    //   getUser();
+    // }
     const timer = setTimeout(() => {
       if (videoRef.current && !videoRef.current.paused) {
         videoRef.current.pause();
@@ -71,7 +71,7 @@ const HomePage: NextPageWithLayout = () => {
     setLoading(true);
     e.stopPropagation();
     try {
-      await authStore.sendSignInLink(email, router.pathname);
+      await authStore.sendSignInLink(email, router.pathname, true);
       setEmailSent(true);
       setMessage("Check your email for the sign-in link.");
     } catch (error: any) {

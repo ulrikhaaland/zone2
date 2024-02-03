@@ -38,11 +38,14 @@ export default function Guide(props: GuideProps) {
   };
 
   return (
-    <div className="absolute top-0 left-0 w-full h-fit text-white overflow-hidden">
-      <div className="scrollable-container max-w-4xl mx-auto p-4 h-[calc(100vh-8rem)] overflow-auto">
-        <h1 className="text-3xl text-center font-bold mb-6">
-          Your Personalized Fitness Guide
-        </h1>
+    <div className="flex justify-center items-center min-h-screen absolute inset-0 bg-black bg-opacity-60 rounded-lg overflow-hidden">
+      <div
+        className="scrollable-container p-4 overflow-y-auto w-[850px] mx-auto text-white"
+        style={{
+          height: "calc(100vh - 2rem)",
+          maxHeight: "calc(100vh - 2rem)",
+        }}
+      >
         {getContent()}
       </div>
     </div>

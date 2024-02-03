@@ -61,9 +61,11 @@ export default function Questionnaire(props: QuestionnaireProps) {
         questionsFull[questionsFull.length - 1]
     ) {
       setCompleted(true);
+
       if (canSubmit) {
         canSubmit(true);
       }
+
       handleSubmit(new Event("submit"));
     }
   }, [questions]);
@@ -240,7 +242,11 @@ export default function Questionnaire(props: QuestionnaireProps) {
   };
 
   return (
-    <div className="md:min-h-[77.5dvh] text-white md:max-h-[77.5dvh] min-h-[72.5dvh] max-h-[72.5dvh]">
+    <div
+      className={`max-w-md md:min-h-[77.5dvh] text-white md:max-h-[77.5dvh] min-h-[72.5dvh] max-h-[72.5dvh] ${
+        isProfile ? "bg-black bg-opacity-60 rounded-lg" : ""
+      }`}
+    >
       {/* Header with progress bar */}
       <div
         className={`relative md:p-4 pb-1 px-4 ${

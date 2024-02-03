@@ -10,6 +10,8 @@ import { set } from "mobx";
 import { observer } from "mobx-react";
 import { a } from "react-spring";
 import { GuideItem } from "@/app/model/guide";
+import MenuBookIcon from "@mui/icons-material/MenuBook";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 const UserProfile: NextPageWithLayout = () => {
   const { authStore } = useStore();
@@ -120,7 +122,6 @@ const UserProfile: NextPageWithLayout = () => {
           }}
         ></div>
       </div>
-
       {/* Page Content */}
       <h1
         className="text-5xl text-white text-center font-bold pt-6 mb-4 relative z-10"
@@ -128,13 +129,50 @@ const UserProfile: NextPageWithLayout = () => {
           textShadow: "10px 10px 10px rgba(0,0,0,1)",
         }}
       >
-        Zone 2 Guide Creation
+        {pageIndex === 1 ? "Profile" : "Your Personalized Fitness Guide"}
       </h1>
+      {/* Button Container */}
+      <div className="relative flex justify-between items-center md:px-6 pt-12 md:pt-2 md-pb-0 pb-4 w-[300px] mx-auto">
+        <button
+          className={`flex items-center font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-150 ease-in-out ${
+            pageIndex === 0 ? "bg-white text-black" : "bg-black text-white"
+          }`}
+          type="button"
+          onClick={() => setPageIndex(0)}
+        >
+          <MenuBookIcon
+            className="mr-2"
+            style={{ color: pageIndex === 0 ? "black" : "white" }}
+          />
+          Guide
+        </button>
+        <div
+          style={{
+            width: "50px",
+            height: "10px",
+            backgroundColor: "transparent",
+          }}
+        ></div>
+        <button
+          className={`flex items-center font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-150 ease-in-out ${
+            pageIndex === 1 ? "bg-white text-black" : "bg-black text-white"
+          }`}
+          type="submit"
+          onClick={(e) => setPageIndex(1)}
+        >
+          <AccountCircleIcon
+            className="mr-2"
+            style={{ color: pageIndex === 1 ? "black" : "white" }}
+          />
+          Profile
+        </button>
+      </div>
+
       <div className="flex overflow-hidden md:rounded flex-col items-center min-h-max p-4 relative">
-        <div className="w-full bg-black bg-opacity-60 rounded-lg md:overflow-hidden md:shadow-md md:min-h-[83.5dvh] md:max-h-[87.5dvh] min-h-[86.5dvh] max-h-[86.5dvh]">
+        <div className="w-full md:overflow-hidden md:shadow-md md:min-h-[83.5dvh] md:max-h-[87.5dvh] min-h-[86.5dvh] max-h-[86.5dvh]">
           <AnimatePresence mode="wait">
             <motion.div
-              className="relative z-0" // Ensure content is below the overlays
+              className="relative z-0 flex justify-center" // Ensure content is below the overlays
               key={pageIndex}
               initial={{ opacity: 0, x: 100 }}
               animate={{ opacity: 1, x: 0 }}
@@ -144,7 +182,14 @@ const UserProfile: NextPageWithLayout = () => {
               }}
               transition={{ duration: 0.25 }}
             >
-              {pageIndex === 0 && user && (
+              {pageIndex === 0 && user && user.guideStatus && (
+                <Guide
+                  key={guideStatus}
+                  guideItems={user.guideItems}
+                  status={guideStatus!}
+                />
+              )}
+              {pageIndex === 1 && user && (
                 <Questionnaire
                   onQuestCompleted={(questions) => {
                     updateUser(questions);
@@ -153,13 +198,6 @@ const UserProfile: NextPageWithLayout = () => {
                   questions={user.questions}
                   canSubmit={() => null}
                   isProfile={true}
-                />
-              )}
-              {pageIndex === 1 && user && user.guideStatus && (
-                <Guide
-                  key={guideStatus}
-                  guideItems={user.guideItems}
-                  status={guideStatus!}
                 />
               )}
             </motion.div>

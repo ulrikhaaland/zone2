@@ -203,6 +203,8 @@ export default function Questionnaire(props: QuestionnaireProps) {
       nextQuestion.hasSkipped = false;
       setQuestions([...currentQuestions, nextQuestion]);
     } else {
+      console.log("completed");
+      onQuestCompleted(questions);
       setCompleted(true);
       handleSubmit(new Event("submit"));
     }

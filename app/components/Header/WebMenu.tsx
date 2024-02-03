@@ -1,7 +1,7 @@
 import AuthStore from "@/app/stores/auth.store";
 import { observer } from "mobx-react";
 import { NextRouter } from "next/router";
-import React from "react";
+import React, { useEffect } from "react";
 
 interface WebMenuProps {
   router: NextRouter;
@@ -12,6 +12,8 @@ function WebMenu({ router, authStore }: WebMenuProps) {
   const { user } = authStore;
 
   const isHome = router.pathname === "/";
+
+  useEffect(() => {}, [authStore.user]);
 
   return (
     <div
@@ -47,7 +49,7 @@ function WebMenu({ router, authStore }: WebMenuProps) {
       </p> */}
 
       {!user ||
-        (user?.guideItems && user.guideItems.length > 0 && (
+        (user?.hasPaid && (
           <p
             className="text-lg font-semibold leading-6 group-hover:text-secondary-button"
             onClick={() => {

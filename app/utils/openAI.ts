@@ -1,14 +1,18 @@
 import OpenAI from "openai";
 import { MessageCreateParams } from "openai/resources/beta/threads/messages/messages.mjs";
-import { FitnessData, fitnessDataToJson } from "../model/user";
-import { RequestOptions } from "openai/core.mjs";
+import { FitnessData, GuideStatus, fitnessDataToJson } from "../model/user";
+import dotenv from "dotenv";
+import { doc, updateDoc } from "firebase/firestore";
+import { db } from "@/pages/_app";
+import { GuideItem, parseJsonToGuideItems } from "../model/guide";
+
+dotenv.config();
 
 const client = new OpenAI({
-  apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
-  dangerouslyAllowBrowser: true,
+  apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY, // Use server-side environment variable
 });
 
-export const generateGuide = async (
+const generateGuide = async (
   fitnessData: FitnessData,
   previousThread?: OpenAI.Beta.Threads.Thread
 ): Promise<string | undefined> => {
@@ -23,20 +27,9 @@ export const generateGuide = async (
 
   await client.beta.threads.messages.create(thread.id, message);
 
-  const requestOptions: RequestOptions = {
-    headers: {
-      Accept: "application/json",
-    },
-    // ... include other options if necessary
-  };
-
-  const run = await client.beta.threads.runs.create(
-    thread.id,
-    {
-      assistant_id: "asst_P04Kgk0OWercjCtYJtNzUV8G",
-    },
-    requestOptions
-  );
+  const run = await client.beta.threads.runs.create(thread.id, {
+    assistant_id: "asst_P04Kgk0OWercjCtYJtNzUV8G",
+  });
 
   async function getRunStatus(
     threadId: string,
@@ -57,4 +50,36 @@ export const generateGuide = async (
   }
 
   return await getRunStatus(thread.id, run.id);
+};
+
+export const handleOnGenerateGuide = async (
+  fitnessData: FitnessData,
+  uid: string
+) => {
+  const userRef = doc(db, "users", uid); // Create a reference to the user's document in Firestore
+
+  try {
+    const guide = await generateGuide(fitnessData);
+
+    if (guide) {
+      console.log("Guide generated successfully:");
+      const guideItems: GuideItem[] = parseJsonToGuideItems(guide);
+
+      // on error
+      updateDoc(userRef, {
+        guideItems: guideItems,
+        guideStatus: GuideStatus.LOADED,
+      }).catch((error) => {
+        console.error("Error updating user document:", error);
+        updateDoc(userRef, {
+          guideStatus: GuideStatus.ERROR,
+        });
+      });
+    }
+  } catch (error) {
+    console.error("Error generating guide:", error);
+    updateDoc(userRef, {
+      guideStatus: GuideStatus.ERROR,
+    });
+  }
 };

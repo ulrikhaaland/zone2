@@ -1,8 +1,11 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import Stripe from "stripe";
 import { buffer } from "micro";
-import { doc, updateDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "../_app";
+import { GuideStatus } from "@/app/model/user";
+import { questToFitnessData } from "@/app/model/questionaire";
+import { handleOnGenerateGuide } from "@/app/utils/openAI";
 
 const stripe = new Stripe(process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY!);
 
@@ -76,7 +79,33 @@ export default async function handler(
           console.log("userRef" + userRef);
           await updateDoc(userRef, {
             hasPaid: true, // Update the document field
+            guideStatus: GuideStatus.LOADING,
           });
+          getDoc(userRef)
+            .then((doc) => {
+              if (doc.exists()) {
+                const data = doc.data();
+
+                if (data?.guideItems) {
+                  updateDoc(userRef, {
+                    previousGuideItems: data?.guideItems,
+                    guideItems: [],
+                  });
+                }
+
+                const fitnessData = questToFitnessData(data?.questions);
+                handleOnGenerateGuide(fitnessData, clientReferenceId);
+              } else {
+                // doc.data() will be undefined in this case
+                console.log("No such document!");
+              }
+            })
+            .catch(async (error) => {
+              await updateDoc(userRef, {
+                guideStatus: GuideStatus.ERROR, // Update the document field
+              });
+            });
+
           console.log("User document updated with hasPaid = true");
           console.log("Payment completed");
           console.log(customerEmail);

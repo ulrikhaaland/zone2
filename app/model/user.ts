@@ -8,15 +8,23 @@ import {
   zone2FrequencyAnswers,
 } from "./questionaire";
 
+export enum GuideStatus {
+  LOADING = "LOADING",
+  LOADED = "LOADED",
+  ERROR = "ERROR",
+}
+
 export interface User {
   firebaseUser?: firebaseAuth.User;
   guideItems: GuideItem[];
+  previousGuideItems?: GuideItem[];
   questions: Question[];
   usesKG: boolean;
   usesCM: boolean;
   uid: string;
   credits: number;
   hasPaid?: boolean;
+  guideStatus?: GuideStatus;
 }
 
 export interface FitnessData {

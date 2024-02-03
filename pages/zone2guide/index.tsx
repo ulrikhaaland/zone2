@@ -37,31 +37,32 @@ const HomePage: NextPageWithLayout = () => {
   const [pageIndex, setPageIndex] = useState(0);
   const [previousPageIndex, setPreviousPageIndex] = useState(0);
   const [questions, setQuestions] = useState<Question[] | undefined>(
-    user.questions
+    authStore.user?.questions
   );
   const [canSubmit, setCanSubmit] = useState(false);
   const [forward, setForward] = useState(false);
-  const [fitnessData, setFitnessData] = useState<FitnessData | undefined>();
 
   useEffect(() => {
-    if (authStore.user) {
+    if (authStore.user && user.uid !== authStore.user.uid) {
+      console.log("setting user");
       setUser(authStore.user);
+      const newQuestions = authStore.user?.questions;
+      if (newQuestions) {
+        setQuestions([...newQuestions]);
+      }
     }
   }, [authStore.user]);
 
   const handleOnQuestCompleted = (questions: Question[]) => {
-    const fitnessData = questToFitnessData(questions);
-    setFitnessData(fitnessData);
     setCanSubmit(true);
     setQuestions(questions);
-
-    const newUser = {
+    const newUser: User = {
       ...user!,
-      guideItems: [],
       questions: questions,
+      guideItems: authStore.user?.guideItems ?? [],
     };
-    authStore.setUser(newUser);
-    authStore.updateUserData();
+    console.log(newUser);
+    authStore.updateUserData(newUser);
 
     setUser(newUser);
   };
@@ -210,6 +211,7 @@ const HomePage: NextPageWithLayout = () => {
             >
               {pageIndex === 0 && (
                 <Questionnaire
+                  key={user.uid}
                   onQuestCompleted={handleOnQuestCompleted}
                   user={user}
                   questions={questions}
@@ -217,9 +219,9 @@ const HomePage: NextPageWithLayout = () => {
                   isProfile={false}
                 />
               )}
-              {pageIndex === 1 && fitnessData && (
+              {pageIndex === 1 && (
                 <UserInfoConfirmationPage
-                  fitnessData={fitnessData}
+                  fitnessData={questToFitnessData(questions!)}
                   user={user}
                 />
               )}
@@ -283,14 +285,6 @@ const HomePage: NextPageWithLayout = () => {
           </div>
         </div>
       </div>
-
-      {pageIndex === 3 && user && (
-        <Guide
-          onLoadGuideItems={(items) => setUser({ ...user, guideItems: items })}
-          guideItems={user.guideItems}
-          fitnessData={questToFitnessData(user.questions)}
-        />
-      )}
     </div>
   );
 };

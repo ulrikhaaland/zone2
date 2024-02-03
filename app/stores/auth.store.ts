@@ -13,8 +13,10 @@ import {
   doc,
   setDoc,
   updateDoc,
+  onSnapshot,
+  Unsubscribe,
 } from "firebase/firestore";
-import { User } from "../model/user";
+import { GuideStatus, User } from "../model/user";
 import { auth, db, provider } from "../../pages/_app";
 import { makeObservable, observable, action } from "mobx";
 
@@ -67,15 +69,20 @@ export default class AuthStore {
     this.fromPath = fromPath;
   };
 
-  updateUserData = async () => {
+  updateUserData = async (newUser: User) => {
     if (this.user) {
+      console.log("Updating user data..." + newUser);
       const userData = {
-        guideItems: this.user.guideItems,
-        questions: this.user.questions,
-        usesKG: this.user.usesKG,
-        usesCM: this.user.usesCM,
-        credits: this.user.credits,
+        guideItems: newUser.guideItems,
+        previousGuideItems:
+          newUser.previousGuideItems ?? newUser.guideItems ?? [],
+        questions: newUser.questions,
+        usesKG: newUser.usesKG,
+        usesCM: newUser.usesCM,
+        credits: newUser.credits,
       };
+
+      this.setUser(newUser);
 
       // Here, userData contains all fields from the User object.
       updateDoc(doc(db, "users", this.user.uid), userData);
@@ -197,28 +204,20 @@ export default class AuthStore {
     const data = userDocSnapshot.data();
     try {
       if (!data) {
-        const userData: User = {
-          uid: uid,
-          credits: 1000,
-          guideItems: [],
-          questions: [],
-          usesKG: true,
-          usesCM: true,
-        };
-        await setDoc(doc(db, "users", uid), userData);
-        console.log("User document created successfully.");
-
-        return userData;
+        return this.createUser(uid);
       } else {
         const user: User = {
           uid: data?.uid,
           credits: data?.credits,
           guideItems: data?.guideItems,
+          previousGuideItems: data?.previousGuideItems,
           questions: data?.questions,
           usesKG: data?.usesKG,
           usesCM: data?.usesCM,
           hasPaid: data?.hasPaid,
+          guideStatus: data?.guideStatus,
         };
+        console.log("User document found:", user);
         return user;
       }
     } catch (error) {
@@ -226,4 +225,60 @@ export default class AuthStore {
       throw error;
     }
   }
+
+  async createUser(uid: string): Promise<User> {
+    const userData: User = {
+      uid: uid,
+      credits: 1000,
+      guideItems: [],
+      questions: [],
+      usesKG: true,
+      usesCM: true,
+      hasPaid: false,
+    };
+    await setDoc(doc(db, "users", uid), userData);
+    console.log("User document created successfully.");
+
+    return userData;
+  }
+
+  listenToUserGuideStatus = (
+    onGuideStatusUpdate: (newGuideStatus: GuideStatus) => void
+  ): Unsubscribe | void => {
+    if (!this.user || !this.user.uid) {
+      console.log("No user logged in");
+      return;
+    }
+
+    console.log("listening to guide status");
+
+    const userDocRef = doc(db, "users", this.user.uid);
+
+    return onSnapshot(
+      userDocRef,
+      (doc) => {
+        if (doc.exists()) {
+          const data = doc.data();
+          // Assuming GuideStatus.LOADING is a valid enum or constant value
+          if (
+            data.guideStatus !== undefined &&
+            data.guideStatus !== GuideStatus.LOADING
+          ) {
+            console.log("Guide Status updated:", data.guideStatus);
+            // Call the callback function with the new guide status
+            onGuideStatusUpdate(data.guideStatus);
+          } else if (data.guideStatus === GuideStatus.LOADING) {
+            console.log("Guide status is loading, no action taken.");
+          } else {
+            console.log("No guideStatus found in user document");
+          }
+        } else {
+          console.log("User document does not exist");
+        }
+      },
+      (error) => {
+        console.error("Error listening to user guideStatus:", error);
+      }
+    );
+  };
 }

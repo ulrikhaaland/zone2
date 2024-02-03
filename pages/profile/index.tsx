@@ -1,7 +1,7 @@
 import { ReactElement, useEffect, useState } from "react";
 import { NextPageWithLayout, auth } from "../_app";
 import { useStore } from "@/RootStoreProvider";
-import { User } from "@/app/model/user";
+import { GuideStatus, User } from "@/app/model/user";
 import Guide from "@/app/pages/GuidePage";
 import { AnimatePresence, motion } from "framer-motion";
 import Questionnaire from "@/app/components/questionnaire/Questionnaire";
@@ -18,31 +18,67 @@ const UserProfile: NextPageWithLayout = () => {
     authStore.user ?? undefined
   );
 
-  const [pageIndex, setPageIndex] = useState(0);
+  const [pageIndex, setPageIndex] = useState(1);
 
-  // generate guide
-  const [genGuide, setGenGuide] = useState(false);
+  const [guideStatus, setGuideStatus] = useState(user?.guideStatus);
 
-  const updateUser = (questions: Question[], guideItems: GuideItem[]) => {
-    setUser({ ...user!, questions: questions, guideItems: guideItems });
-    authStore.updateUserData();
+  const updateUser = (questions: Question[]) => {
+    const updatedUser = { ...user!, questions: questions };
+    authStore.updateUserData(updatedUser);
   };
 
   useEffect(() => {
     if (!authStore.user) {
       authStore.checkAuth();
     } else {
-      console.log("user has paid: ", authStore.user);
-      if (authStore.user.hasPaid && authStore.user.guideItems.length === 0) {
-        console.log("setting page index to 1");
-        setPageIndex(1);
-
-        setGenGuide(true);
-      }
-
       setUser(authStore.user);
+
+      if (authStore.user.guideStatus === GuideStatus.LOADING) {
+        setGuideStatus(authStore.user.guideStatus);
+        console.log("user is in guide loading status: ", authStore.user);
+
+        // Setup listener for guideStatus updates
+        const unsubscribe = authStore.listenToUserGuideStatus(
+          (newGuideStatus: GuideStatus) => {
+            console.log("new guide status: ", newGuideStatus);
+            if (newGuideStatus === GuideStatus.LOADED) {
+              // Unsubscribe when guideStatus becomes LOADED
+              console.log("Guide is loaded, unsubscribing from updates.");
+              onGuideLoaded();
+              if (typeof unsubscribe === "function") {
+                unsubscribe();
+              }
+            } else {
+              // Handle other guide status updates here
+              authStore
+                .getUserOrCreateIfNotExists(authStore.user!.uid)
+                .then((updatedUser) => {
+                  setGuideStatus(newGuideStatus);
+                  setUser(updatedUser);
+                });
+            }
+          }
+        );
+
+        // Cleanup function to unsubscribe, only if unsubscribe is a function
+        return () => {
+          if (typeof unsubscribe === "function") {
+            unsubscribe();
+          }
+        };
+      }
     }
   }, [authStore, authStore.user]);
+
+  const onGuideLoaded = () => {
+    authStore
+      .getUserOrCreateIfNotExists(authStore.user!.uid)
+      .then((updatedUser) => {
+        setGuideStatus(GuideStatus.LOADED);
+        authStore.setUser(updatedUser);
+        setUser(updatedUser);
+      });
+  };
 
   return (
     <div className="w-full font-custom md:h-screen min-h-[100dvh] relative">
@@ -111,7 +147,7 @@ const UserProfile: NextPageWithLayout = () => {
               {pageIndex === 0 && user && (
                 <Questionnaire
                   onQuestCompleted={(questions) => {
-                    updateUser(questions, user.guideItems);
+                    updateUser(questions);
                   }}
                   user={user}
                   questions={user.questions}
@@ -119,13 +155,11 @@ const UserProfile: NextPageWithLayout = () => {
                   isProfile={true}
                 />
               )}
-              {pageIndex === 1 && user && (
+              {pageIndex === 1 && user && user.guideStatus && (
                 <Guide
-                  onLoadGuideItems={(items) =>
-                    updateUser(user.questions, items)
-                  }
+                  key={guideStatus}
                   guideItems={user.guideItems}
-                  fitnessData={questToFitnessData(user.questions)}
+                  status={guideStatus!}
                 />
               )}
             </motion.div>

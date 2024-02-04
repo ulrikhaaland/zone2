@@ -35,7 +35,7 @@ const UserProfile: NextPageWithLayout = () => {
     } else {
       const user = authStore.user;
       setUser(user);
-      setGuideStatus(GuideStatus.NONE);
+      setGuideStatus(user.guideStatus);
 
       if (authStore.user.guideStatus === GuideStatus.LOADING) {
         setGuideStatus(authStore.user.guideStatus);
@@ -200,11 +200,11 @@ const UserProfile: NextPageWithLayout = () => {
             <motion.div
               className="relative z-0 flex justify-center" // Ensure content is below the overlays
               key={pageIndex}
-              initial={{ opacity: 0, x: 100 }}
+              initial={{ opacity: 0, x: pageIndex === 0 ? -100 : 100 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{
                 opacity: 0,
-                x: -100,
+                x: pageIndex === 0 ?  -100 : 100,
               }}
               transition={{ duration: 0.25 }}
             >

@@ -5,6 +5,7 @@ import GuideSection from "./GuideSection";
 import "./styles.css";
 import { GuideSkeleton } from "./skeleton";
 import { Create as CreateIcon } from "@mui/icons-material";
+import { useRouter } from "next/router";
 
 interface GuideProps {
   guideItems?: GuideItem[];
@@ -12,6 +13,8 @@ interface GuideProps {
 }
 
 export default function Guide(props: GuideProps) {
+  const router = useRouter();
+
   const [guideItems, setGuideItems] = useState<GuideItem[]>(
     props.guideItems || []
   );
@@ -33,7 +36,7 @@ export default function Guide(props: GuideProps) {
             <button
               className="flex justify-center items-center font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline transition duration-150 ease-in-out bg-white text-black border border-gray-700"
               onClick={() => {
-                /* Implement the function to start creating a guide */
+                router.push("/zone2guide");
               }}
             >
               <CreateIcon className="mr-2" style={{ color: "black" }} />
@@ -54,8 +57,12 @@ export default function Guide(props: GuideProps) {
   };
 
   return (
-    <div className="md:min-h-[72.5dvh] min-h-[50.5dvh] md:max-h-[72.5dvh] max-h-[50.5dvh] justify-center items-center min-h-screen relative w-[850px] inset-0 bg-black bg-opacity-60 rounded-lg border border-gray-700">
-      <div className="p-4 overflow-y-auto max-w-[850px] mx-auto text-white">
+    <div
+      className="md:min-h-[72.5dvh] min-h-[50.5dvh] md:max-h-[72.5dvh] max-h-[50.5dvh] 
+      justify-center items-center min-h-screen relative w-[850px] 
+        inset-0 bg-black bg-opacity-60 rounded-lg border border-gray-700"
+    >
+      <div className="p-4 h-full overflow-y-auto max-w-[850px] mx-auto text-white custom-scrollbar">
         {getContent()}
       </div>
     </div>

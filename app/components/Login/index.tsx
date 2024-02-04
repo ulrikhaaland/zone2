@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import { useStore } from "@/RootStoreProvider";
 import { isSignInWithEmailLink } from "firebase/auth";
 import { auth } from "@/pages/_app";
+import { Send as SendIcon } from "@mui/icons-material";
 
 export default function Login() {
   const { authStore } = useStore();
@@ -37,7 +38,7 @@ export default function Login() {
     setLoading(true); // Start loading
     try {
       const path = router.pathname;
-      await authStore.sendSignInLink(email, path);
+      await authStore.sendSignInLink(email, path, true);
       setEmailSent(true);
       setMessage(
         "We've sent a sign-in link to your email. Please check your inbox and follow the instructions to complete the sign-up process."
@@ -79,13 +80,11 @@ export default function Login() {
         top: "50%",
         left: "50%",
         transform: "translate(-50%, -50%)",
-        minWidth: 448,
-        maxHeight: 524,
         zIndex: 10001,
         textShadow: "10px 10px 10px rgba(0,0,0,1)",
       }}
     >
-      <div className="p-10 xs:p-0 mx-auto md:w-full md:max-w-md">
+      <div className="p-10 xs:p-0 mx-auto w-full md:max-w-md">
         <IconButton
           sx={{
             position: "relative",
@@ -104,7 +103,7 @@ export default function Login() {
         >
           <CloseIcon className="my-2" />
         </IconButton>
-        <div className="bg-black bg-opacity-80 p-8 rounded-lg text-white">
+        <div className="bg-black bg-opacity-80 p-8 rounded-lg border border-gray-700 text-white">
           <div className="px-5 pt-7">
             <h2 className="text-3xl font-bold mb-6">
               {emailSent
@@ -116,7 +115,7 @@ export default function Login() {
                 <input
                   type="email"
                   id="email"
-                  className="border-2 text-black border-gray-300 p-3 rounded-lg focus:outline-none focus:border-blue-500 transition duration-300"
+                  className="border-2 text-white border-gray-700 p-3 rounded-lg focus:outline-none focus:border-white bg-black transition duration-300"
                   placeholder="Enter your email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -126,12 +125,20 @@ export default function Login() {
                 />
                 <button
                   type="submit"
-                  className="bg-blue-600 hover:bg-blue-800 text-white p-3 rounded-lg transition duration-300 flex justify-center items-center"
+                  className="bg-white hover:bg-gray-300 text-black p-3 rounded-lg transition duration-300 flex justify-center items-center"
                 >
                   {loading ? (
                     <CircularProgress size={24} color="inherit" />
                   ) : (
-                    "Send Email"
+                    <div className="flex w-full justify-between items-center">
+                      <SendIcon
+                        style={{ color: "transparent", fontSize: "1.25rem" }}
+                      />
+                      <p>Send Email</p>
+                      <SendIcon
+                        style={{ color: "black", fontSize: "1.25rem" }}
+                      />
+                    </div>
                   )}
                 </button>
                 <p className="text-sm">
@@ -140,7 +147,7 @@ export default function Login() {
               </form>
             ) : (
               <div className="mt-4">
-                <p className="text-green-500">{message}</p>
+                <p className="text-white">{message}</p>
               </div>
             )}
           </div>

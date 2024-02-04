@@ -1,31 +1,36 @@
-.scrollable-container::-webkit-scrollbar-thumb {
-  background: #ffffff !important;
+/* For Webkit (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 10px; /* Adjust scrollbar width */
 }
 
-.scrollable-container::-webkit-scrollbar-thumb:hover {
-  background: #cccccc !important;
+::-webkit-scrollbar-track {
+  background: transparent; /* Optional: Change track background */
 }
 
-.scrollable-container {
-  scrollbar-color: #ffffff #f1f1f1 !important;
+::-webkit-scrollbar-thumb {
+  background: white; /* Scroll thumb color */
+  border-radius: 5px; /* Optional: Roundness of the scroll thumb */
 }
 
-@keyframes shimmer {
-  0% {
-    background-position: -468px 0;
-  }
-  100% {
-    background-position: 468px 0; 
-  }
+/* For Firefox */
+* {
+  scrollbar-width: thin; /* 'auto' or 'thin' */
+  scrollbar-color: white transparent; /* thumb and track color */
+}
+.custom-scrollbar::-webkit-scrollbar {
+  width: 10px;
 }
 
-.shimmer {
-  animation: shimmer 1.5s infinite linear;
-  background: linear-gradient(to right, #eeeeee 8%, #dddddd 18%, #eeeeee 33%);
-  background-size: 800px 104px;
-  height: 20px;
-  margin-bottom: 20px;
-  position: relative;
-  overflow: hidden;
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
 }
 
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: white;
+  border-radius: 5px;
+}
+
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: white transparent;
+}

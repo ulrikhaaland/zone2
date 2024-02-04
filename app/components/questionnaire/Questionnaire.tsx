@@ -7,6 +7,9 @@ import {
 } from "../../model/questionaire";
 import QuestionItem from "./QuestionItem";
 import { User } from "@/app/model/user";
+import LogoutIcon from "@mui/icons-material/Logout";
+import { useStore } from "@/RootStoreProvider";
+import { useRouter } from "next/router";
 
 const questionsFull: Question[] = questionnaireList;
 
@@ -20,6 +23,9 @@ interface QuestionnaireProps {
 
 export default function Questionnaire(props: QuestionnaireProps) {
   const { onQuestCompleted, user, canSubmit, isProfile } = props;
+
+  const { authStore } = useStore();
+  const router = useRouter();
 
   const [questions, setQuestions] = useState<Question[]>(
     props.questions && props.questions?.length !== 0
@@ -250,20 +256,21 @@ export default function Questionnaire(props: QuestionnaireProps) {
       }`}
     >
       {/* Header with progress bar */}
-      <div
-        className={`relative md:p-4 pb-1 px-4 ${
-          isScrolled ? "shadow-[0_8px_4px_-2px_rgba(0,0,0,0.3)]" : ""
-        }`}
-      >
-        {/* Progress Bar */}
-        <div className="h-1 bg-gray-600 md:mt-0 mb-4">
-          <div
-            className="h-full bg-white"
-            style={{ width: `${progressPercentage}%` }}
-          ></div>
+      {!isProfile && (
+        <div
+          className={`relative md:p-4 pb-1 px-4 ${
+            isScrolled ? "shadow-[0_8px_4px_-2px_rgba(0,0,0,0.3)]" : ""
+          }`}
+        >
+          {/* Progress Bar */}
+          <div className="h-1 bg-gray-600 md:mt-0 mb-4">
+            <div
+              className="h-full bg-white"
+              style={{ width: `${progressPercentage}%` }}
+            ></div>
+          </div>
         </div>
-      </div>
-
+      )}
       {/* Scrollable questions section */}
       <div
         className="overflow-y-auto"
@@ -271,16 +278,16 @@ export default function Questionnaire(props: QuestionnaireProps) {
         onScroll={handleScroll}
         ref={questionsRef} // Assign the ref to this div
       >
-        <p
-          className="text-3xl font-bold text-white px-6"
-          style={{
-            textShadow: "10px 10px 10px rgba(0,0,0,1)",
-          }}
-        >
-          {isProfile
-            ? "Fitness Data"
-            : "Provide some information about yourself"}
-        </p>
+        {!isProfile && (
+          <p
+            className="text-3xl font-bold text-white px-6"
+            style={{
+              textShadow: "10px 10px 10px rgba(0,0,0,1)",
+            }}
+          >
+            Provide some information about yourself
+          </p>
+        )}
         <div className="p-6">
           {questions.map((question, index) => (
             <QuestionItem
@@ -329,6 +336,21 @@ export default function Questionnaire(props: QuestionnaireProps) {
             />
           ))}
         </div>
+        {isProfile && (
+          <div className="flex justify-center mb-8">
+            <button
+              className={`flex items-center font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline transition duration-150 ease-in-out ${"bg-black text-white border border-gray-700 transition duration-150 ease-in-out"}`}
+              type="button"
+              onClick={() => {
+                authStore.signOut();
+                router.push("/");
+              }}
+            >
+              <LogoutIcon className="mr-2" style={{ color: "white" }} />
+              Sign out
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

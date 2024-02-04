@@ -243,8 +243,10 @@ export default function Questionnaire(props: QuestionnaireProps) {
 
   return (
     <div
-      className={`max-w-md md:min-h-[77.5dvh] text-white md:max-h-[77.5dvh] min-h-[72.5dvh] max-h-[72.5dvh] ${
-        isProfile ? "bg-black bg-opacity-60 rounded-lg" : ""
+      className={`text-white ${
+        isProfile
+          ? "bg-black bg-opacity-60 rounded-lg max-w-md md:min-h-[72.5dvh] md:max-h-[72.5dvh] min-h-[72.5dvh] max-h-[72.5dvh] md:border md:border-gray-700 md:rounded-lg"
+          : "max-w-md md:min-h-[77.5dvh] md:max-h-[77.5dvh] min-h-[72.5dvh] max-h-[72.5dvh]"
       }`}
     >
       {/* Header with progress bar */}
@@ -265,7 +267,7 @@ export default function Questionnaire(props: QuestionnaireProps) {
       {/* Scrollable questions section */}
       <div
         className="overflow-y-auto"
-        style={{ maxHeight: "70dvh" }}
+        style={{ maxHeight: isProfile ? "65dvh" : "70dvh" }}
         onScroll={handleScroll}
         ref={questionsRef} // Assign the ref to this div
       >

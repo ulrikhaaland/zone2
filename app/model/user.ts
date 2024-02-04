@@ -9,6 +9,7 @@ import {
 } from "./questionaire";
 
 export enum GuideStatus {
+  NONE = "NONE",
   LOADING = "LOADING",
   LOADED = "LOADED",
   ERROR = "ERROR",

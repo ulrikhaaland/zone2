@@ -2,7 +2,7 @@ import { ReactElement, useEffect, useState } from "react";
 import { NextPageWithLayout, auth } from "../_app";
 import { useStore } from "@/RootStoreProvider";
 import { GuideStatus, User } from "@/app/model/user";
-import Guide from "@/app/pages/GuidePage";
+import Guide from "@/app/components/guide";
 import { AnimatePresence, motion } from "framer-motion";
 import Questionnaire from "@/app/components/questionnaire/Questionnaire";
 import { Question, questToFitnessData } from "@/app/model/questionaire";
@@ -20,7 +20,7 @@ const UserProfile: NextPageWithLayout = () => {
     authStore.user ?? undefined
   );
 
-  const [pageIndex, setPageIndex] = useState(1);
+  const [pageIndex, setPageIndex] = useState(0);
 
   const [guideStatus, setGuideStatus] = useState(user?.guideStatus);
 
@@ -33,7 +33,9 @@ const UserProfile: NextPageWithLayout = () => {
     if (!authStore.user) {
       authStore.checkAuth();
     } else {
-      setUser(authStore.user);
+      const user = authStore.user;
+      setUser(user);
+      setGuideStatus(GuideStatus.NONE);
 
       if (authStore.user.guideStatus === GuideStatus.LOADING) {
         setGuideStatus(authStore.user.guideStatus);
@@ -83,7 +85,7 @@ const UserProfile: NextPageWithLayout = () => {
   };
 
   return (
-    <div className="w-full font-custom md:h-screen min-h-[100dvh] relative">
+    <div className="w-full font-custom h-screen overflow-hidden relative">
       {/* Background Image */}
       {/* Container for Background Image and Black Overlay */}
       <div
@@ -124,18 +126,39 @@ const UserProfile: NextPageWithLayout = () => {
       </div>
       {/* Page Content */}
       <h1
-        className="text-5xl text-white text-center font-bold pt-6 mb-4 relative z-10"
+        className={`text-5xl text-white text-center font-bold pt-6 mb-4 relative z-10 ${
+          guideStatus === GuideStatus.LOADING && pageIndex === 0
+            ? "animate-pulse"
+            : ""
+        }`}
         style={{
           textShadow: "10px 10px 10px rgba(0,0,0,1)",
         }}
       >
-        {pageIndex === 1 ? "Profile" : "Your Personalized Fitness Guide"}
+        {pageIndex === 1
+          ? "Profile"
+          : guideStatus === GuideStatus.LOADING
+          ? "Creating Guide..."
+          : "Your Personalized Fitness Guide"}
       </h1>
+      {/* If guidestatus === loading show subtitle saying this can take a few minutes */}
+      {guideStatus === GuideStatus.LOADING && (
+        <p
+          className="text-white text-center text-m mb-4 relative z-10"
+          style={{
+            textShadow: "10px 10px 10px rgba(0,0,0,1)",
+          }}
+        >
+          This can take a few minutes...
+        </p>
+      )}
       {/* Button Container */}
       <div className="relative flex justify-between items-center md:px-6 pt-12 md:pt-2 md-pb-0 pb-4 w-[300px] mx-auto">
         <button
-          className={`flex items-center font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-150 ease-in-out ${
-            pageIndex === 0 ? "bg-white text-black" : "bg-black text-white"
+          className={`flex items-center font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline transition duration-150 ease-in-out ${
+            pageIndex === 0
+              ? "bg-white text-black border border-gray-700 transition duration-150 ease-in-out"
+              : "bg-black text-white border border-gray-700 transition duration-150 ease-in-out"
           }`}
           type="button"
           onClick={() => setPageIndex(0)}
@@ -154,8 +177,10 @@ const UserProfile: NextPageWithLayout = () => {
           }}
         ></div>
         <button
-          className={`flex items-center font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-150 ease-in-out ${
-            pageIndex === 1 ? "bg-white text-black" : "bg-black text-white"
+          className={`flex items-center font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline transition duration-150 ease-in-out ${
+            pageIndex === 1
+              ? "bg-white text-black border border-transparent transition duration-150 ease-in-out"
+              : "bg-black text-white border border-gray-700 transition duration-150 ease-in-out"
           }`}
           type="submit"
           onClick={(e) => setPageIndex(1)}
@@ -168,6 +193,7 @@ const UserProfile: NextPageWithLayout = () => {
         </button>
       </div>
 
+      {/* Page Content */}
       <div className="flex overflow-hidden md:rounded flex-col items-center min-h-max p-4 relative">
         <div className="w-full md:overflow-hidden md:shadow-md md:min-h-[83.5dvh] md:max-h-[87.5dvh] min-h-[86.5dvh] max-h-[86.5dvh]">
           <AnimatePresence mode="wait">

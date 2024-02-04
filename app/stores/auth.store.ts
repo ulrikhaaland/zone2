@@ -235,6 +235,7 @@ export default class AuthStore {
       usesKG: true,
       usesCM: true,
       hasPaid: false,
+      guideStatus: GuideStatus.NONE,
     };
     await setDoc(doc(db, "users", uid), userData);
     console.log("User document created successfully.");

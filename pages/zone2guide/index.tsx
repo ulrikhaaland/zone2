@@ -9,7 +9,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import { AnimatePresence, motion } from "framer-motion";
 import { AiOutlineArrowLeft } from "react-icons/ai";
 import CheckoutPage from "../../app/pages/CheckoutForm";
-import Guide from "../../app/pages/GuidePage";
+import Guide from "../../app/components/guide";
 import UserInfoConfirmationPage from "../../app/pages/UserInfoConfirmationPage";
 import { NextPageWithLayout } from "@/pages/_app";
 import { useStore } from "@/RootStoreProvider";
@@ -195,8 +195,8 @@ const HomePage: NextPageWithLayout = () => {
       >
         Zone 2 Guide Creation
       </h1>
-      <div className="flex overflow-hidden md:rounded flex-col items-center min-h-max p-4 relative">
-        <div className="w-full bg-black bg-opacity-60 rounded-lg md:overflow-hidden max-w-md md:shadow-md md:min-h-[83.5dvh] md:max-h-[87.5dvh] min-h-[86.5dvh] max-h-[86.5dvh]">
+      <div className="flex overflow-hidden flex-col items-center min-h-max p-4 relative">
+        <div className="w-full md:border md:border-gray-700 md:rounded-lg bg-black bg-opacity-60 rounded-lg md:overflow-hidden max-w-md md:shadow-md md:min-h-[83.5dvh] md:max-h-[87.5dvh] min-h-[86.5dvh] max-h-[86.5dvh]">
           <AnimatePresence mode="wait">
             <motion.div
               className="relative z-0" // Ensure content is below the overlays

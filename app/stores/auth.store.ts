@@ -175,18 +175,10 @@ export default class AuthStore {
         window.localStorage.removeItem("emailForSignIn");
 
         // Check if user exists in the Firestore and update/create as necessary
-        await this.getUserOrCreateIfNotExists(result.user.uid);
+        const user = await this.getUserOrCreateIfNotExists(result.user.uid);
 
         // Update the user observable with the signed-in user's information
-        this.setUser({
-          firebaseUser: result.user,
-          uid: result.user.uid,
-          credits: 0, // Or any default value
-          guideItems: [],
-          questions: [],
-          usesKG: true,
-          usesCM: true,
-        });
+        this.setUser(user);
 
         console.log("Successfully signed in with email link!");
         return true; // Sign-in successful
@@ -202,6 +194,7 @@ export default class AuthStore {
     const userDocSnapshot = await getDoc(doc(db, "users/" + uid));
 
     const data = userDocSnapshot.data();
+
     try {
       if (!data) {
         return this.createUser(uid);

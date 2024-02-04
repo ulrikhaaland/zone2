@@ -6,10 +6,7 @@ import Guide from "@/app/components/guide";
 import { AnimatePresence, motion } from "framer-motion";
 import Questionnaire from "@/app/components/questionnaire/Questionnaire";
 import { Question, questToFitnessData } from "@/app/model/questionaire";
-import { set } from "mobx";
 import { observer } from "mobx-react";
-import { a } from "react-spring";
-import { GuideItem } from "@/app/model/guide";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
@@ -101,7 +98,7 @@ const UserProfile: NextPageWithLayout = () => {
         {/* Background Image */}
         <div
           style={{
-            backgroundImage: "url('/assets/images/runner8.png')",
+            backgroundImage: "url('/assets/images/cyclist/cyclist.png')",
             backgroundSize: "cover",
             backgroundPosition: "center",
             position: "absolute",
@@ -157,8 +154,8 @@ const UserProfile: NextPageWithLayout = () => {
         <button
           className={`flex items-center font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline transition duration-150 ease-in-out ${
             pageIndex === 0
-              ? "bg-white text-black border border-gray-700 transition duration-150 ease-in-out"
-              : "bg-black text-white border border-gray-700 transition duration-150 ease-in-out"
+              ? "bg-white text-black border border-gray-700 transition duration-150 ease-in-out hover:bg-gray-300"
+              : "bg-black text-white border border-gray-700 transition duration-150 ease-in-out hover:bg-gray-900"
           }`}
           type="button"
           onClick={() => setPageIndex(0)}
@@ -179,8 +176,8 @@ const UserProfile: NextPageWithLayout = () => {
         <button
           className={`flex items-center font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline transition duration-150 ease-in-out ${
             pageIndex === 1
-              ? "bg-white text-black border border-transparent transition duration-150 ease-in-out"
-              : "bg-black text-white border border-gray-700 transition duration-150 ease-in-out"
+              ? "bg-white text-black border border-transparent transition duration-150 ease-in-out hover:bg-gray-300"
+              : "bg-black text-white border border-gray-700 transition duration-150 ease-in-out hover:bg-gray-900"
           }`}
           type="submit"
           onClick={(e) => setPageIndex(1)}
@@ -204,7 +201,7 @@ const UserProfile: NextPageWithLayout = () => {
               animate={{ opacity: 1, x: 0 }}
               exit={{
                 opacity: 0,
-                x: pageIndex === 0 ?  -100 : 100,
+                x: pageIndex === 0 ? -100 : 100,
               }}
               transition={{ duration: 0.25 }}
             >

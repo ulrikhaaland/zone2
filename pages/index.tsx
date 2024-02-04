@@ -93,7 +93,14 @@ const HomePage: NextPageWithLayout = () => {
           .confirmSignInWithEmailLink(email, currentUrl)
           .then((isSignedIn) => {
             if (isSignedIn) {
-              router.push("/zone2guide");
+              if (
+                authStore.user?.guideItems?.length &&
+                authStore.user.guideItems.length > 0
+              ) {
+                router.push("/profile");
+              } else {
+                router.push("/zone2guide");
+              }
             }
           })
           .catch((error) => {
@@ -197,62 +204,68 @@ const HomePage: NextPageWithLayout = () => {
               />
             </div>
           </div>
-
           {/* Right side sign-up box */}
-          <div className="bg-black bg-opacity-60 p-8 rounded-lg text-white max-w-[357px]">
-            {emailSent ? (
-              <div>
-                <h2 className="text-3xl font-bold mb-6">Check Your Email</h2>
-                <p className="mt-4 text-green-500">
-                  We&apos;ve sent a sign-up link to your email. Please check
-                  your inbox and follow the instructions to complete the sign-up
-                  process.
-                </p>
-              </div>
-            ) : (
-              <>
-                <h2 className="text-3xl font-bold mb-6">Get Your Guide Now</h2>
-                <form onSubmit={handleSendLink} className="flex flex-col gap-6">
-                  <input
-                    type="email"
-                    id="email"
-                    ref={emailInputRef}
-                    className="border-2 text-black border-gray-300 p-3 rounded-lg focus:outline-none focus:border-blue-500 transition duration-300"
-                    placeholder="Enter your email to start..."
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                    autoFocus={true}
-                    onClick={(e) => e.stopPropagation()}
-                  />
-                  <button
-                    type="submit"
-                    onClick={(e) => e.stopPropagation()}
-                    className="bg-blue-600 hover:bg-blue-800 text-white p-3 rounded-lg transition duration-300 flex justify-center items-center"
-                    disabled={loading} // Disable button while loading
-                  >
-                    {loading ? (
-                      <CircularProgress size={24} color="inherit" />
-                    ) : (
-                      "Start Training"
-                    )}
-                  </button>
-                  <p className="text-sm">
-                    If you already have an account, we&apos;ll log you in
+          {!authStore.user && (
+            <div className="bg-black bg-opacity-60 p-8 rounded-lg text-white max-w-[357px]">
+              {emailSent ? (
+                <div>
+                  <h2 className="text-3xl font-bold mb-6">Check Your Email</h2>
+                  <p className="mt-4 text-green-500">
+                    We&apos;ve sent a sign-up link to your email. Please check
+                    your inbox and follow the instructions to complete the
+                    sign-up process.
                   </p>
-                </form>
-                {message && (
-                  <p
-                    className={`mt-4 ${
-                      emailSent ? "text-green-500" : "text-red-500"
-                    }`}
+                </div>
+              ) : (
+                <>
+                  <h2 className="text-3xl font-bold mb-6">
+                    Get Your Guide Now
+                  </h2>
+                  <form
+                    onSubmit={handleSendLink}
+                    className="flex flex-col gap-6"
                   >
-                    {message}
-                  </p>
-                )}
-              </>
-            )}
-          </div>
+                    <input
+                      type="email"
+                      id="email"
+                      ref={emailInputRef}
+                      className="border-2 text-black border-gray-300 p-3 rounded-lg focus:outline-none focus:border-blue-500 transition duration-300"
+                      placeholder="Enter your email to start..."
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      required
+                      autoFocus={true}
+                      onClick={(e) => e.stopPropagation()}
+                    />
+                    <button
+                      type="submit"
+                      onClick={(e) => e.stopPropagation()}
+                      className="bg-blue-600 hover:bg-blue-800 text-white p-3 rounded-lg transition duration-300 flex justify-center items-center"
+                      disabled={loading} // Disable button while loading
+                    >
+                      {loading ? (
+                        <CircularProgress size={24} color="inherit" />
+                      ) : (
+                        "Start Training"
+                      )}
+                    </button>
+                    <p className="text-sm">
+                      If you already have an account, we&apos;ll log you in
+                    </p>
+                  </form>
+                  {message && (
+                    <p
+                      className={`mt-4 ${
+                        emailSent ? "text-green-500" : "text-red-500"
+                      }`}
+                    >
+                      {message}
+                    </p>
+                  )}
+                </>
+              )}
+            </div>
+          )}
         </div>
       </div>
 

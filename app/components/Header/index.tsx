@@ -30,8 +30,10 @@ function Header() {
           >
             <h1
               className={`text-3xl font-semibold leading-6 ${
-                isHome ? "text-white" : "text-white"
-              } group-hover:text-title2`}
+                isHome
+                  ? "text-white hover:text-gray-300"
+                  : "text-gray-500 hover:text-gray-300"
+              }`}
               style={{
                 textShadow: "10px 10px 10px rgba(0,0,0,1)",
               }}

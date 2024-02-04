@@ -1,6 +1,7 @@
 import AuthStore from "@/app/stores/auth.store";
 import { observer } from "mobx-react";
 import { NextRouter } from "next/router";
+import path from "path";
 import React, { useEffect } from "react";
 
 interface WebMenuProps {
@@ -11,9 +12,15 @@ interface WebMenuProps {
 function WebMenu({ router, authStore }: WebMenuProps) {
   const { user } = authStore;
 
-  const isHome = router.pathname === "/";
+  const pathName = router.pathname;
 
-  useEffect(() => {}, [authStore.user]);
+  const isHome = pathName === "/";
+
+  const isGuide = pathName === "/zone2guide";
+
+  const isProfile = pathName === "/profile";
+
+  useEffect(() => {}, [authStore.user, router.pathname, pathName]);
 
   return (
     <div
@@ -29,7 +36,14 @@ function WebMenu({ router, authStore }: WebMenuProps) {
         style={{
           cursor: "pointer",
         }}
-        className={`text-lg font-semibold leading-6 group-hover:text-secondary-button`}
+        className={`text-lg font-semibold leading-6 
+        ${isHome && "text-white hover:text-gray-300"}  
+        ${
+          isGuide
+            ? "text-white hover:text-gray-300"
+            : !isHome && "text-gray-500 hover:text-gray-300"
+        }
+        `}
       >
         Create Zone 2 Guide
       </p>
@@ -51,7 +65,14 @@ function WebMenu({ router, authStore }: WebMenuProps) {
       {!user ||
         (user?.hasPaid && (
           <p
-            className="text-lg font-semibold leading-6 group-hover:text-secondary-button"
+            className={`text-lg font-semibold leading-6 group-hover:text-secondary-button
+            ${isHome && "text-white hover:text-gray-300"}  
+            ${
+              isProfile
+                ? "text-white hover:text-gray-300"
+                : !isHome && "text-gray-500 hover:text-gray-300"
+            }
+            `}
             onClick={() => {
               if (!user) {
                 authStore.setOpen(true);

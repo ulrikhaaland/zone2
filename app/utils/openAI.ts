@@ -61,11 +61,27 @@ export const handleOnGenerateGuide = async (
   try {
     const guide = await generateGuide(fitnessData);
 
-    if (guide) {
+    if (guide && guide.length > 0) {
       console.log("Guide generated successfully:");
-      const guideItems: GuideItem[] = parseJsonToGuideItems(guide);
+      let guideItems: GuideItem[] = [];
+      try {
+        guideItems = parseJsonToGuideItems(guide);
+      } catch (error) {
+        console.error("Error parsing guide JSON:", error);
+        updateDoc(userRef, {
+          guideStatus: GuideStatus.ERROR,
+          errorMessage: "Error parsing guide JSON",
+        });
+        return;
+      }
 
-      // on error
+      if (guideItems.length === 0) {
+        updateDoc(userRef, {
+          guideStatus: GuideStatus.ERROR,
+        });
+        return;
+      }
+      /// Todo Catch error and log message + retry
       updateDoc(userRef, {
         guideItems: guideItems,
         guideStatus: GuideStatus.LOADED,
@@ -73,7 +89,13 @@ export const handleOnGenerateGuide = async (
         console.error("Error updating user document:", error);
         updateDoc(userRef, {
           guideStatus: GuideStatus.ERROR,
+          errorMessage: error.message,
         });
+      });
+    } else {
+      updateDoc(userRef, {
+        guideStatus: GuideStatus.ERROR,
+        errorMessage: "Guide was empty or undefined",
       });
     }
   } catch (error) {

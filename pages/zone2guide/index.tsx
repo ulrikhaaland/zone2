@@ -162,7 +162,7 @@ const HomePage: NextPageWithLayout = () => {
         {/* Background Image */}
         <div
           style={{
-            backgroundImage: "url('/assets/images/runner8.png')",
+            backgroundImage: "url('/assets/images/runner/runner8.png')",
             backgroundSize: "cover",
             backgroundPosition: "center",
             position: "absolute",

@@ -130,14 +130,15 @@ export default function Login() {
                   {loading ? (
                     <CircularProgress size={24} color="inherit" />
                   ) : (
-                    <div className="flex w-full justify-between items-center">
+                    <div className="flex w-full justify-center items-center">
                       <SendIcon
-                        style={{ color: "transparent", fontSize: "1.25rem" }}
-                      />
-                      <p>Send Email</p>
-                      <SendIcon
+                        className="mr-2"
                         style={{ color: "black", fontSize: "1.25rem" }}
                       />
+                      <p>Send Email</p>
+                      {/* <SendIcon
+                        style={{ color: "black", fontSize: "1.25rem" }}
+                      /> */}
                     </div>
                   )}
                 </button>

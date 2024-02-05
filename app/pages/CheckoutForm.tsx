@@ -22,7 +22,7 @@ const CheckoutPage = (props: CheckoutPageProps) => {
 
   return (
     <div
-      className="text-white md:min-h-[77.5dvh] md:max-h-[77.5dvh] min-h-[72.5dvh] max-h-[72.5dvh]"
+      className="text-whitebg md:min-h-[77.5dvh] md:max-h-[77.5dvh] min-h-[72.5dvh] max-h-[72.5dvh]"
       style={{
         textShadow: "10px 10px 10px rgba(0,0,0,1)",
       }}

@@ -9,8 +9,6 @@ import Image from "next/image";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import PauseIcon from "@mui/icons-material/Pause";
 import { observer } from "mobx-react";
-import { a } from "react-spring";
-import { set } from "mobx";
 import { CircularProgress } from "@mui/material";
 
 const HomePage: NextPageWithLayout = () => {
@@ -108,11 +106,10 @@ const HomePage: NextPageWithLayout = () => {
   };
 
   useEffect(() => {
-    if (authStore.open) {
-      emailInputRef.current?.focus();
-      authStore.setOpen(false); // Focus the email input
+    if (emailInputRef.current) {
+      emailInputRef.current.focus();
     }
-  }, [authStore, authStore.open]);
+  }, []);
 
   return (
     <div
@@ -150,7 +147,7 @@ const HomePage: NextPageWithLayout = () => {
         }}
       >
         {/* Expert Testimonials */}
-        <div className="text-white mb-6 py-4 rounded-lg">
+        <div className="text-whitebg mb-6 py-4 rounded-lg">
           <h2 className="text-3xl font-bold">Tailored To Your Fitness Level</h2>
           <p className="mt-2">
             To offer you a comprehensive guide to Zone 2 training, we have
@@ -162,20 +159,21 @@ const HomePage: NextPageWithLayout = () => {
         {/* Main Content */}
         <div className="flex justify-between items-start">
           {/* Left side content */}
-          <div className="bg-black bg-opacity-60 p-6 rounded-lg max-w-[500px]">
-            <h1 className="text-5xl font-bold text-white mb-6">
+          <div className="bg-black bg-opacity-60 p-6 rounded-lg border border-gray-700 max-w-[500px]">
+            <h1 className="text-5xl font-bold text-whitebg mb-6">
               Your Tailored Guide to Zone 2
             </h1>
-            <p className="text-lg text-white mb-4">
+            <p className="text-lg text-whitebg mb-4">
               Uncovers the scientific details behind Zone 2 training and applies
               them to your fitness level.
             </p>
             {/* Includes */}
-            <h2 className="text-2xl font-bold text-white mb-2">Includes:</h2>
-            <ul className="list-disc list-inside mb-6 text-white">
+            <h2 className="text-2xl font-bold text-whitebg mb-2">Includes:</h2>
+            <ul className="list-disc list-inside mb-6 text-whitebg">
               <li>Your Expected Benefits</li>
               <li>Effective Exercise Duration, Frequency & Dose</li>
               <li>Methods For Determining Zone 2 Intensity</li>
+              <li>Your Heart Rate Zones</li>
               <li>What To Think About During Zone 2 Training</li>
               <li>Realistic Goals & Expectations</li>
               <li>Recovery & Preventing Overtraining</li>
@@ -183,7 +181,7 @@ const HomePage: NextPageWithLayout = () => {
 
             {/* Bottom content with laurel */}
             <div className="relative text-center mt-6 py-3 h-[100px] flex flex-col justify-center items-center">
-              <p className="text-sm font-bold text-white px-20">
+              <p className="text-sm font-bold text-whitebg px-20">
                 Based upon the recommendations of Dr. PETER ATTIA & Dr. IÑIGO
                 SAN MILLÁN
               </p>
@@ -198,7 +196,7 @@ const HomePage: NextPageWithLayout = () => {
           </div>
           {/* Right side sign-up box */}
           {!authStore.user && (
-            <div className="bg-black bg-opacity-60 p-8 rounded-lg text-white max-w-[357px]">
+            <div className="bg-black bg-opacity-60 p-8 rounded-lg border border-gray-700 text-whitebg w-[367px]">
               {emailSent ? (
                 <div>
                   <h2 className="text-3xl font-bold mb-6">Check Your Email</h2>
@@ -218,11 +216,11 @@ const HomePage: NextPageWithLayout = () => {
                     className="flex flex-col gap-6"
                   >
                     <input
+                      ref={emailInputRef}
                       type="email"
                       id="email"
-                      ref={emailInputRef}
-                      className="border-2 text-black border-gray-300 p-3 rounded-lg focus:outline-none focus:border-blue-500 transition duration-300"
-                      placeholder="Enter your email to start..."
+                      className="border-2 text-whitebg border-gray-700 p-3 rounded-lg focus:outline-none focus:border-white bg-black transition duration-300"
+                      placeholder="Enter your email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       required
@@ -232,7 +230,7 @@ const HomePage: NextPageWithLayout = () => {
                     <button
                       type="submit"
                       onClick={(e) => e.stopPropagation()}
-                      className="bg-blue-600 hover:bg-blue-800 text-white p-3 rounded-lg transition duration-300 flex justify-center items-center"
+                      className="bg-blue-600 hover:bg-blue-800 text-whitebg p-3 rounded-lg transition duration-300 flex justify-center items-center"
                       disabled={loading} // Disable button while loading
                     >
                       {loading ? (
@@ -268,14 +266,24 @@ const HomePage: NextPageWithLayout = () => {
           e.preventDefault();
           toggleSound();
         }}
-        className="absolute right-4 bottom-4 bg-title p-2 rounded-full focus:outline-none z-20 flex items-center justify-center shadow-lg"
+        className="absolute right-4 bottom-4 bg-gray-700 hover:bg-gray-900 p-2 rounded-full focus:outline-none z-20 flex items-center justify-center shadow-lg"
         aria-label={isMuted ? "Unmute video" : "Mute video"}
         style={{ width: "50px", height: "50px" }}
       >
         {isMuted ? (
-          <VolumeOffIcon fontSize="large" />
+          <VolumeOffIcon
+            fontSize="large"
+            sx={{
+              color: "white",
+            }}
+          />
         ) : (
-          <VolumeUpIcon fontSize="large" />
+          <VolumeUpIcon
+            fontSize="large"
+            sx={{
+              color: "white",
+            }}
+          />
         )}
       </button>
       {/* Play/Pause toggle button */}
@@ -284,7 +292,7 @@ const HomePage: NextPageWithLayout = () => {
           e.stopPropagation();
           togglePlay();
         }}
-        className="absolute bottom-4 bg-title p-2 rounded-full focus:outline-none z-20 flex items-center justify-center shadow-lg"
+        className="absolute bottom-4 bg-gray-700 hover:bg-gray-900 p-2 rounded-full focus:outline-none z-20 flex items-center justify-center shadow-lg"
         aria-label={isPlaying ? "Pause video" : "Play video"}
         style={{
           width: "50px",
@@ -294,9 +302,19 @@ const HomePage: NextPageWithLayout = () => {
         }}
       >
         {isPlaying ? (
-          <PauseIcon fontSize="large" />
+          <PauseIcon
+            fontSize="large"
+            sx={{
+              color: "white",
+            }}
+          />
         ) : (
-          <PlayArrowIcon fontSize="large" />
+          <PlayArrowIcon
+            fontSize="large"
+            sx={{
+              color: "white",
+            }}
+          />
         )}
       </button>
     </div>

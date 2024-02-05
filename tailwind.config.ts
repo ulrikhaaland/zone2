@@ -20,6 +20,7 @@ const config: Config = {
         title: "#486895",
         title2: "#314f6b",
         subtitle: "#364759",
+        whitebg: "#ededed",
         card: "#37464f",
         "primary-button": "#4b75a7",
         "primary-button-dark": "#476894",

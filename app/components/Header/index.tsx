@@ -31,7 +31,7 @@ function Header() {
             <h1
               className={`text-3xl font-semibold leading-6 ${
                 isHome
-                  ? "text-white hover:text-gray-300"
+                  ? "text-whitebg hover:text-gray-300"
                   : "text-gray-500 hover:text-gray-300"
               }`}
               style={{

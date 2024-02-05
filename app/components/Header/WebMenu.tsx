@@ -25,7 +25,7 @@ function WebMenu({ router, authStore }: WebMenuProps) {
   return (
     <div
       className={`hidden lg:flex lg:gap-x-12 ${
-        isHome ? "text-white" : "text-white"
+        isHome ? "text-whitebg" : "text-whitebg"
       } `}
       style={{
         textShadow: "10px 10px 10px rgba(0,0,0,1)",
@@ -37,10 +37,10 @@ function WebMenu({ router, authStore }: WebMenuProps) {
           cursor: "pointer",
         }}
         className={`text-lg font-semibold leading-6 
-        ${isHome && "text-white hover:text-gray-300"}  
+        ${isHome && "text-whitebg hover:text-gray-300"}  
         ${
           isGuide
-            ? "text-white hover:text-gray-300"
+            ? "text-whitebg hover:text-gray-300"
             : !isHome && "text-gray-500 hover:text-gray-300"
         }
         `}
@@ -50,14 +50,14 @@ function WebMenu({ router, authStore }: WebMenuProps) {
       {/* <p
         onClick={() => router.push("/zone2-calculator")}
         style={{ cursor: "pointer" }}
-        className="text-lg font-semibold leading-6 text-white group-hover:text-secondary-button"
+        className="text-lg font-semibold leading-6 text-whitebg group-hover:text-secondary-button"
       >
         Zone 2 Heart Rate Calculator
       </p>
       <p
         onClick={() => router.push("/zone2-content")}
         style={{ cursor: "pointer" }}
-        className="text-lg font-semibold leading-6 text-white group-hover:text-secondary-button"
+        className="text-lg font-semibold leading-6 text-whitebg group-hover:text-secondary-button"
       >
         Zone 2 Content
       </p> */}
@@ -66,10 +66,10 @@ function WebMenu({ router, authStore }: WebMenuProps) {
         (user?.hasPaid && (
           <p
             className={`text-lg font-semibold leading-6 group-hover:text-secondary-button
-            ${isHome && "text-white hover:text-gray-300"}  
+            ${isHome && "text-whitebg hover:text-gray-300"}  
             ${
               isProfile
-                ? "text-white hover:text-gray-300"
+                ? "text-whitebg hover:text-gray-300"
                 : !isHome && "text-gray-500 hover:text-gray-300"
             }
             `}

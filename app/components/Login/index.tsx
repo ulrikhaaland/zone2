@@ -52,7 +52,7 @@ export default function Login() {
 
   useEffect(() => {
     const currentUrl = window.location.href;
-    if (isSignInWithEmailLink(auth, currentUrl)) {
+    if (isSignInWithEmailLink(auth, currentUrl) && !authStore.user) {
       let email = window.localStorage.getItem("emailForSignIn");
       if (!email) {
         email = window.prompt("Please provide your email for confirmation");
@@ -74,7 +74,7 @@ export default function Login() {
 
   return (
     <div
-      className="flex text-white"
+      className="flex text-whitebg"
       style={{
         position: "fixed",
         top: "50%",
@@ -103,7 +103,7 @@ export default function Login() {
         >
           <CloseIcon className="my-2" />
         </IconButton>
-        <div className="bg-black bg-opacity-80 p-8 rounded-lg border border-gray-700 text-white">
+        <div className="bg-black bg-opacity-80 p-8 rounded-lg border border-gray-700 text-whitebg">
           <div className="px-5 pt-7">
             <h2 className="text-3xl font-bold mb-6">
               {emailSent
@@ -115,7 +115,7 @@ export default function Login() {
                 <input
                   type="email"
                   id="email"
-                  className="border-2 text-white border-gray-700 p-3 rounded-lg focus:outline-none focus:border-white bg-black transition duration-300"
+                  className="border-2 text-whitebg border-gray-700 p-3 rounded-lg focus:outline-none focus:border-white bg-black transition duration-300"
                   placeholder="Enter your email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -125,7 +125,7 @@ export default function Login() {
                 />
                 <button
                   type="submit"
-                  className="bg-white hover:bg-gray-300 text-black p-3 rounded-lg transition duration-300 flex justify-center items-center"
+                  className="bg-whitebg hover:bg-gray-300 text-black p-3 rounded-lg transition duration-300 flex justify-center items-center"
                 >
                   {loading ? (
                     <CircularProgress size={24} color="inherit" />
@@ -148,7 +148,7 @@ export default function Login() {
               </form>
             ) : (
               <div className="mt-4">
-                <p className="text-white">{message}</p>
+                <p className="text-whitebg">{message}</p>
               </div>
             )}
           </div>

@@ -34,7 +34,7 @@ export default function Guide(props: GuideProps) {
         return (
           <div className="flex justify-center items-center h-full">
             <button
-              className="flex justify-center items-center font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline transition duration-150 ease-in-out bg-white text-black border border-gray-700"
+              className="flex justify-center items-center font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline transition duration-150 ease-in-out bg-whitebg text-black border border-gray-700"
               onClick={() => {
                 router.push("/zone2guide");
               }}
@@ -62,7 +62,7 @@ export default function Guide(props: GuideProps) {
       justify-center items-center min-h-screen relative w-[850px] 
         inset-0 bg-black bg-opacity-60 rounded-lg border border-gray-700"
     >
-      <div className="p-4 h-full overflow-y-auto max-w-[850px] mx-auto text-white custom-scrollbar">
+      <div className="p-4 h-full overflow-y-auto max-w-[850px] mx-auto text-whitebg custom-scrollbar">
         {getContent()}
       </div>
     </div>

@@ -188,7 +188,7 @@ const HomePage: NextPageWithLayout = () => {
 
       {/* Page Content */}
       <h1
-        className="text-5xl text-white text-center font-bold pt-6 mb-4 relative z-10"
+        className="text-5xl text-whitebg text-center font-bold pt-6 mb-4 relative z-10"
         style={{
           textShadow: "10px 10px 10px rgba(0,0,0,1)",
         }}
@@ -236,7 +236,7 @@ const HomePage: NextPageWithLayout = () => {
           <div className="flex justify-between items-center md:px-6 relative pt-12 md:pt-2 md-pb-0 pb-4">
             {pageIndex !== 0 ? (
               <button
-                className="flex items-center bg-gray-400 hover:bg-white text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-150 ease-in-out"
+                className="flex items-center bg-gray-400 hover:bg-whitebg text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-150 ease-in-out"
                 type="button"
                 onClick={() => onBack(forward)}
               >
@@ -259,7 +259,7 @@ const HomePage: NextPageWithLayout = () => {
                 <span
                   key={index}
                   className={`h-2 w-2 mx-1 rounded-full ${
-                    pageIndex === index ? "bg-white" : "bg-gray-600"
+                    pageIndex === index ? "bg-whitebg" : "bg-gray-600"
                   }`}
                 ></span>
               ))}
@@ -267,8 +267,8 @@ const HomePage: NextPageWithLayout = () => {
             <button
               className={`font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-150 ease-in-out ${
                 canSubmit
-                  ? "bg-secondary-button-dark hover:bg-primary-button-dark text-white"
-                  : "bg-secondary-button-dark text-white opacity-50 cursor-not-allowed"
+                  ? "bg-secondary-button-dark hover:bg-primary-button-dark text-whitebg"
+                  : "bg-secondary-button-dark text-whitebg opacity-50 cursor-not-allowed"
               }`}
               type="submit"
               disabled={!canSubmit}

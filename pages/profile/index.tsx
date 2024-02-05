@@ -123,7 +123,7 @@ const UserProfile: NextPageWithLayout = () => {
       </div>
       {/* Page Content */}
       <h1
-        className={`text-5xl text-white text-center font-bold pt-6 mb-4 relative z-10 ${
+        className={`text-5xl text-whitebg text-center font-bold pt-6 mb-4 relative z-10 ${
           guideStatus === GuideStatus.LOADING && pageIndex === 0
             ? "animate-pulse"
             : ""
@@ -141,7 +141,7 @@ const UserProfile: NextPageWithLayout = () => {
       {/* If guidestatus === loading show subtitle saying this can take a few minutes */}
       {guideStatus === GuideStatus.LOADING && (
         <p
-          className="text-white text-center text-m mb-4 relative z-10"
+          className="text-whitebg text-center text-m mb-4 relative z-10"
           style={{
             textShadow: "10px 10px 10px rgba(0,0,0,1)",
           }}
@@ -154,8 +154,8 @@ const UserProfile: NextPageWithLayout = () => {
         <button
           className={`flex items-center font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline transition duration-150 ease-in-out ${
             pageIndex === 0
-              ? "bg-white text-black border border-gray-700 transition duration-150 ease-in-out hover:bg-gray-300"
-              : "bg-black text-white border border-gray-700 transition duration-150 ease-in-out hover:bg-gray-900"
+              ? "bg-whitebg text-black border border-gray-700 transition duration-150 ease-in-out hover:bg-gray-300"
+              : "bg-black text-whitebg border border-gray-700 transition duration-150 ease-in-out hover:bg-gray-900"
           }`}
           type="button"
           onClick={() => setPageIndex(0)}
@@ -176,8 +176,8 @@ const UserProfile: NextPageWithLayout = () => {
         <button
           className={`flex items-center font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline transition duration-150 ease-in-out ${
             pageIndex === 1
-              ? "bg-white text-black border border-transparent transition duration-150 ease-in-out hover:bg-gray-300"
-              : "bg-black text-white border border-gray-700 transition duration-150 ease-in-out hover:bg-gray-900"
+              ? "bg-whitebg text-black border border-transparent transition duration-150 ease-in-out hover:bg-gray-300"
+              : "bg-black text-whitebg border border-gray-700 transition duration-150 ease-in-out hover:bg-gray-900"
           }`}
           type="submit"
           onClick={(e) => setPageIndex(1)}

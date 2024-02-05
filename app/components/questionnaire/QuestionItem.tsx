@@ -238,7 +238,8 @@ export default function QuestionItem(props: QuestionItemProps) {
               <input
                 // Input field for feet
                 ref={inputRef}
-                className="shadow appearance-none border rounded w-1/3 py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline mr-2"
+                className="border-2 text-whitebg border-gray-700 rounded-lg focus:outline-none focus:border-white bg-black transition duration-300
+                shadow appearance-none border rounded w-1/3 py-[9.5px] px-3 text-black leading-tight focus:outline-none focus:shadow-outline mr-2"
                 placeholder="Feet"
                 type="number"
                 value={feet}
@@ -254,7 +255,8 @@ export default function QuestionItem(props: QuestionItemProps) {
               <input
                 // Input field for inches
                 ref={inchesInputRef}
-                className="shadow appearance-none border rounded w-1/3 py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline mr-2"
+                className="border-2 text-whitebg border-gray-700 rounded-lg focus:outline-none focus:border-white bg-black transition duration-300
+                shadow appearance-none w-1/3 py-[9.5px] px-3 leading-tight focus:outline-none focus:shadow-outline mr-2"
                 placeholder="Inches"
                 type="number"
                 value={inches}
@@ -267,8 +269,9 @@ export default function QuestionItem(props: QuestionItemProps) {
           ) : (
             <input
               // Input field for cm or kg
+              id={isHeight ? "height" : "weight"}
               ref={inputRef}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline mr-2"
+              className="w-full py-[9.5px] px-3 leading-tight border-2 text-whitebg border-gray-700 rounded-lg focus:outline-none focus:border-white bg-black transition duration-300 mr-2"
               placeholder={isHeight ? "Height" : "Weight"}
               type="number"
               value={
@@ -281,33 +284,26 @@ export default function QuestionItem(props: QuestionItemProps) {
           {/* Unit toggle buttons */}
           <div className="flex">
             <button
-              className={`text-white font-bold py-2 px-4 rounded w-20 mr-1 ${
+              className={`font-bold py-2 px-4 rounded-lg w-20 mr-2 border-2 transition duration-150 ease-in-out ${
                 unit === firstUnit
-                  ? "bg-blue-500 hover:bg-blue-700"
-                  : "bg-blue-500/50 hover:bg-blue-700/50"
+                  ? "bg-whitebg text-black hover:bg-gray-300 border-gray-200"
+                  : "bg-black/50 text-white/50 hover:bg-gray-700 border-gray-700"
               }`}
               onClick={() => toggleUnit(firstUnit)}
-              style={{
-                color: unit === firstUnit ? "#FFF" : "rgba(255, 255, 255, 0.7)",
-              }}
             >
               {firstUnit}
             </button>
             <button
-              className={`text-white font-bold py-2 px-4 rounded w-20 ${
+              className={`font-bold py-2 px-4 rounded-lg w-20 border-2 transition duration-150 ease-in-out ${
                 unit === secondUnit
-                  ? "bg-blue-500 hover:bg-blue-700"
-                  : "bg-blue-500/50 hover:bg-blue-700/50"
+                  ? "bg-whitebg text-black hover:bg-gray-300 border-gray-200"
+                  : "bg-black/50 text-white/50 hover:bg-gray-700 border-gray-700"
               }`}
               onClick={() => {
                 if (unit === "kg") {
                   convertKgToLbs();
                 }
                 toggleUnit(secondUnit);
-              }}
-              style={{
-                color:
-                  unit === secondUnit ? "#FFF" : "rgba(255, 255, 255, 0.7)",
               }}
             >
               {secondUnit}
@@ -322,7 +318,7 @@ export default function QuestionItem(props: QuestionItemProps) {
         // text input field
         return (
           <textarea
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline"
+            className="w-full py-[9.5px] px-3 leading-tight border-2 text-whitebg border-gray-700 rounded-lg focus:outline-none focus:border-white bg-black transition duration-300 mr-2"
             id="teamName"
             placeholder={question.placeholder}
             value={answer}
@@ -341,7 +337,7 @@ export default function QuestionItem(props: QuestionItemProps) {
           <>
             <input
               ref={inputRef}
-              className={`shadow appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline ${errorClass}`}
+              className={`${errorClass} w-full py-[9.5px] px-3 leading-tight border-2 text-whitebg border-gray-700 rounded-lg focus:outline-none focus:border-white bg-black transition duration-300 mr-2`}
               id="teamName"
               type="number"
               placeholder={question.placeholder}
@@ -367,9 +363,9 @@ export default function QuestionItem(props: QuestionItemProps) {
               <button
                 className={`${
                   answer === "yes"
-                    ? "bg-blue-700" // Highlighted color for 'Yes'
-                    : "bg-blue-500 hover:bg-blue-700 opacity-50"
-                } text-white font-bold py-2 px-4 rounded`}
+                    ? "bg-whitebg text-black border-gray-300 hover:bg-gray-300" // Highlighted color for 'Yes'
+                    : "bg-black hover:bg-gray-700 text-white/50 border-gray-700"
+                } border-2 font-bold py-2 px-4 rounded-lg`}
                 onClick={() => handleOnAnswer("yes")}
               >
                 Yes
@@ -379,9 +375,9 @@ export default function QuestionItem(props: QuestionItemProps) {
               <button
                 className={`${
                   answer === "no"
-                    ? "bg-blue-500" // Highlighted color for 'No'
-                    : "bg-blue-500 hover:bg-blue-700 opacity-50"
-                } text-white font-bold py-2 px-4 rounded`}
+                    ? "bg-whitebg text-black border-gray-300 hover:bg-gray-300" // Highlighted color for 'No'
+                    : "bg-black hover:bg-gray-700 text-white/50 border-gray-700"
+                } border-2 font-bold py-2 px-4 rounded-lg`}
                 onClick={() => handleOnAnswer("no")}
               >
                 No
@@ -402,9 +398,9 @@ export default function QuestionItem(props: QuestionItemProps) {
                 <button
                   className={`${
                     answer === option
-                      ? "bg-blue-500" // Highlighted color
-                      : "bg-blue-500 hover:bg-blue-700 opacity-50" // Default color
-                  } text-white font-bold py-2 px-4 rounded`}
+                      ? "bg-whitebg text-black border-gray-300 hover:bg-gray-300" // Highlighted color
+                      : "bg-black hover:bg-gray-700 text-white/50 border-gray-700" // Default color
+                  } border-2 font-bold py-2 px-4 rounded-lg`}
                   onClick={() => handleOnAnswer(option)}
                 >
                   {option}
@@ -427,7 +423,7 @@ export default function QuestionItem(props: QuestionItemProps) {
       <div className="mb-4">
         <div className="grid grid-cols-[auto_1fr] items-start gap-x-2 mb-2">
           <label
-            className="block text-white text-sm font-bold"
+            className="block text-whitebg text-sm font-bold"
             htmlFor="teamName"
             style={{
               textShadow: "10px 10px 10px rgba(0,0,0,1)",
@@ -436,13 +432,13 @@ export default function QuestionItem(props: QuestionItemProps) {
             {getQuestion()}
           </label>
           <AiOutlineInfoCircle
-            className="text-white cursor-pointer justify-self-end"
+            className="text-whitebg cursor-pointer justify-self-end"
             onClick={handleInfoClick}
           />
         </div>
         {showDescription && (
           <p
-            className="text-white text-sm mb-2"
+            className="text-whitebg text-sm mb-2"
             style={{
               textShadow: "10px 10px 10px rgba(0,0,0,1)",
             }}
@@ -454,7 +450,7 @@ export default function QuestionItem(props: QuestionItemProps) {
         {question.canSkip && showSkipButton && (
           <animated.button
             style={skipAnim}
-            className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded mt-4 overflow-hidden"
+            className="font-bold px-4 rounded-lg w-20 mt-4 border-2 transition duration-150 ease-in-out bg-black/50 text-white/50 hover:bg-gray-700 border-gray-700"
             onClick={handleSkipQuestion}
           >
             Skip

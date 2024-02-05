@@ -60,7 +60,7 @@ export default function UserInfoConfirmationPage(
 
   return (
     <div
-      className="text-white md:min-h-[77.5dvh] md:max-h-[77.5dvh] min-h-[72.5dvh] max-h-[72.5dvh]"
+      className="text-whitebg md:min-h-[77.5dvh] md:max-h-[77.5dvh] min-h-[72.5dvh] max-h-[72.5dvh]"
       style={{
         textShadow: "10px 10px 10px rgba(0,0,0,1)",
       }}
@@ -108,16 +108,16 @@ export default function UserInfoConfirmationPage(
           Days Available for Zone 2:{" "}
           {zone2FrequencyAnswers[fitnessData.numberOfDaysAvailableForZone2]}{" "}
           {" days"}
-        </p>
-        {fitnessData.maxHeartRate && (
-          <p className="mb-2">
-            Max Heart Rate: {fitnessData.maxHeartRate ?? "Undefined"} {" bpm"}
-          </p>
-        )}
+        </p>{" "}
         {fitnessData.restingHeartRate && (
           <p className="mb-2">
             Resting Heart Rate: {fitnessData.restingHeartRate ?? "Undefined"}{" "}
             {" bpm"}
+          </p>
+        )}
+        {fitnessData.maxHeartRate && (
+          <p className="mb-2">
+            Max Heart Rate: {fitnessData.maxHeartRate ?? "Undefined"} {" bpm"}
           </p>
         )}
         <p className="mb-2">

@@ -249,7 +249,7 @@ export default function Questionnaire(props: QuestionnaireProps) {
 
   return (
     <div
-      className={`text-white ${
+      className={`text-whitebg ${
         isProfile
           ? "bg-black bg-opacity-60 rounded-lg max-w-md md:min-h-[72.5dvh] md:max-h-[72.5dvh] min-h-[72.5dvh] max-h-[72.5dvh] md:border md:border-gray-700 md:rounded-lg"
           : "max-w-md md:min-h-[77.5dvh] md:max-h-[77.5dvh] min-h-[72.5dvh] max-h-[72.5dvh]"
@@ -265,7 +265,7 @@ export default function Questionnaire(props: QuestionnaireProps) {
           {/* Progress Bar */}
           <div className="h-1 bg-gray-600 md:mt-0 mb-4">
             <div
-              className="h-full bg-white"
+              className="h-full bg-whitebg"
               style={{ width: `${progressPercentage}%` }}
             ></div>
           </div>
@@ -280,7 +280,7 @@ export default function Questionnaire(props: QuestionnaireProps) {
       >
         {!isProfile && (
           <p
-            className="text-3xl font-bold text-white px-6"
+            className="text-3xl font-bold text-whitebg px-6"
             style={{
               textShadow: "10px 10px 10px rgba(0,0,0,1)",
             }}
@@ -340,7 +340,7 @@ export default function Questionnaire(props: QuestionnaireProps) {
           <div className="flex justify-center">
             <button
               className={`flex items-center font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline transition duration-150 ease-in-out 
-              ${"bg-black text-white border border-gray-700 transition duration-150 ease-in-out"} hover:bg-gray-900`}
+              ${"bg-black text-whitebg border border-gray-700 transition duration-150 ease-in-out"} hover:bg-gray-900`}
               type="button"
               onClick={() => {
                 authStore.signOut();

@@ -6,6 +6,7 @@ import { useStore } from "../../RootStoreProvider";
 import { AppProps } from "next/app";
 import { useState, useEffect } from "react";
 import { NextRouter, useRouter } from "next/router";
+import Head from "next/head";
 
 function Layout({ children }: { children: React.ReactNode }) {
   const { authStore } = useStore();
@@ -34,6 +35,18 @@ function Layout({ children }: { children: React.ReactNode }) {
 
   return (
     <>
+      <Head>
+        <link
+          rel="preload"
+          href="/assets/images/cyclist/cyclist.png"
+          as="image"
+        />
+        <link
+          rel="preload"
+          href="/assets/images/runner/runner8.png.png"
+          as="image"
+        />
+      </Head>
       <Header></Header>
       <div
         className={`pt-18 font-custom ${

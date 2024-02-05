@@ -45,17 +45,7 @@ const HomePage: NextPageWithLayout = () => {
     }
   };
 
-  const getUser = async () => {
-    const user = await authStore.getUserOrCreateIfNotExists("123");
-    if (user) {
-      authStore.setUser(user);
-    }
-  };
-
   useEffect(() => {
-    // if (!authStore.user) {
-    //   getUser();
-    // }
     const timer = setTimeout(() => {
       if (videoRef.current && !videoRef.current.paused) {
         videoRef.current.pause();
@@ -89,6 +79,8 @@ const HomePage: NextPageWithLayout = () => {
         email = window.prompt("Please provide your email for confirmation");
       }
       if (email) {
+        window.localStorage.setItem("emailForSignIn", email);
+
         authStore
           .confirmSignInWithEmailLink(email, currentUrl)
           .then((isSignedIn) => {

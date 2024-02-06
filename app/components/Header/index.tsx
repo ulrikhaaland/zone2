@@ -18,38 +18,41 @@ function Header() {
   return (
     <header className="bg-transparent fixed top-0 left-0 w-full z-50">
       <nav
-        className="flex justify-between items-center py-6 lg:px-12"
+        className="flex justify-between items-center lg:py-6 py-2 px-4 lg:px-12"
         aria-label="Global"
       >
-        <div className="flex">
-          {/* Logo and Title Container */}
-          <div
-            style={{ cursor: "pointer" }}
-            className="flex fixed left-6 lg:left-12 top-6" // Adjusted for flex container
-            onClick={() => router.push("/")}
+        {/* Logo and Title, now part of the flex layout without fixed positioning */}
+        <div
+          style={{ cursor: "pointer" }}
+          className="flex items-center" // Ensure alignment
+          onClick={() => router.push("/")}
+        >
+          <h1
+            className={`text-3xl font-semibold leading-6 ${
+              isHome
+                ? "text-white hover:text-gray-300"
+                : "text-gray-500 hover:text-gray-300"
+            }`}
+            style={{
+              textShadow: "10px 10px 10px rgba(0,0,0,1)",
+            }}
           >
-            <h1
-              className={`text-3xl font-semibold leading-6 ${
-                isHome
-                  ? "text-whitebg hover:text-gray-300"
-                  : "text-gray-500 hover:text-gray-300"
-              }`}
-              style={{
-                textShadow: "10px 10px 10px rgba(0,0,0,1)",
-              }}
-            >
-              Zone 2 Guide
-            </h1>
-          </div>
+            Zone 2 Guide
+          </h1>
         </div>
+
+        {/* Mobile Burger Menu */}
         <div className="flex lg:hidden">
           <button
             type="button"
-            className="x  m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
-            onClick={() => setMobileMenuOpen(true)}
+            className="inline-flex items-center justify-center rounded-md py-2 px-0 text-white icon-shadow" // Add the icon-shadow class here
+            onClick={() => {
+              authStore.setOpen(true);
+              setMobileMenuOpen(true);
+            }}
           >
             <span className="sr-only">Open main menu</span>
-            <Bars3Icon className="h-6 w-6" aria-hidden="true" />
+            <Bars3Icon className="h-8 w-8" aria-hidden="true" />
           </button>
         </div>
 
@@ -57,7 +60,10 @@ function Header() {
       </nav>
       <MobileMenu
         isOpen={mobileMenuOpen}
-        onClose={() => setMobileMenuOpen(false)}
+        onClose={() => {
+          authStore.setOpen(false);
+          setMobileMenuOpen(false);
+        }}
         router={router}
         authStore={authStore}
       />

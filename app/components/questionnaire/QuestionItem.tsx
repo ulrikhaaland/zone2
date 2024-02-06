@@ -70,6 +70,7 @@ export default function QuestionItem(props: QuestionItemProps) {
 
   const setFeetAndInches = () => {
     if (question.identifier === "height" && question.answer) {
+      setAnswer(question.answer);
       const feet = Math.floor(question.answer / FEET_TO_CM_CONVERSION_FACTOR);
       const inches = Math.round(
         (question.answer / FEET_TO_CM_CONVERSION_FACTOR - feet) * 12
@@ -84,14 +85,15 @@ export default function QuestionItem(props: QuestionItemProps) {
   }, []);
 
   useEffect(() => {
-    if (question.identifier === "height" && unit === "feet") {
+    if (question.identifier === "height" && unit === "feet" && feet && inches) {
       user.usesCM = false;
-      const totalFeet =
-        parseFloat(feet || "0") + parseFloat(inches || "0") / 12; // Convert inches to feet
-      const cm = convertFeetToCm(totalFeet).toFixed(0);
-      console.log(cm);
+      // Convert feet and inches to total inches
+      const totalInches =
+        parseFloat(feet || "0") * 12 + parseFloat(inches || "0");
+      // Convert inches to centimeters
+      const cm = (totalInches * 2.54).toFixed(0);
       question.answer = cm;
-      setAnswer(cm); // Set answer in feet and inches format
+      setAnswer(cm); // Set answer in centimeters
     }
   }, [feet, inches]);
 
@@ -119,10 +121,7 @@ export default function QuestionItem(props: QuestionItemProps) {
     to: { opacity: 0, transform: "translateY(-20px)" },
     from: { opacity: 0, transform: "translateY(-20px)" },
     reset: true, // Reset the animation on mount
-    onRest: () => {
-      // This callback ensures that the animation has finished
-      console.log("Animation finished");
-    },
+    onRest: () => {},
   }));
 
   const [skipAnim, setSkipAnim] = useSpring(() => ({
@@ -194,7 +193,6 @@ export default function QuestionItem(props: QuestionItemProps) {
         kg = "";
       }
 
-      console.log(kg);
       question.answer = kg;
       setAnswer(val);
     } else {
@@ -231,11 +229,8 @@ export default function QuestionItem(props: QuestionItemProps) {
     setUnit(newUnit);
   };
 
-  function convertKgToLbs() {
-    if (question.answer) {
-      const val = Math.round(Number(question.answer) * 2.20462);
-      setAnswer(val);
-    }
+  function convertKgToLbs(): any {
+    return Math.round(Number(question.answer) * 2.20462);
   }
 
   const getAnswerType = (question: Question) => {
@@ -288,7 +283,11 @@ export default function QuestionItem(props: QuestionItemProps) {
               placeholder={isHeight ? "Height" : "Weight"}
               type="number"
               value={
-                isHeight ? answer : unit === "kg" ? question.answer : answer
+                isHeight
+                  ? answer
+                  : unit === "kg"
+                  ? question.answer
+                  : convertKgToLbs()
               }
               onChange={(e) => handleOnAnswer(e.target.value)}
               onKeyDown={handleKeyPress}

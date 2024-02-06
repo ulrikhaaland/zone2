@@ -14,13 +14,53 @@ function MobileMenu({ isOpen, onClose, router, authStore }: MobileMenuProps) {
 
   return (
     <Dialog as="div" className="lg:hidden" open={isOpen} onClose={onClose}>
+      {/* Background */}
+      <div
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          zIndex: 100, // Ensure this is below the modal content
+        }}
+      >
+        {/* Background Image */}
+        <div
+          style={{
+            backgroundImage: "url('/assets/images/cyclist/cyclist.png')",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            zIndex: 100, // Ensure this is below the overlay
+          }}
+        ></div>
+
+        {/* Black Overlay with Opacity */}
+        <div
+          style={{
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+          }}
+        ></div>
+      </div>
+
       <div className="fixed inset-0 z-10 bg-gray-600 bg-opacity-25" />
+
       <Dialog.Panel
-        style={{ zIndex: 40 }}
-        className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-secondary-bg px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10"
+        style={{ zIndex: 101 }} // Even higher z-index for the dialog panel
+        className="fixed inset-y-0 right-0 w-full overflow-y-auto px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10"
       >
         <div className="flex items-center justify-between">
-          <h2 className="-m-1.5 p-1.5 text-lg font-semibold leading-7 text-title">
+          <h2 className="m-1.5 p-1.5 text-lg font-semibold leading-7 text-title">
             Zone 2 Program
           </h2>
           <button

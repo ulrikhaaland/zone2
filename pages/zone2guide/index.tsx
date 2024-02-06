@@ -23,35 +23,28 @@ const stripePromise = loadStripe(
 const HomePage: NextPageWithLayout = () => {
   const { authStore } = useStore();
 
-  const [user, setUser] = useState<User>(
-    authStore.user ?? {
-      questions: [],
-      guideItems: [],
-      usesCM: true,
-      usesKG: true,
-      uid: "",
-      credits: 0,
-    }
-  );
+  const { user } = authStore;
+
+  const [userID, setUserID] = useState<string | undefined>(user?.uid);
 
   const [pageIndex, setPageIndex] = useState(0);
   const [previousPageIndex, setPreviousPageIndex] = useState(0);
   const [questions, setQuestions] = useState<Question[] | undefined>(
-    authStore.user?.questions
+    user?.questions
   );
   const [canSubmit, setCanSubmit] = useState(false);
   const [forward, setForward] = useState(false);
 
   useEffect(() => {
-    if (authStore.user && user.uid !== authStore.user.uid) {
+    if (user && user?.uid !== userID) {
       console.log("setting user");
-      setUser(authStore.user);
-      const newQuestions = authStore.user?.questions;
+      setUserID(user?.uid);
+      const newQuestions = user?.questions;
       if (newQuestions) {
-        setQuestions([...newQuestions]);
+        setQuestions(newQuestions);
       }
     }
-  }, [authStore.user]);
+  }, [user]);
 
   const handleOnQuestCompleted = (questions: Question[]) => {
     setCanSubmit(true);
@@ -59,12 +52,12 @@ const HomePage: NextPageWithLayout = () => {
     const newUser: User = {
       ...user!,
       questions: questions,
-      guideItems: authStore.user?.guideItems ?? [],
+      guideItems: user?.guideItems ?? [],
     };
     console.log(newUser);
     authStore.updateUserData(newUser);
 
-    setUser(newUser);
+    authStore.setUser(newUser);
   };
 
   const onBack = (isForward: boolean) => {
@@ -103,21 +96,21 @@ const HomePage: NextPageWithLayout = () => {
 
   const redirectToStripe = () => {
     const stripeUrl = "https://buy.stripe.com/test_4gwaII0gpc3QfDy7ss";
-    const prefilledEmail = user.firebaseUser?.email ?? "";
-    const returnUrl = `${window.location.origin}/profile?userId=${user.uid}`;
+    const prefilledEmail = user!.firebaseUser?.email ?? "";
+    const returnUrl = `${window.location.origin}/profile?userId=${user!.uid}`;
 
     window.location.href = `${stripeUrl}?prefilled_email=${encodeURIComponent(
       prefilledEmail
     )}&redirect_to=${encodeURIComponent(returnUrl)}&client_reference_id=${
-      user.uid
+      user!.uid
     }`;
   };
 
   useEffect(() => {
-    if (!authStore.user) {
+    if (!user) {
       authStore.setOpen(true);
     }
-  }, [user, authStore.user, authStore]);
+  }, [user, user, authStore]);
 
   const getExit = () => {
     // If we are moving to a higher pageIndex, slide out to the left (-100)
@@ -210,9 +203,19 @@ const HomePage: NextPageWithLayout = () => {
             >
               {pageIndex === 0 && (
                 <Questionnaire
-                  key={user.uid}
+                  key={userID}
                   onQuestCompleted={handleOnQuestCompleted}
-                  user={user}
+                  user={
+                    user ?? {
+                      uid: "0",
+                      questions: [],
+                      guideItems: [],
+                      firebaseUser: undefined,
+                      usesCM: true,
+                      usesKG: true,
+                      credits: 0,
+                    }
+                  }
                   questions={questions}
                   canSubmit={setCanSubmit}
                   isProfile={false}
@@ -221,7 +224,7 @@ const HomePage: NextPageWithLayout = () => {
               {pageIndex === 1 && (
                 <UserInfoConfirmationPage
                   fitnessData={questToFitnessData(questions!)}
-                  user={user}
+                  user={user!}
                 />
               )}
               {pageIndex === 2 && (

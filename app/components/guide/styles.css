@@ -26,11 +26,11 @@
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: white;
+  background: #ededed;
   border-radius: 5px;
 }
 
 .custom-scrollbar {
   scrollbar-width: thin;
-  scrollbar-color: white transparent;
+  scrollbar-color: #ededed transparent;
 }

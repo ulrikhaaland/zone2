@@ -102,7 +102,10 @@ async function handleCheckoutSessionCompleted(event: Stripe.Event) {
 async function updateUserWithPaymentError(userId: string) {
   try {
     const userRef = db.collection("users").doc(userId);
-    await userRef.update({ paymentError: true });
+    await userRef.update({
+      paymentError: true,
+      guideStatus: GuideStatus.ERROR,
+    });
     console.log(`Updated user ${userId} with paymentError: true`);
   } catch (error) {
     console.error(`Failed to update user ${userId} with payment error:`, error);

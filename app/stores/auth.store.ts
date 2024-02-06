@@ -47,7 +47,7 @@ export default class AuthStore {
       if (firebaseUser) {
         // User is signed in, see docs for a list of available properties
         // https://firebase.google.com/docs/reference/js/firebase.User
-        const user = await this.getUserOrCreateIfNotExists(firebaseUser.uid);
+        const user = await this.getUserOrCreateIfNotExists(firebaseUser);
         this.setUser(user, firebaseUser);
       } else {
         // User is signed out
@@ -98,7 +98,7 @@ export default class AuthStore {
       this.user = user;
     } else if (firebaseUser) {
       this.setOpen(false);
-      this.getUserOrCreateIfNotExists(firebaseUser!.uid);
+      this.getUserOrCreateIfNotExists(firebaseUser);
       this.user = {
         uid: firebaseUser.uid!,
         credits: 0,
@@ -175,8 +175,8 @@ export default class AuthStore {
         window.localStorage.removeItem("emailForSignIn");
 
         // Check if user exists in the Firestore and update/create as necessary
-        const user = await this.getUserOrCreateIfNotExists(result.user.uid);
-
+        const user = await this.getUserOrCreateIfNotExists(result.user);
+        user.firebaseUser = result.user;
         // Update the user observable with the signed-in user's information
         this.setUser(user);
 
@@ -190,16 +190,21 @@ export default class AuthStore {
     }
   };
 
-  async getUserOrCreateIfNotExists(uid: string): Promise<User> {
+  async getUserOrCreateIfNotExists(firebaseUser: FirebaseUser): Promise<User> {
+    const uid = firebaseUser.uid;
+
     const userDocSnapshot = await getDoc(doc(db, "users/" + uid));
 
     const data = userDocSnapshot.data();
 
     try {
       if (!data) {
-        return this.createUser(uid);
+        const user = await this.createUser(uid);
+        user.firebaseUser = firebaseUser;
+        return user;
       } else {
         const user: User = {
+          firebaseUser: firebaseUser,
           uid: data?.uid,
           credits: data?.credits,
           guideItems: data?.guideItems,

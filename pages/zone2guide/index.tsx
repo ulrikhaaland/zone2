@@ -103,7 +103,6 @@ const HomePage: NextPageWithLayout = () => {
 
   const redirectToStripe = () => {
     const stripeUrl = "https://buy.stripe.com/test_4gwaII0gpc3QfDy7ss";
-    console.log(user.firebaseUser);
     const prefilledEmail = user.firebaseUser?.email ?? "";
     const returnUrl = `${window.location.origin}/profile?userId=${user.uid}`;
 
@@ -236,7 +235,8 @@ const HomePage: NextPageWithLayout = () => {
           <div className="flex justify-between items-center md:px-6 relative pt-12 md:pt-2 md-pb-0 pb-4">
             {pageIndex !== 0 ? (
               <button
-                className="flex items-center bg-gray-400 hover:bg-whitebg text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-150 ease-in-out"
+                className="flex items-center font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline
+                bg-black text-whitebg border border-gray-700 transition duration-150 ease-in-out hover:bg-gray-900"
                 type="button"
                 onClick={() => onBack(forward)}
               >
@@ -244,10 +244,11 @@ const HomePage: NextPageWithLayout = () => {
               </button>
             ) : (
               <button
-                className="flex items-center opacity-0 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-150 ease-in-out"
+                className="flex opacity-0 items-center font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline
+                bg-black text-whitebg border border-gray-700 transition duration-150 ease-in-out hover:bg-gray-900"
                 type="button"
+                disabled={true}
                 onClick={() => onBack(forward)}
-                disabled
               >
                 <AiOutlineArrowLeft className="mr-2" /> Back
               </button>
@@ -267,7 +268,7 @@ const HomePage: NextPageWithLayout = () => {
             <button
               className={`font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-150 ease-in-out ${
                 canSubmit
-                  ? "bg-secondary-button-dark hover:bg-primary-button-dark text-whitebg"
+                  ? "bg-blue-600 hover:bg-blue-800 text-whitebg"
                   : "bg-secondary-button-dark text-whitebg opacity-50 cursor-not-allowed"
               }`}
               type="submit"

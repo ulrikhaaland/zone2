@@ -298,6 +298,7 @@ export default function Questionnaire(props: QuestionnaireProps) {
               onAnswer={(val) => handleOnQuestionAnswered(question.id)}
               chosenExercise={chosenExercise?.toLowerCase()}
               user={user}
+              isProfile={isProfile}
               onFocusCurrent={(id) => {
                 if (id === questions[questions.length - 1].id) {
                   /// scroll to bottom

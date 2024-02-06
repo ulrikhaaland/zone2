@@ -51,12 +51,7 @@ const UserProfile: NextPageWithLayout = () => {
               }
             } else {
               // Handle other guide status updates here
-              authStore
-                .getUserOrCreateIfNotExists(authStore.user!.uid)
-                .then((updatedUser) => {
-                  setGuideStatus(newGuideStatus);
-                  setUser(updatedUser);
-                });
+              onGuideLoaded();
             }
           }
         );
@@ -73,7 +68,7 @@ const UserProfile: NextPageWithLayout = () => {
 
   const onGuideLoaded = () => {
     authStore
-      .getUserOrCreateIfNotExists(authStore.user!.uid)
+      .getUserOrCreateIfNotExists(authStore.user!.firebaseUser!)
       .then((updatedUser) => {
         setGuideStatus(GuideStatus.LOADED);
         authStore.setUser(updatedUser);
@@ -176,8 +171,8 @@ const UserProfile: NextPageWithLayout = () => {
         <button
           className={`flex items-center font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline transition duration-150 ease-in-out ${
             pageIndex === 1
-              ? "bg-whitebg text-black border border-transparent transition duration-150 ease-in-out hover:bg-gray-300"
-              : "bg-black text-whitebg border border-gray-700 transition duration-150 ease-in-out hover:bg-gray-900"
+              ? "bg-whitebg text-black border border-transparent hover:bg-gray-300"
+              : "bg-black text-whitebg border border-gray-700 hover:bg-gray-900"
           }`}
           type="submit"
           onClick={(e) => setPageIndex(1)}

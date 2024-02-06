@@ -25,6 +25,7 @@ interface QuestionItemProps {
   onFocusCurrent: (id?: number) => void;
   displayError: boolean;
   completed: boolean;
+  isProfile?: boolean;
 }
 
 export default function QuestionItem(props: QuestionItemProps) {
@@ -34,10 +35,10 @@ export default function QuestionItem(props: QuestionItemProps) {
     chosenExercise,
     user,
     autoFocus,
-    onFocusNext,
     onFocusCurrent,
     displayError,
     completed,
+    isProfile,
   } = props;
   const [answer, setAnswer] = useState<any>(question.answer);
   const [showDescription, setShowDescription] = useState(false);
@@ -58,6 +59,14 @@ export default function QuestionItem(props: QuestionItemProps) {
 
   const inputRef = useRef<HTMLInputElement>(null);
   const inchesInputRef = useRef<HTMLInputElement>(null);
+
+  const onFocusNext = (id?: number) => {
+    props.onFocusNext(id);
+    if (showSkipButton) {
+      setShowSkipButton(false);
+      question.hasSkipped = true;
+    }
+  };
 
   const setFeetAndInches = () => {
     if (question.identifier === "height" && question.answer) {
@@ -99,6 +108,10 @@ export default function QuestionItem(props: QuestionItemProps) {
 
   // This effect will run once on component mount
   useEffect(() => {
+    if (question.answer && question.answer !== "") {
+      setShowSkipButton(false);
+      question.hasSkipped = true;
+    }
     setAnim({ opacity: 1, transform: "translateY(0)" });
   }, []);
 
@@ -238,7 +251,7 @@ export default function QuestionItem(props: QuestionItemProps) {
               <input
                 // Input field for feet
                 ref={inputRef}
-                className="border-2 text-whitebg border-gray-700 rounded-lg focus:outline-none focus:border-white bg-black transition duration-300
+                className="border text-whitebg border-gray-700 rounded-lg focus:outline-none focus:border-white bg-black transition duration-300
                 shadow appearance-none border rounded w-1/3 py-[9.5px] px-3 text-black leading-tight focus:outline-none focus:shadow-outline mr-2"
                 placeholder="Feet"
                 type="number"
@@ -255,7 +268,7 @@ export default function QuestionItem(props: QuestionItemProps) {
               <input
                 // Input field for inches
                 ref={inchesInputRef}
-                className="border-2 text-whitebg border-gray-700 rounded-lg focus:outline-none focus:border-white bg-black transition duration-300
+                className="border text-whitebg border-gray-700 rounded-lg focus:outline-none focus:border-white bg-black transition duration-300
                 shadow appearance-none w-1/3 py-[9.5px] px-3 leading-tight focus:outline-none focus:shadow-outline mr-2"
                 placeholder="Inches"
                 type="number"
@@ -271,7 +284,7 @@ export default function QuestionItem(props: QuestionItemProps) {
               // Input field for cm or kg
               id={isHeight ? "height" : "weight"}
               ref={inputRef}
-              className="w-full py-[9.5px] px-3 leading-tight border-2 text-whitebg border-gray-700 rounded-lg focus:outline-none focus:border-white bg-black transition duration-300 mr-2"
+              className="w-full py-[9.5px] px-3 leading-tight border text-whitebg border-gray-700 rounded-lg focus:outline-none focus:border-white bg-black transition duration-300 mr-2"
               placeholder={isHeight ? "Height" : "Weight"}
               type="number"
               value={
@@ -284,7 +297,7 @@ export default function QuestionItem(props: QuestionItemProps) {
           {/* Unit toggle buttons */}
           <div className="flex">
             <button
-              className={`font-bold py-2 px-4 rounded-lg w-20 mr-2 border-2 transition duration-150 ease-in-out ${
+              className={`font-bold py-2 px-4 rounded-lg w-20 mr-2 border transition duration-150 ease-in-out ${
                 unit === firstUnit
                   ? "bg-whitebg text-black hover:bg-gray-300 border-gray-200"
                   : "bg-black/50 text-white/50 hover:bg-gray-700 border-gray-700"
@@ -294,7 +307,7 @@ export default function QuestionItem(props: QuestionItemProps) {
               {firstUnit}
             </button>
             <button
-              className={`font-bold py-2 px-4 rounded-lg w-20 border-2 transition duration-150 ease-in-out ${
+              className={`font-bold py-2 px-4 rounded-lg w-20 border transition duration-150 ease-in-out ${
                 unit === secondUnit
                   ? "bg-whitebg text-black hover:bg-gray-300 border-gray-200"
                   : "bg-black/50 text-white/50 hover:bg-gray-700 border-gray-700"
@@ -318,7 +331,7 @@ export default function QuestionItem(props: QuestionItemProps) {
         // text input field
         return (
           <textarea
-            className="w-full py-[9.5px] px-3 leading-tight border-2 text-whitebg border-gray-700 rounded-lg focus:outline-none focus:border-white bg-black transition duration-300 mr-2"
+            className="w-full py-[9.5px] px-3 leading-tight border text-whitebg border-gray-700 rounded-lg focus:outline-none focus:border-white bg-black transition duration-300 mr-2"
             id="teamName"
             placeholder={question.placeholder}
             value={answer}
@@ -337,7 +350,7 @@ export default function QuestionItem(props: QuestionItemProps) {
           <>
             <input
               ref={inputRef}
-              className={`${errorClass} w-full py-[9.5px] px-3 leading-tight border-2 text-whitebg border-gray-700 rounded-lg focus:outline-none focus:border-white bg-black transition duration-300 mr-2`}
+              className={`${errorClass} w-full py-[9.5px] px-3 leading-tight border text-whitebg border-gray-700 rounded-lg focus:outline-none focus:border-white bg-black transition duration-300 mr-2`}
               id="teamName"
               type="number"
               placeholder={question.placeholder}
@@ -365,7 +378,7 @@ export default function QuestionItem(props: QuestionItemProps) {
                   answer === "yes"
                     ? "bg-whitebg text-black border-gray-300 hover:bg-gray-300" // Highlighted color for 'Yes'
                     : "bg-black hover:bg-gray-700 text-white/50 border-gray-700"
-                } border-2 font-bold py-2 px-4 rounded-lg`}
+                } border font-bold py-2 px-4 rounded-lg`}
                 onClick={() => handleOnAnswer("yes")}
               >
                 Yes
@@ -377,7 +390,7 @@ export default function QuestionItem(props: QuestionItemProps) {
                   answer === "no"
                     ? "bg-whitebg text-black border-gray-300 hover:bg-gray-300" // Highlighted color for 'No'
                     : "bg-black hover:bg-gray-700 text-white/50 border-gray-700"
-                } border-2 font-bold py-2 px-4 rounded-lg`}
+                } border font-bold py-2 px-4 rounded-lg`}
                 onClick={() => handleOnAnswer("no")}
               >
                 No
@@ -400,7 +413,7 @@ export default function QuestionItem(props: QuestionItemProps) {
                     answer === option
                       ? "bg-whitebg text-black border-gray-300 hover:bg-gray-300" // Highlighted color
                       : "bg-black hover:bg-gray-700 text-white/50 border-gray-700" // Default color
-                  } border-2 font-bold py-2 px-4 rounded-lg`}
+                  } border font-bold py-2 px-4 rounded-lg`}
                   onClick={() => handleOnAnswer(option)}
                 >
                   {option}
@@ -447,10 +460,10 @@ export default function QuestionItem(props: QuestionItemProps) {
           </p>
         )}
         {getAnswerType(question)}
-        {question.canSkip && showSkipButton && (
+        {question.canSkip && showSkipButton && !isProfile && (
           <animated.button
             style={skipAnim}
-            className="font-bold px-4 rounded-lg w-20 mt-4 border-2 transition duration-150 ease-in-out bg-black/50 text-white/50 hover:bg-gray-700 border-gray-700"
+            className="font-bold px-4 rounded-lg w-20 mt-4 border transition duration-150 ease-in-out bg-black/50 text-white/50 hover:bg-gray-700 border-gray-700"
             onClick={handleSkipQuestion}
           >
             Skip

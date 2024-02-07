@@ -77,7 +77,7 @@ export const HomeMobileLayout: React.FC<HomeMobileLayoutProps> = ({
 
       {/* Content container adjusted for mobile */}
       <div
-        className={`absolute top-0 left-0 right-0 bottom-0 z-10 px-4 pt-2 mx-auto overflow-auto pb-20 ${
+        className={`absolute top-0 left-0 right-0 bottom-0 z-10 px-4 pt-2 mx-auto overflow-auto ${
           user && "pt-24"
         }`}
         style={{
@@ -90,12 +90,18 @@ export const HomeMobileLayout: React.FC<HomeMobileLayoutProps> = ({
             <h1 className="text-3xl font-bold text-white mb-4">
               Your Tailored Guide to Zone 2 Training
             </h1>
-            <p className="text-sm text-white mb-2">
-              Discover the science behind Zone 2 training tailored to your
-              fitness level.
+            <p className="text-l text-white mb-2">
+              Uncovers the scientific details behind Zone 2 training and applies
+              them to your fitness level.
             </p>
+            <h2 className="text-2xl font-bold text-whitebg mb-2">Includes:</h2>
             {/* Condensed includes section */}
-            <ul className="list-disc list-inside text-sm text-white">
+            <ul
+              className="list-disc list-inside text-sm text-white"
+              style={{
+                textShadow: "10px 10px 10px rgba(0,0,0,1)",
+              }}
+            >
               <li>Your Expected Benefits</li>
               <li>Effective Exercise Duration, Frequency & Dose</li>
               <li>Methods For Determining Zone 2 Intensity</li>

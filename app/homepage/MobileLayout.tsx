@@ -56,7 +56,6 @@ export const HomeMobileLayout: React.FC<HomeMobileLayoutProps> = ({
     <div
       className="relative h-screen w-full overflow-hidden"
       onClick={handleClick}
-      tabIndex={0}
     >
       {/* Adjusted video container for mobile */}
       {canPlayVideo && (
@@ -192,30 +191,31 @@ export const HomeMobileLayout: React.FC<HomeMobileLayoutProps> = ({
             </div>
           )}
         </div>
-      </div>
-
-      {/* Adjust buttons for mobile */}
-      <div className="z-100 absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            toggleSound();
-          }}
-          className="bg-gray-700 p-2 rounded-full"
-          aria-label={isMuted ? "Unmute" : "Mute"}
-        >
-          {isMuted ? <VolumeOffIcon /> : <VolumeUpIcon />}
-        </button>
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            togglePlay();
-          }}
-          className="bg-gray-700 p-2 rounded-full"
-          aria-label={isPlaying ? "Pause" : "Play"}
-        >
-          {isPlaying ? <PauseIcon /> : <PlayArrowIcon />}
-        </button>
+        {/* Adjust buttons for mobile */}
+        <div className="z-100 absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+          <button
+            onClick={(e) => {
+              e.preventDefault(); // Prevent default action
+              e.stopPropagation(); // Stop event bubbling
+              toggleSound();
+            }}
+            className="bg-gray-700 p-2 rounded-full focus:outline-none"
+            aria-label={isMuted ? "Unmute" : "Mute"}
+          >
+            {isMuted ? <VolumeOffIcon /> : <VolumeUpIcon />}
+          </button>
+          <button
+            onClick={(e) => {
+              e.preventDefault(); // Prevent default action
+              e.stopPropagation(); // Stop event bubbling
+              togglePlay();
+            }}
+            className="bg-gray-700 p-2 rounded-full focus:outline-none"
+            aria-label={isPlaying ? "Pause" : "Play"}
+          >
+            {isPlaying ? <PauseIcon /> : <PlayArrowIcon />}
+          </button>
+        </div>
       </div>
     </div>
   );

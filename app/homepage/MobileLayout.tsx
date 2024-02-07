@@ -69,12 +69,7 @@ export const HomeMobileLayout: React.FC<HomeMobileLayoutProps> = ({
             onPlay={handleVideoPlay}
             className="w-full h-full object-cover"
           >
-            <source
-              src={
-                isSignupLink || user ? videoLinkBottomText : videoLinkTopText
-              }
-              type="video/mp4"
-            />
+            <source src={videoLinkBottomText} type="video/mp4" />
           </video>
           <div className="absolute inset-0 bg-black opacity-70" />
         </div>
@@ -89,20 +84,11 @@ export const HomeMobileLayout: React.FC<HomeMobileLayoutProps> = ({
           textShadow: "10px 10px 10px rgba(0,0,0,1)",
         }}
       >
-        {/* Expert Testimonials */}
-        <div className="text-white mb-0 py-2">
-          <h2 className="text-2xl font-bold">Tailored To Your Fitness Level</h2>
-          <p>
-            A comprehensive guide to Zone 2 training, featuring Dr. Peter Attia
-            and Dr. Iñigo San Millán&apos;s insights.
-          </p>
-        </div>
-
         {/* Simplified content section */}
         <div>
           <div className="py-4">
             <h1 className="text-3xl font-bold text-white mb-4">
-              Your Tailored Guide to Zone 2
+              Your Tailored Guide to Zone 2 Training
             </h1>
             <p className="text-sm text-white mb-2">
               Discover the science behind Zone 2 training tailored to your
@@ -120,7 +106,7 @@ export const HomeMobileLayout: React.FC<HomeMobileLayoutProps> = ({
             </ul>
             {/* Bottom content with laurel */}
             <div
-              className="relative text-center mt-2 h-[100px] flex flex-col justify-center items-center"
+              className="relative text-center mt-4 h-[100px] flex flex-col justify-center items-center"
               style={{ minWidth: "300px" }}
             >
               <p className="text-sm text-white w-[205px]">
@@ -139,7 +125,7 @@ export const HomeMobileLayout: React.FC<HomeMobileLayoutProps> = ({
           {/* Sign-up box adjusted for mobile */}
           {!user && (
             <div
-              className="fixed mx-4 mb-4 rounded-lg border border-gray-700 inset-x-0 bottom-0 pb-4 px-4 bg-black bg-opacity-60 rounded-t-lg"
+              className="relative rounded-lg border border-gray-700 inset-x-0 bottom-0 pb-4 px-4 bg-black bg-opacity-60 rounded-t-lg"
               onClick={(e) => e.stopPropagation()}
             >
               {emailSent ? (

@@ -18,7 +18,7 @@ function Header() {
   return (
     <header className="bg-transparent fixed top-0 left-0 w-full z-50">
       <nav
-        className="flex justify-between items-center lg:py-6 py-2 px-4 lg:px-12"
+        className="flex justify-between items-center lg:py-6 py-2 px-4 lg:px-12 z-150"
         aria-label="Global"
       >
         {/* Logo and Title, now part of the flex layout without fixed positioning */}

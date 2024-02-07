@@ -24,9 +24,7 @@ function WebMenu({ router, authStore }: WebMenuProps) {
 
   return (
     <div
-      className={`hidden lg:flex lg:gap-x-12 ${
-        isHome ? "text-whitebg" : "text-whitebg"
-      } `}
+      className={`hidden lg:flex lg:gap-x-12 text-whitebg`}
       style={{
         textShadow: "10px 10px 10px rgba(0,0,0,1)",
       }}

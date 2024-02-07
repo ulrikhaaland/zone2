@@ -62,11 +62,11 @@ const HomePage: NextPageWithLayout = () => {
     if (videoRef.current) {
       if (videoRef.current.paused) {
         videoRef.current.play();
+        setIsPlaying(true);
       } else {
         videoRef.current.pause();
+        setIsPlaying(false);
       }
-      // Update the isPlaying state based on the video's paused state
-      setIsPlaying(!videoRef.current.paused);
     }
   };
 

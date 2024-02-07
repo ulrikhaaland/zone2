@@ -43,7 +43,7 @@ export const HomeMobileLayout: React.FC<HomeMobileLayoutProps> = ({
 }) => {
   return (
     <div
-      className="relative h-screen w-full "
+      className="relative h-screen w-full overflow-hidden"
       onClick={handleClick}
       tabIndex={0}
     >
@@ -54,25 +54,27 @@ export const HomeMobileLayout: React.FC<HomeMobileLayoutProps> = ({
           autoPlay
           loop
           muted={isMuted}
-          className="w-full h-screen object-cover"
+          className="w-full h-full object-cover"
         >
           <source
-            src="https://firebasestorage.googleapis.com/v0/b/zone2program-a24ce.appspot.com/o/zone2small.mp4?alt=media&token=2ed6320e-bb96-402e-9700-3ba1028a8111"
+            src="https://firebasestorage.googleapis.com/v0/b/zone2program-a24ce.appspot.com/o/zone2small3.mp4?alt=media&token=364e25ae-bd36-4534-93b5-2ccfd9fc5fd2"
             type="video/mp4"
           />
         </video>
-        <div className="absolute inset-0 bg-black opacity-50" />
+        <div className="absolute inset-0 bg-black opacity-70" />
       </div>
 
       {/* Content container adjusted for mobile */}
       <div
-        className="relative z-10 p-4 mx-auto w-full pt-24"
+        className={`absolute top-0 left-0 right-0 bottom-0 z-10 px-4 pt-2 mx-auto overflow-auto pb-20 ${
+          user && "pt-24"
+        }`}
         style={{
           textShadow: "10px 10px 10px rgba(0,0,0,1)",
         }}
       >
         {/* Expert Testimonials */}
-        <div className="text-white mb-4 py-2">
+        <div className="text-white mb-0 py-2">
           <h2 className="text-2xl font-bold">Tailored To Your Fitness Level</h2>
           <p>
             A comprehensive guide to Zone 2 training, featuring Dr. Peter Attia
@@ -82,7 +84,7 @@ export const HomeMobileLayout: React.FC<HomeMobileLayoutProps> = ({
 
         {/* Simplified content section */}
         <div>
-          <div className="bg-black bg-opacity-60 p-4 rounded-lg">
+          <div className="py-4">
             <h1 className="text-3xl font-bold text-white mb-4">
               Your Tailored Guide to Zone 2
             </h1>
@@ -100,34 +102,70 @@ export const HomeMobileLayout: React.FC<HomeMobileLayoutProps> = ({
               <li>Realistic Goals & Expectations</li>
               <li>Recovery & Preventing Overtraining</li>
             </ul>
+            {/* Bottom content with laurel */}
+            <div
+              className="relative text-center mt-2 h-[100px] flex flex-col justify-center items-center"
+              style={{ minWidth: "300px" }}
+            >
+              <p className="text-sm text-white w-[205px]">
+                Based Upon The Recommendations of Dr. PETER ATTIA & Dr. IÑIGO
+                SAN MILLÁN
+              </p>
+              <Image
+                src="/assets/laurel.svg"
+                alt="Laurel"
+                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+                width={295}
+                height={50}
+              />
+            </div>
           </div>
-
           {/* Sign-up box adjusted for mobile */}
           {!user && (
-            <div className="bg-black bg-opacity-60 p-4 rounded-lg mt-4">
+            <div className="fixed mx-4 mb-4 rounded-lg border border-gray-700 inset-x-0 bottom-0 pb-4 px-4 bg-black bg-opacity-60 rounded-t-lg">
               {emailSent ? (
-                <p className="text-green-500 text-center">
-                  Check your email for the sign-in link.
-                </p>
+                <div>
+                  <h2 className="text-3xl font-bold mb-6 text-center text-white">
+                    Check Your Email
+                  </h2>
+                  <p className="text-green-500 text-center">
+                    We&apos;ve sent a sign-up link to your email. Please check
+                    your inbox and follow the instructions to complete the
+                    sign-up process.
+                  </p>
+                </div>
               ) : (
-                <form onSubmit={handleSendLink} className="space-y-4">
-                  <input
-                    ref={emailInputRef}
-                    type="email"
-                    className="w-full p-2 text-white bg-black border-2 border-gray-700 rounded-lg"
-                    placeholder="Enter your email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                  />
-                  <button
-                    type="submit"
-                    className="w-full bg-blue-600 hover:bg-blue-800 text-white p-2 rounded-lg"
-                    disabled={loading}
-                  >
-                    {loading ? "Loading..." : "Start Training"}
-                  </button>
-                </form>
+                <>
+                  <h2 className="text-2xl font-bold my-2 text-center text-white">
+                    Claim Your Guide Now
+                  </h2>
+                  <form onSubmit={handleSendLink} className="space-y-2">
+                    <input
+                      ref={emailInputRef}
+                      type="email"
+                      className="w-full border-2 text-whitebg border-gray-700 p-3 rounded-lg focus:outline-none focus:border-white bg-black transition duration-300"
+                      placeholder="Enter your email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      required
+                      autoFocus={true} // autoFocus for better UX
+                    />
+                    <button
+                      type="submit"
+                      className="w-full bg-blue-600 hover:bg-blue-800 text-white p-3 rounded-lg flex justify-center items-center"
+                      disabled={loading}
+                    >
+                      {loading ? (
+                        <CircularProgress size={24} color="inherit" />
+                      ) : (
+                        "Start Training"
+                      )}
+                    </button>
+                    <p className="text-sm text-center text-white">
+                      If you already have an account, we&apos;ll log you in.
+                    </p>
+                  </form>
+                </>
               )}
               {message && (
                 <p

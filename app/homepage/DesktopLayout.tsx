@@ -62,8 +62,11 @@ export const HomeDesktopLayout: React.FC<HomeDesktopLayoutProps> = ({
           autoPlay
           loop
           onPlay={handleVideoPlay}
-          muted={isMuted}
+          muted={isMuted} // Ensure this is always true for autoplay on mobile
+          playsInline // Add playsInline to avoid fullscreen mode on play in iOS
           className="absolute inset-0 w-full h-full object-cover"
+          controls={false} // Add this to disable default controls and prevent opening in video viewer
+          onClick={(e) => e.preventDefault()} // Optionally prevent default action on click
         >
           <source
             src="https://firebasestorage.googleapis.com/v0/b/zone2program-a24ce.appspot.com/o/zone4.mp4?alt=media&token=50bcc0b5-9d9b-4863-93c9-9901ae9ecffd"
@@ -94,7 +97,7 @@ export const HomeDesktopLayout: React.FC<HomeDesktopLayoutProps> = ({
           {/* Left side content */}
           <div className="bg-black bg-opacity-60 p-6 rounded-lg border border-gray-700 max-w-[500px]">
             <h1 className="text-5xl font-bold text-whitebg mb-6">
-              Your Tailored Guide to Zone 2
+              Your Personalized Guide to Zone 2
             </h1>
             <p className="text-lg text-whitebg mb-4">
               Uncovers the scientific details behind Zone 2 training and applies

@@ -88,7 +88,7 @@ export const HomeMobileLayout: React.FC<HomeMobileLayoutProps> = ({
         <div>
           <div className="py-4">
             <h1 className="text-3xl font-bold text-white mb-4">
-              Your Tailored Guide to Zone 2 Training
+              Your Personalized Guide to Zone 2 Training
             </h1>
             <p className="text-l text-white mb-2">
               Uncovers the scientific details behind Zone 2 training and applies
@@ -159,7 +159,6 @@ export const HomeMobileLayout: React.FC<HomeMobileLayoutProps> = ({
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       required
-                      autoFocus={true} // autoFocus for better UX
                     />
                     <button
                       type="submit"

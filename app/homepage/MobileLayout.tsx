@@ -66,6 +66,9 @@ export const HomeMobileLayout: React.FC<HomeMobileLayoutProps> = ({
             autoPlay
             loop
             muted={isMuted}
+            playsInline // Add playsInline to avoid fullscreen mode on play in iOS
+            controls={false} // Add this to disable default controls and prevent opening in video viewer
+            onClick={(e) => e.preventDefault()} // Optionally prevent default action on click
             onPlay={handleVideoPlay}
             className="w-full h-full object-cover"
           >

@@ -22,7 +22,8 @@ interface HomeDesktopLayoutProps {
   togglePlay: () => void;
   handleClick: React.MouseEventHandler<HTMLDivElement>;
   handleSendLink: (e: React.FormEvent<HTMLFormElement>) => void;
-  user?: User; // Define a more specific type if available
+  user?: User;
+  handleVideoPlay: () => void;
 }
 
 export const HomeDesktopLayout: React.FC<HomeDesktopLayoutProps> = ({
@@ -40,6 +41,7 @@ export const HomeDesktopLayout: React.FC<HomeDesktopLayoutProps> = ({
   handleClick,
   handleSendLink,
   user,
+  handleVideoPlay,
 }) => {
   return (
     <div
@@ -59,6 +61,7 @@ export const HomeDesktopLayout: React.FC<HomeDesktopLayoutProps> = ({
           ref={videoRef}
           autoPlay
           loop
+          onPlay={handleVideoPlay}
           muted={isMuted}
           className="absolute inset-0 w-full h-full object-cover"
         >
@@ -126,14 +129,17 @@ export const HomeDesktopLayout: React.FC<HomeDesktopLayoutProps> = ({
           </div>
           {/* Right side sign-up box */}
           {!user && (
-            <div className="bg-black bg-opacity-60 p-8 rounded-lg border border-gray-700 text-whitebg w-[367px]">
+            <div
+              onClick={(e) => e.stopPropagation()}
+              className="bg-black bg-opacity-60 p-8 rounded-lg border border-gray-700 text-whitebg w-[367px]"
+            >
               {emailSent ? (
                 <div>
                   <h2 className="text-3xl font-bold mb-6">Check Your Email</h2>
                   <p className="mt-4 text-green-500">
-                    We&apos;ve sent a sign-up link to your email. Please check
-                    your inbox and follow the instructions to complete the
-                    sign-up process.
+                    We&apos;ve sent a login link to your email. Please check
+                    your inbox and follow the instructions to complete the login
+                    process.
                   </p>
                 </div>
               ) : (

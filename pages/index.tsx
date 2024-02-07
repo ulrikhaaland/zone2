@@ -3,13 +3,7 @@ import { NextPageWithLayout, auth } from "./_app";
 import { useStore } from "@/RootStoreProvider";
 import { isSignInWithEmailLink } from "firebase/auth";
 import { useRouter } from "next/router";
-import VolumeOffIcon from "@mui/icons-material/VolumeOff";
-import VolumeUpIcon from "@mui/icons-material/VolumeUp";
-import Image from "next/image";
-import PlayArrowIcon from "@mui/icons-material/PlayArrow";
-import PauseIcon from "@mui/icons-material/Pause";
 import { observer } from "mobx-react";
-import { CircularProgress } from "@mui/material";
 import { HomeDesktopLayout } from "@/app/homepage/DesktopLayout";
 import { HomeMobileLayout } from "@/app/homepage/MobileLayout";
 
@@ -25,6 +19,9 @@ const HomePage: NextPageWithLayout = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const emailInputRef = useRef<HTMLInputElement>(null);
   const [isMobileView, setIsMobileView] = useState(false); // Set a default state
+  const [isSignupLink, setIsSignupLink] = useState(false);
+  const [videoStarted, setVideoStarted] = useState(false);
+  const [canPlayVideo, setCanPlayVideo] = useState(false);
 
   useEffect(() => {
     // Ensure window is defined (it will be, as this runs in the client)
@@ -63,6 +60,7 @@ const HomePage: NextPageWithLayout = () => {
       if (videoRef.current.paused) {
         videoRef.current.play();
         setIsPlaying(true);
+        setVideoStarted(true); // Set video started to true when video plays
       } else {
         videoRef.current.pause();
         setIsPlaying(false);
@@ -70,16 +68,30 @@ const HomePage: NextPageWithLayout = () => {
     }
   };
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (videoRef.current && !videoRef.current.paused) {
-        videoRef.current.pause();
-        setIsPlaying(false);
-      }
-    }, 9361.5); // 10000 milliseconds = 10 seconds
+  const handleVideoPlay = () => {
+    setVideoStarted(true); // Set video started to true when video plays
+    setIsPlaying(true);
+  };
 
-    return () => clearTimeout(timer);
-  }, []);
+  useEffect(() => {
+    setCanPlayVideo(true);
+    console.log(authStore.user, isSignupLink);
+  }, [authStore.hasCheckedAuth]);
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (videoStarted) {
+      // Check if video has started
+      timer = setTimeout(() => {
+        if (videoRef.current && !videoRef.current.paused) {
+          videoRef.current.pause();
+          setIsPlaying(false);
+        }
+      }, 9361.5); // Adjust the time as needed
+    }
+
+    return () => clearTimeout(timer); // Cleanup to clear the timer
+  }, [videoStarted]); // Depend on the videoStarted state
 
   const handleSendLink = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -88,7 +100,6 @@ const HomePage: NextPageWithLayout = () => {
     try {
       await authStore.sendSignInLink(email, router.pathname, true);
       setEmailSent(true);
-      setMessage("Check your email for the sign-in link.");
     } catch (error: any) {
       setMessage("Error sending email: " + error.message);
     } finally {
@@ -100,6 +111,7 @@ const HomePage: NextPageWithLayout = () => {
     if (!window) return;
     const currentUrl = window.location.href;
     if (isSignInWithEmailLink(auth, currentUrl)) {
+      setIsSignupLink(true);
       let email = window.localStorage.getItem("emailForSignIn");
       if (!email) {
         email = window.prompt("Please provide your email for confirmation");
@@ -156,6 +168,9 @@ const HomePage: NextPageWithLayout = () => {
         handleClick={handleClick}
         handleSendLink={handleSendLink}
         user={authStore.user ?? undefined}
+        isSignupLink={isSignupLink}
+        handleVideoPlay={handleVideoPlay}
+        canPlayVideo={canPlayVideo}
       />
     );
   } else
@@ -175,6 +190,7 @@ const HomePage: NextPageWithLayout = () => {
         handleClick={handleClick}
         handleSendLink={handleSendLink}
         user={authStore.user ?? undefined}
+        handleVideoPlay={handleVideoPlay}
       />
     );
 };

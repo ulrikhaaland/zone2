@@ -7,6 +7,11 @@ import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import PauseIcon from "@mui/icons-material/Pause";
 import { User } from "../model/user";
 
+const videoLinkTopText =
+  "https://firebasestorage.googleapis.com/v0/b/zone2program-a24ce.appspot.com/o/zone2small3.mp4?alt=media&token=364e25ae-bd36-4534-93b5-2ccfd9fc5fd2";
+const videoLinkBottomText =
+  "https://firebasestorage.googleapis.com/v0/b/zone2program-a24ce.appspot.com/o/zone2small.mp4?alt=media&token=2ed6320e-bb96-402e-9700-3ba1028a8111";
+
 // Define the props interface
 interface HomeMobileLayoutProps {
   isMuted: boolean;
@@ -15,6 +20,7 @@ interface HomeMobileLayoutProps {
   setEmail: React.Dispatch<React.SetStateAction<string>>;
   emailSent: boolean;
   loading: boolean;
+  isSignupLink: boolean;
   message: string;
   videoRef: RefObject<HTMLVideoElement>;
   emailInputRef: RefObject<HTMLInputElement>;
@@ -23,6 +29,8 @@ interface HomeMobileLayoutProps {
   handleClick: React.MouseEventHandler<HTMLDivElement>;
   handleSendLink: (e: React.FormEvent<HTMLFormElement>) => void;
   user?: User; // Define a more specific type if available
+  handleVideoPlay: () => void;
+  canPlayVideo: boolean;
 }
 
 export const HomeMobileLayout: React.FC<HomeMobileLayoutProps> = ({
@@ -40,6 +48,9 @@ export const HomeMobileLayout: React.FC<HomeMobileLayoutProps> = ({
   handleClick,
   handleSendLink,
   user,
+  isSignupLink,
+  handleVideoPlay,
+  canPlayVideo,
 }) => {
   return (
     <div
@@ -48,21 +59,26 @@ export const HomeMobileLayout: React.FC<HomeMobileLayoutProps> = ({
       tabIndex={0}
     >
       {/* Adjusted video container for mobile */}
-      <div className="absolute inset-0 z-0 ">
-        <video
-          ref={videoRef}
-          autoPlay
-          loop
-          muted={isMuted}
-          className="w-full h-full object-cover"
-        >
-          <source
-            src="https://firebasestorage.googleapis.com/v0/b/zone2program-a24ce.appspot.com/o/zone2small3.mp4?alt=media&token=364e25ae-bd36-4534-93b5-2ccfd9fc5fd2"
-            type="video/mp4"
-          />
-        </video>
-        <div className="absolute inset-0 bg-black opacity-70" />
-      </div>
+      {canPlayVideo && (
+        <div className="absolute inset-0 z-0 ">
+          <video
+            ref={videoRef}
+            autoPlay
+            loop
+            muted={isMuted}
+            onPlay={handleVideoPlay}
+            className="w-full h-full object-cover"
+          >
+            <source
+              src={
+                isSignupLink || user ? videoLinkBottomText : videoLinkTopText
+              }
+              type="video/mp4"
+            />
+          </video>
+          <div className="absolute inset-0 bg-black opacity-70" />
+        </div>
+      )}
 
       {/* Content container adjusted for mobile */}
       <div
@@ -122,16 +138,19 @@ export const HomeMobileLayout: React.FC<HomeMobileLayoutProps> = ({
           </div>
           {/* Sign-up box adjusted for mobile */}
           {!user && (
-            <div className="fixed mx-4 mb-4 rounded-lg border border-gray-700 inset-x-0 bottom-0 pb-4 px-4 bg-black bg-opacity-60 rounded-t-lg">
+            <div
+              className="fixed mx-4 mb-4 rounded-lg border border-gray-700 inset-x-0 bottom-0 pb-4 px-4 bg-black bg-opacity-60 rounded-t-lg"
+              onClick={(e) => e.stopPropagation()}
+            >
               {emailSent ? (
                 <div>
-                  <h2 className="text-3xl font-bold mb-6 text-center text-white">
+                  <h2 className="text-3xl font-bold my-4 text-center text-white">
                     Check Your Email
                   </h2>
                   <p className="text-green-500 text-center">
-                    We&apos;ve sent a sign-up link to your email. Please check
-                    your inbox and follow the instructions to complete the
-                    sign-up process.
+                    We&apos;ve sent a login link to your email. Please check
+                    your inbox and follow the instructions to complete the login
+                    process.
                   </p>
                 </div>
               ) : (

@@ -24,12 +24,14 @@ export default class AuthStore {
   open: boolean = false;
   user: User | null | undefined = undefined;
   fromPath?: string = undefined;
+  hasCheckedAuth: boolean = false;
 
   constructor() {
     makeObservable(this, {
       open: observable,
       user: observable,
       fromPath: observable,
+      hasCheckedAuth: observable,
       setOpen: action,
       signOut: action,
       checkAuth: action,
@@ -54,11 +56,16 @@ export default class AuthStore {
         this.setUser(undefined);
         console.log("User is signed out");
       }
+      this.hasCheckedAuth = true;
     });
   };
 
   checkAuth = () => {
     this.initAuthListener();
+  };
+
+  setHasCheckedAuth = (hasCheckedAuth: boolean) => {
+    this.hasCheckedAuth = hasCheckedAuth;
   };
 
   setOpen = (open: boolean) => {

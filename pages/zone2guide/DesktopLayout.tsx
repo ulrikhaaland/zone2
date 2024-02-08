@@ -174,7 +174,7 @@ const Zone2GuideDesktopLayout: React.FC<Zone2GuideDesktopLayoutProps> = ({
               ))}
             </div>
             <button
-              className={`font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-150 ease-in-out ${
+              className={`font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline transition duration-150 ease-in-out ${
                 canSubmit
                   ? "bg-blue-600 hover:bg-blue-800 text-whitebg"
                   : "bg-secondary-button-dark text-whitebg opacity-50 cursor-not-allowed"

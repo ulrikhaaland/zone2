@@ -66,7 +66,7 @@ export default function UserInfoConfirmationPage(
       }}
     >
       {/* Header */}
-      <div className="relative p-6 ">
+      <div className={`relative px-6 md:pt-6`}>
         <h1 className="text-3xl font-bold">Confirm your information</h1>
       </div>
 

@@ -142,17 +142,15 @@ export default class AuthStore {
   };
 
   // Method to send sign-in link to email
-  sendSignInLink = async (
-    email: string,
-    path: string,
-    isLocal: boolean = false
-  ): Promise<void> => {
+  sendSignInLink = async (email: string, path: string): Promise<void> => {
+    // Determine if the current environment is localhost
+    const isLocal = window.location.hostname === "localhost";
+
     const actionCodeSettings = {
-      // URL you want to redirect back to. The domain (www.example.com) for this
-      // URL must be in the authorized domains list in the Firebase Console.
+      // Dynamically set URL based on whether the code is running on localhost or not
       url: `${
         isLocal ? "http://localhost:3000" : "https://zone2-liard.vercel.app"
-      }${path}`, // change this to your desired URL
+      }${path}`,
       handleCodeInApp: true,
     };
 
@@ -165,6 +163,7 @@ export default class AuthStore {
       // The link was successfully sent. Inform the user.
       // Save email locally to complete sign-in when user returns.
       window.localStorage.setItem("emailForSignIn", email);
+      // Assuming "confirmation" is used for something, otherwise, you might not need to return it.
       return confirmation;
     } catch (error: any) {
       console.error("Error sending email link:", error);

@@ -83,7 +83,7 @@ const HomePage: NextPageWithLayout = () => {
     setLoading(true);
     e.stopPropagation();
     try {
-      await authStore.sendSignInLink(email, router.pathname, true);
+      await authStore.sendSignInLink(email, router.pathname);
       setEmailSent(true);
     } catch (error: any) {
       setMessage("Error sending email: " + error.message);

@@ -38,7 +38,7 @@ export default function Login() {
     setLoading(true); // Start loading
     try {
       const path = router.pathname;
-      await authStore.sendSignInLink(email, path, true);
+      await authStore.sendSignInLink(email, path);
       setEmailSent(true);
       setMessage(
         "We've sent a sign-in link to your email. Please check your inbox and follow the instructions to complete the sign-up process."

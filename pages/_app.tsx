@@ -41,11 +41,30 @@ type AppPropsWithLayout = AppProps & {
 };
 
 export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
-  const { authStore } = useStore();
+  const { authStore, generalStore } = useStore();
+  const [isMobileView, setIsMobileView] = React.useState(false);
 
   useEffect(() => {
     if (!authStore.user && auth) authStore.checkAuth();
   }, [authStore]);
+
+  useEffect(() => {
+    // Ensure window is defined (it will be, as this runs in the client)
+    const handleResize = () => setIsMobileView(window.innerWidth < 768);
+
+    // Set initial state based on current window size
+    handleResize();
+
+    // Setup event listener for window resize
+    window.addEventListener("resize", handleResize);
+
+    // Cleanup function to remove event listener
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  useEffect(() => {
+    generalStore.setIsMobileView(isMobileView);
+  }, [generalStore, isMobileView]);
 
   // Use the getLayout function if it's defined in the page component
   const getLayout = Component.getLayout || ((page) => page);
@@ -56,9 +75,7 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
         <Provider>
           <React.Suspense fallback={<div>Loading...</div>}>
             <RootStoreProvider>
-                <Layout>
-                    {getLayout(<Component {...pageProps} />)}
-                </Layout>
+              <Layout>{getLayout(<Component {...pageProps} />)}</Layout>
             </RootStoreProvider>
           </React.Suspense>
         </Provider>

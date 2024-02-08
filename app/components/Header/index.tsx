@@ -7,13 +7,30 @@ import { useStore } from "@/RootStoreProvider";
 import WebMenu from "./WebMenu";
 import MobileMenu from "./MobileMenu";
 import Image from "next/image";
+import { profile } from "console";
 
 function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const router = useRouter();
-  const { authStore } = useStore();
+  const { authStore, generalStore } = useStore();
+
+  const { isMobileView } = generalStore;
 
   const isHome = router.pathname === "/";
+  const isGuide = router.pathname === "/zone2guide";
+  const isProfile = router.pathname === "/profile";
+
+  const getTitle = () => {
+    if (isMobileView) {
+      if (isGuide) {
+        return "Create Guide";
+      } else if (isProfile) {
+        return "Profile";
+      }
+    }
+
+    return "Zone 2 Guide";
+  };
 
   return (
     <header className="bg-transparent fixed top-0 left-0 w-full z-50">
@@ -29,15 +46,15 @@ function Header() {
         >
           <h1
             className={`text-3xl font-semibold leading-6 ${
-              isHome
-                ? "text-white hover:text-gray-300"
+              isHome || isMobileView
+                ? "text-whitebg hover:text-gray-300"
                 : "text-gray-500 hover:text-gray-300"
             }`}
             style={{
               textShadow: "10px 10px 10px rgba(0,0,0,1)",
             }}
           >
-            Zone 2 Guide
+            {getTitle()}
           </h1>
         </div>
 
@@ -45,7 +62,7 @@ function Header() {
         <div className="flex lg:hidden">
           <button
             type="button"
-            className="inline-flex items-center justify-center rounded-md py-2 px-0 text-white icon-shadow" // Add the icon-shadow class here
+            className="inline-flex items-center justify-center rounded-md py-2 px-0 text-whitebg icon-shadow" // Add the icon-shadow class here
             onClick={() => {
               authStore.setOpen(true);
               setMobileMenuOpen(true);

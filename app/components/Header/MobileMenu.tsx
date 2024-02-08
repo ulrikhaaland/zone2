@@ -113,7 +113,7 @@ function MobileMenu({ isOpen, onClose, router, authStore }: MobileMenuProps) {
                 }
                 `}
               >
-                Create Program
+                Create Zone 2 Guide
               </p>
               {/* <p
                 onClick={() => {

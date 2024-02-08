@@ -8,7 +8,8 @@ import { HomeDesktopLayout } from "@/app/homepage/DesktopLayout";
 import { HomeMobileLayout } from "@/app/homepage/MobileLayout";
 
 const HomePage: NextPageWithLayout = () => {
-  const { authStore } = useStore();
+  const { authStore, generalStore } = useStore();
+  const { isMobileView } = generalStore;
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [emailSent, setEmailSent] = useState(false);
@@ -18,24 +19,9 @@ const HomePage: NextPageWithLayout = () => {
   const [isPlaying, setIsPlaying] = useState(true); // State to manage video play/pause
   const videoRef = useRef<HTMLVideoElement>(null);
   const emailInputRef = useRef<HTMLInputElement>(null);
-  const [isMobileView, setIsMobileView] = useState(false); // Set a default state
   const [isSignupLink, setIsSignupLink] = useState(false);
   const [videoStarted, setVideoStarted] = useState(false);
   const [canPlayVideo, setCanPlayVideo] = useState(false);
-
-  useEffect(() => {
-    // Ensure window is defined (it will be, as this runs in the client)
-    const handleResize = () => setIsMobileView(window.innerWidth < 768);
-
-    // Set initial state based on current window size
-    handleResize();
-
-    // Setup event listener for window resize
-    window.addEventListener("resize", handleResize);
-
-    // Cleanup function to remove event listener
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
   const toggleSound = () => {
     if (videoRef.current) {
@@ -46,7 +32,6 @@ const HomePage: NextPageWithLayout = () => {
   };
 
   useEffect(() => {
-    console.log("authStore.open: ", authStore.open);
     if (authStore.open) {
       if (videoRef.current) {
         videoRef.current.pause();

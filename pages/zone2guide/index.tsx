@@ -1,29 +1,24 @@
 "use client";
 import "../../app/globals.css";
 import React, { ReactElement, useEffect, useState } from "react";
-import { FitnessData, User, fitnessDataToJson } from "../../app/model/user";
-import { Question, questToFitnessData } from "../../app/model/questionaire";
-import Questionnaire from "../../app/components/questionnaire/Questionnaire";
-import { Elements } from "@stripe/react-stripe-js";
+import { User } from "../../app/model/user";
+import { Question } from "../../app/model/questionaire";
 import { loadStripe } from "@stripe/stripe-js";
-import { AnimatePresence, motion } from "framer-motion";
-import { AiOutlineArrowLeft } from "react-icons/ai";
-import CheckoutPage from "../../app/pages/CheckoutForm";
-import Guide from "../../app/components/guide";
-import UserInfoConfirmationPage from "../../app/pages/UserInfoConfirmationPage";
 import { NextPageWithLayout } from "@/pages/_app";
 import { useStore } from "@/RootStoreProvider";
 import { observer } from "mobx-react";
-import { a } from "react-spring";
+import Zone2GuideDesktopLayout from "./DesktopLayout";
+import Zone2GuideMobileLayout from "./MobileLayout";
 
 const stripePromise = loadStripe(
   "pk_test_51Oc6ntFwAwE234wG9Lu3IfmZQXEv7nHPJx7alrzq00EzVaO74jpv7RifR5iRrkjvTS8BSv67QvoQJz2W2ccTt2bC00gLDhFGLf"
 );
 
 const HomePage: NextPageWithLayout = () => {
-  const { authStore } = useStore();
+  const { authStore, generalStore } = useStore();
 
   const { user } = authStore;
+  const { isMobileView } = generalStore;
 
   const [userID, setUserID] = useState<string | undefined>(user?.uid);
 
@@ -129,168 +124,51 @@ const HomePage: NextPageWithLayout = () => {
     return value;
   };
 
-  const getInitial = () => {
+  const getInitial = (): number => {
     // If we are moving to a higher pageIndex, slide in from the right (100)
     // If we are moving to a lower pageIndex, slide in from the left (-100)
     if (pageIndex < previousPageIndex) return -100;
     if (pageIndex > previousPageIndex) return 100;
     else if (pageIndex < previousPageIndex) return 100;
+    return 100;
   };
-
-  return (
-    <div className="w-full font-custom md:h-screen min-h-[100dvh] relative">
-      {/* Background Image */}
-      {/* Container for Background Image and Black Overlay */}
-      <div
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          zIndex: 0, // Adjust zIndex as needed
-        }}
-      >
-        {/* Background Image */}
-        <div
-          style={{
-            backgroundImage: "url('/assets/images/runner/runner8.png')",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            position: "absolute",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-          }}
-        ></div>
-
-        {/* Black Overlay with Opacity */}
-        <div
-          style={{
-            backgroundColor: "rgba(0, 0, 0, 0.5)", // Black with 50% opacity
-            position: "absolute",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-          }}
-        ></div>
-      </div>
-
-      {/* Page Content */}
-      <h1
-        className="text-5xl text-whitebg text-center font-bold pt-6 mb-4 relative z-10"
-        style={{
-          textShadow: "10px 10px 10px rgba(0,0,0,1)",
-        }}
-      >
-        Zone 2 Guide Creation
-      </h1>
-      <div className="flex overflow-hidden flex-col items-center min-h-max p-4 relative">
-        <div className="w-full md:border md:border-gray-700 md:rounded-lg bg-black bg-opacity-60 rounded-lg md:overflow-hidden max-w-md md:shadow-md md:min-h-[83.5dvh] md:max-h-[87.5dvh] min-h-[86.5dvh] max-h-[86.5dvh]">
-          <AnimatePresence mode="wait">
-            <motion.div
-              className="relative z-0" // Ensure content is below the overlays
-              key={pageIndex}
-              initial={{ opacity: 0, x: getInitial() }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{
-                opacity: 0,
-                x: pageIndex === 1 ? (forward ? -100 : 100) : getExit(),
-              }}
-              transition={{ duration: 0.25 }}
-            >
-              {pageIndex === 0 && (
-                <Questionnaire
-                  key={userID}
-                  onQuestCompleted={handleOnQuestCompleted}
-                  user={
-                    user ?? {
-                      uid: "0",
-                      questions: [],
-                      guideItems: [],
-                      firebaseUser: undefined,
-                      usesCM: true,
-                      usesKG: true,
-                      credits: 0,
-                    }
-                  }
-                  questions={questions}
-                  canSubmit={setCanSubmit}
-                  isProfile={false}
-                />
-              )}
-              {pageIndex === 1 && (
-                <UserInfoConfirmationPage
-                  fitnessData={questToFitnessData(questions!)}
-                  user={user!}
-                />
-              )}
-              {pageIndex === 2 && (
-                <Elements stripe={stripePromise}>
-                  <CheckoutPage />
-                </Elements>
-              )}
-            </motion.div>
-          </AnimatePresence>
-          {/* Button Container */}
-          <div className="flex justify-between items-center md:px-6 relative pt-12 md:pt-2 md-pb-0 pb-4">
-            {pageIndex !== 0 ? (
-              <button
-                className="flex items-center font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline
-                bg-black text-whitebg border border-gray-700 transition duration-150 ease-in-out hover:bg-gray-900"
-                type="button"
-                onClick={() => onBack(forward)}
-              >
-                <AiOutlineArrowLeft className="mr-2" /> Back
-              </button>
-            ) : (
-              <button
-                className="flex opacity-0 items-center font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline
-                bg-black text-whitebg border border-gray-700 transition duration-150 ease-in-out hover:bg-gray-900"
-                type="button"
-                disabled={true}
-                onClick={() => onBack(forward)}
-              >
-                <AiOutlineArrowLeft className="mr-2" /> Back
-              </button>
-            )}
-
-            {/* Pagination dots */}
-            <div className="flex items-center">
-              {[0, 1, 2].map((index) => (
-                <span
-                  key={index}
-                  className={`h-2 w-2 mx-1 rounded-full ${
-                    pageIndex === index ? "bg-whitebg" : "bg-gray-600"
-                  }`}
-                ></span>
-              ))}
-            </div>
-            <button
-              className={`font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-150 ease-in-out ${
-                canSubmit
-                  ? "bg-blue-600 hover:bg-blue-800 text-whitebg"
-                  : "bg-secondary-button-dark text-whitebg opacity-50 cursor-not-allowed"
-              }`}
-              type="submit"
-              disabled={!canSubmit}
-              onClick={(e) => {
-                if (canSubmit) {
-                  onConfirm(forward);
-                } else {
-                  e.preventDefault();
-                }
-              }}
-            >
-              {pageIndex !== 2 ? "Continue" : "Purchase"}
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+  if (isMobileView) {
+    return (
+      <Zone2GuideMobileLayout
+        pageIndex={pageIndex}
+        userID={userID}
+        questions={questions}
+        user={user}
+        canSubmit={canSubmit}
+        setCanSubmit={setCanSubmit}
+        handleOnQuestCompleted={handleOnQuestCompleted}
+        onBack={onBack}
+        onConfirm={onConfirm}
+        getInitial={getInitial}
+        getExit={getExit}
+        forward={forward}
+        stripePromise={stripePromise}
+      />
+    );
+  } else {
+    return (
+      <Zone2GuideDesktopLayout
+        pageIndex={pageIndex}
+        userID={userID}
+        questions={questions}
+        user={user}
+        canSubmit={canSubmit}
+        setCanSubmit={setCanSubmit}
+        handleOnQuestCompleted={handleOnQuestCompleted}
+        onBack={onBack}
+        onConfirm={onConfirm}
+        getInitial={getInitial}
+        getExit={getExit}
+        forward={forward}
+        stripePromise={stripePromise}
+      />
+    );
+  }
 };
 
 HomePage.getLayout = function getLayout(page: ReactElement) {

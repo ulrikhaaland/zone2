@@ -84,7 +84,7 @@ const Zone2GuideMobileLayout: React.FC<Zone2GuideMobileLayoutProps> = ({
       </div>
 
       <div className="pt-24 flex overflow-hidden flex-col items-center relative">
-        <div className="w-full bg-black bg-opacity-20 rounded-lg md:overflow-hidden">
+        <div className="w-full bg-black bg-opacity-20">
           <AnimatePresence mode="wait">
             <motion.div
               className="relative z-0" // Ensure content is below the overlays
@@ -130,60 +130,59 @@ const Zone2GuideMobileLayout: React.FC<Zone2GuideMobileLayoutProps> = ({
               )}
             </motion.div>
           </AnimatePresence>
-          {/* Button Container */}
-          <div className="fixed inset-x-0 bottom-0 flex justify-between items-center px-4 py-6 mx-auto left-0 right-0 z-20">
-            {pageIndex !== 0 ? (
-              <button
-                className="flex items-center font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline
-                bg-black text-whitebg border border-gray-700 transition duration-150 ease-in-out hover:bg-gray-900"
-                type="button"
-                onClick={() => onBack(forward)}
-              >
-                <AiOutlineArrowLeft className="mr-2" /> Back
-              </button>
-            ) : (
-              <button
-                className="flex opacity-0 items-center font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline
-                bg-black text-whitebg border border-gray-700 transition duration-150 ease-in-out hover:bg-gray-900"
-                type="button"
-                disabled={true}
-                onClick={() => onBack(forward)}
-              >
-                <AiOutlineArrowLeft className="mr-2" /> Back
-              </button>
-            )}
-
-            {/* Pagination dots */}
-            <div className="flex items-center">
-              {[0, 1, 2].map((index) => (
-                <span
-                  key={index}
-                  className={`h-2 w-2 mx-1 rounded-full ${
-                    pageIndex === index ? "bg-whitebg" : "bg-gray-600"
-                  }`}
-                ></span>
-              ))}
-            </div>
-            <button
-              className={`font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-150 ease-in-out ${
-                canSubmit
-                  ? "bg-blue-600 hover:bg-blue-800 text-whitebg"
-                  : "bg-secondary-button-dark text-whitebg opacity-50 cursor-not-allowed"
-              }`}
-              type="submit"
-              disabled={!canSubmit}
-              onClick={(e) => {
-                if (canSubmit) {
-                  onConfirm(forward);
-                } else {
-                  e.preventDefault();
-                }
-              }}
-            >
-              {pageIndex !== 2 ? "Continue" : "Purchase"}
-            </button>
-          </div>
         </div>
+      </div>
+      {/* Button Container */}
+      <div className="fixed flex justify-between items-center px-4 py-6 inset-x-0 bottom-0  left-0 right-0 z-20">
+        {pageIndex !== 0 ? (
+          <button
+            className="flex items-center font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline
+                bg-black text-whitebg border border-gray-700 transition duration-150 ease-in-out hover:bg-gray-900"
+            type="button"
+            onClick={() => onBack(forward)}
+          >
+            <AiOutlineArrowLeft className="mr-2" /> Back
+          </button>
+        ) : (
+          <button
+            className="flex opacity-0 items-center font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline
+                bg-black text-whitebg border border-gray-700 transition duration-150 ease-in-out hover:bg-gray-900"
+            type="button"
+            disabled={true}
+            onClick={() => onBack(forward)}
+          >
+            <AiOutlineArrowLeft className="mr-2" /> Back
+          </button>
+        )}
+        {/* Pagination dots */}
+        <div className="flex items-center">
+          {[0, 1, 2].map((index) => (
+            <span
+              key={index}
+              className={`h-2 w-2 mx-1 rounded-full ${
+                pageIndex === index ? "bg-whitebg" : "bg-gray-600"
+              }`}
+            ></span>
+          ))}
+        </div>
+        <button
+          className={`font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-150 ease-in-out ${
+            canSubmit
+              ? "bg-blue-600 hover:bg-blue-800 text-whitebg"
+              : "bg-secondary-button-dark text-whitebg opacity-50 cursor-not-allowed"
+          }`}
+          type="submit"
+          disabled={!canSubmit}
+          onClick={(e) => {
+            if (canSubmit) {
+              onConfirm(forward);
+            } else {
+              e.preventDefault();
+            }
+          }}
+        >
+          {pageIndex !== 2 ? "Continue" : "Purchase"}
+        </button>
       </div>
     </div>
   );

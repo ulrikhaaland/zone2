@@ -24,7 +24,8 @@ interface QuestionnaireProps {
 export default function Questionnaire(props: QuestionnaireProps) {
   const { onQuestCompleted, user, canSubmit, isProfile } = props;
 
-  const { authStore } = useStore();
+  const { authStore, generalStore } = useStore();
+  const { isMobileView } = generalStore;
   const router = useRouter();
 
   const [questions, setQuestions] = useState<Question[]>(
@@ -251,8 +252,8 @@ export default function Questionnaire(props: QuestionnaireProps) {
     <div
       className={`text-whitebg ${
         isProfile
-          ? "bg-black bg-opacity-60 rounded-lg max-w-md md:min-h-[72.5dvh] md:max-h-[72.5dvh] min-h-[72.5dvh] max-h-[72.5dvh] md:border md:border-gray-700 md:rounded-lg"
-          : "max-w-md md:min-h-[77.5dvh] md:max-h-[77.5dvh] min-h-[72.5dvh] max-h-[72.5dvh]"
+          ? "bg-black bg-opacity-60 rounded-lg max-w-md md:min-h-[72.5dvh] md:max-h-[72.5dvh] md:border md:border-gray-700 md:rounded-lg"
+          : "max-w-md md:min-h-[77.5dvh] md:max-h-[77.5dvh]"
       }`}
     >
       {/* Header with progress bar */}
@@ -265,7 +266,7 @@ export default function Questionnaire(props: QuestionnaireProps) {
           {/* Progress Bar */}
           <div className="h-1 bg-gray-600 md:mt-0 mb-4">
             <div
-              className="h-full bg-whitebg"
+              className="h-full bg-"
               style={{ width: `${progressPercentage}%` }}
             ></div>
           </div>
@@ -274,13 +275,15 @@ export default function Questionnaire(props: QuestionnaireProps) {
       {/* Scrollable questions section */}
       <div
         className="overflow-y-auto"
-        style={{ maxHeight: isProfile ? "65dvh" : "70dvh" }}
+        style={{
+          maxHeight: isProfile ? "65dvh" : isMobileView ? "75dvh" : "70dvh",
+        }}
         onScroll={handleScroll}
         ref={questionsRef} // Assign the ref to this div
       >
         {!isProfile && (
           <p
-            className="text-3xl font-bold text-whitebg px-6"
+            className="text-3xl font-bold text-whitebg px-4"
             style={{
               textShadow: "10px 10px 10px rgba(0,0,0,1)",
             }}
@@ -288,7 +291,7 @@ export default function Questionnaire(props: QuestionnaireProps) {
             Provide some information about yourself
           </p>
         )}
-        <div className="p-6">
+        <div className="p-4">
           {questions.map((question, index) => (
             <QuestionItem
               key={question.id.toString() + question.depensOnAnswer?.toString()}

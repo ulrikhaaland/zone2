@@ -94,8 +94,16 @@ const HomePage: NextPageWithLayout = () => {
 
   useEffect(() => {
     if (!window) return;
+    checkSignInLink();
+  }, []);
+
+  const checkSignInLink = async () => {
     const currentUrl = window.location.href;
-    if (isSignInWithEmailLink(auth, currentUrl)) {
+    if (
+      isSignInWithEmailLink(auth, currentUrl) &&
+      !authStore.user &&
+      !isSignupLink
+    ) {
       setIsSignupLink(true);
       let email = window.localStorage.getItem("emailForSignIn");
       if (!email) {
@@ -123,8 +131,7 @@ const HomePage: NextPageWithLayout = () => {
           });
       }
     }
-  }, [router]);
-
+  };
   const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.stopPropagation(); // This stops the click event from bubbling up to the parent div
     togglePlay();

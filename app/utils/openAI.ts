@@ -11,7 +11,7 @@ dotenv.config();
 if (!admin.apps.length) {
   admin.initializeApp({
     credential: admin.credential.cert(
-      process.env.NEXT_PUBLIC_GOOGLE_APPLICATION_CREDENTIALS!
+      process.env.GOOGLE_APPLICATION_CREDENTIALS!
     ),
     // Other initialization options if necessary
   });
@@ -19,7 +19,7 @@ if (!admin.apps.length) {
 
 const db = admin.firestore();
 const client = new OpenAI({
-  apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
+  apiKey: process.env.OPENAI_API_KEY,
 });
 
 async function logErrorToFirestore(uid: string, error: unknown) {

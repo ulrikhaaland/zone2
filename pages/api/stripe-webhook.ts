@@ -10,14 +10,14 @@ import { handleOnGenerateGuide } from "@/app/utils/openAI";
 if (!admin.apps.length) {
   admin.initializeApp({
     credential: admin.credential.cert(
-      process.env.NEXT_PUBLIC_GOOGLE_APPLICATION_CREDENTIALS!
+      process.env.GOOGLE_APPLICATION_CREDENTIALS!
     ),
     // Other initialization options if necessary
   });
 }
 const db = admin.firestore();
-const stripe = new Stripe(process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY!);
-const endpointSecret = process.env.NEXT_PUBLIC_STRIPE_WEBHOOK_SECRET!;
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
+const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET!;
 
 export default async function handler(
   req: NextApiRequest,

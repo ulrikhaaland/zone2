@@ -43,7 +43,7 @@ const Zone2GuideMobileLayout: React.FC<Zone2GuideMobileLayoutProps> = ({
   setCanSubmit,
 }) => {
   return (
-    <div className="w-full font-custom h-[100dvh] relative">
+    <div className="w-full font-custom h-[100dvh] relative overflow-hidden">
       {/* Background Image */}
       {/* Container for Background Image and Black Overlay */}
       <div
@@ -84,7 +84,7 @@ const Zone2GuideMobileLayout: React.FC<Zone2GuideMobileLayoutProps> = ({
       </div>
 
       <div className="pt-24 flex overflow-hidden flex-col items-center relative">
-        <div className="w-full bg-black bg-opacity-20">
+        <div className="w-full">
           <AnimatePresence mode="wait">
             <motion.div
               className="relative z-0" // Ensure content is below the overlays
@@ -133,7 +133,7 @@ const Zone2GuideMobileLayout: React.FC<Zone2GuideMobileLayoutProps> = ({
         </div>
       </div>
       {/* Button Container */}
-      <div className="fixed flex bg-black justify-between items-center px-4 py-6 inset-x-0 bottom-0  left-0 right-0 z-20">
+      <div className="fixed flex justify-between items-center px-4 py-6 inset-x-0 bottom-0  left-0 right-0 z-20">
         {pageIndex !== 0 ? (
           <button
             className="flex items-center font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline

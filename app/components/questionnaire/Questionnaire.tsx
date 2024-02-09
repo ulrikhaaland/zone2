@@ -266,7 +266,7 @@ export default function Questionnaire(props: QuestionnaireProps) {
           {/* Progress Bar */}
           <div className="h-1 bg-gray-600 md:mt-0 mb-4">
             <div
-              className="h-full bg-"
+              className="h-full bg-whitebg"
               style={{ width: `${progressPercentage}%` }}
             ></div>
           </div>

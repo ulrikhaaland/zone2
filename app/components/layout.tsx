@@ -23,9 +23,9 @@ function Layout({ children }: { children: React.ReactNode }) {
     if (isMobileView) {
       if (!user) return false;
 
+      return true;
       if (isGuide) {
-        if (user.guideItems.length === 0) return false;
-        else return true;
+        return true;
       }
       if (user) {
         return true;

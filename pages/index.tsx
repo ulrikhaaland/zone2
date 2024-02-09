@@ -93,7 +93,6 @@ const HomePage: NextPageWithLayout = () => {
   };
 
   useEffect(() => {
-    if (!window) return;
     checkSignInLink();
   }, []);
 

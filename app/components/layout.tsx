@@ -63,9 +63,9 @@ function Layout({ children }: { children: React.ReactNode }) {
       </Head>
       {getShowHeader() && <Header></Header>}
       <div
-        className={`font-custom ${"bg-black"} text-black w-full overflow-auto`} // pt-18 provides padding top to account for the fixed header
+        className={`font-custom ${"bg-black"} text-black w-full`} // pt-18 provides padding top to account for the fixed header
         style={{
-          height: `100vh`,
+          height: `100dvh`,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",

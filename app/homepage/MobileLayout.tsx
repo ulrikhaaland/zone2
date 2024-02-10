@@ -28,7 +28,7 @@ interface HomeMobileLayoutProps {
   togglePlay: () => void;
   handleClick: React.MouseEventHandler<HTMLDivElement>;
   handleSendLink: (e: React.FormEvent<HTMLFormElement>) => void;
-  user?: User; 
+  user?: User; // Define a more specific type if available
   handleVideoPlay: () => void;
   canPlayVideo: boolean;
 }
@@ -53,10 +53,7 @@ export const HomeMobileLayout: React.FC<HomeMobileLayoutProps> = ({
   canPlayVideo,
 }) => {
   return (
-    <div
-      className="relative h-screen w-full overflow-hidden"
-      onClick={handleClick}
-    >
+    <div className="relative w-full h-full" onClick={handleClick}>
       {/* Adjusted video container for mobile */}
       {canPlayVideo && (
         <div className="absolute inset-0 z-0 ">
@@ -79,11 +76,12 @@ export const HomeMobileLayout: React.FC<HomeMobileLayoutProps> = ({
 
       {/* Content container adjusted for mobile */}
       <div
-        className={`absolute top-0 left-0 right-0 bottom-0 z-10 px-4 pt-2 mx-auto overflow-auto ${
-          user && "pt-24"
-        }`}
+        className={`absolute top-0 left-0 right-0 bottom-0 z-10 px-4 pt-2 mx-auto overflow-auto 
+        `}
         style={{
           textShadow: "10px 10px 10px rgba(0,0,0,1)",
+          height: user ? "calc(100dvh - 50px)" : "100dvh",
+          marginTop: user ? "50px" : "",
         }}
       >
         {/* Simplified content section */}
@@ -141,7 +139,7 @@ export const HomeMobileLayout: React.FC<HomeMobileLayoutProps> = ({
                   <h2 className="text-3xl font-bold my-4 text-center text-white">
                     Check Your Email
                   </h2>
-                  <p className="text-green-500 text-center">
+                  <p className="text-whitebg text-center">
                     We&apos;ve sent a login link to your email. Please check
                     your inbox and follow the instructions to complete the login
                     process.
@@ -156,6 +154,7 @@ export const HomeMobileLayout: React.FC<HomeMobileLayoutProps> = ({
                     <input
                       ref={emailInputRef}
                       type="email"
+                      id="email"
                       className="w-full border-2 text-whitebg border-gray-700 p-3 rounded-lg focus:outline-none focus:border-white bg-black transition duration-300"
                       placeholder="Enter your email"
                       value={email}
@@ -192,7 +191,7 @@ export const HomeMobileLayout: React.FC<HomeMobileLayoutProps> = ({
           )}
         </div>
         {/* Adjust buttons for mobile */}
-        <div className="z-100 absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+        <div className="z-100 relative justify-center items-center flex space-x-2 my-4">
           <button
             onClick={(e) => {
               e.preventDefault(); // Prevent default action

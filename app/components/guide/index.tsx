@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { GuideStatus } from "../../model/user";
 import { GuideItem } from "../../model/guide";
 import GuideSection from "./GuideSection";
@@ -24,10 +24,40 @@ export default function Guide(props: GuideProps) {
   );
   const [status, setStatus] = useState(props.status);
 
+  const containerRef = useRef<HTMLDivElement>(null); // Add this line
+
+  const [expandedItemId, setExpandedItemId] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (expandedItemId !== null && containerRef.current) {
+      const itemElement = document.getElementById(
+        `guide-item-${expandedItemId}`
+      );
+      if (itemElement) {
+        // Calculate the top offset of the item relative to the container
+        const itemOffsetTop = itemElement.offsetTop;
+        // Scroll the container to bring the item to the top
+        containerRef.current.scrollTo({
+          top: itemOffsetTop,
+          behavior: "smooth",
+        });
+      }
+    }
+  }, [expandedItemId]);
+  const handleExpand = (item: GuideItem) => {
+    setExpandedItemId(item.id);
+  };
+
   const renderGuideItems = (items: GuideItem[]) => (
     <ul className="list-none p-0">
-      {items.map((item) => (
-        <GuideSection key={item.id} item={item} isSubItem={false} />
+      {items.map((item, index) => (
+        <GuideSection
+          key={item.id}
+          item={item}
+          isSubItem={false}
+          isLast={index === items.length - 1}
+          onExpand={handleExpand}
+        />
       ))}
     </ul>
   );
@@ -68,7 +98,8 @@ export default function Guide(props: GuideProps) {
       ${isMobileView && "mx-4"}`}
     >
       <div
-        className="p-4 h-full overflow-y-auto max-w-[850px] mx-auto text-whitebg custom-scrollbar"
+        className="px-4 h-full overflow-y-auto max-w-[850px] mx-auto text-whitebg custom-scrollbar"
+        ref={containerRef}
         style={{
           height: isMobileView ? "calc(100vh - 150px)" : "",
         }}

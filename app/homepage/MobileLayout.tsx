@@ -141,7 +141,7 @@ export const HomeMobileLayout: React.FC<HomeMobileLayoutProps> = ({
                   <h2 className="text-3xl font-bold my-4 text-center text-white">
                     Check Your Email
                   </h2>
-                  <p className="text-whitebg text-center">
+                  <p className="text-green-500 text-center">
                     We&apos;ve sent a login link to your email. Please check
                     your inbox and follow the instructions to complete the login
                     process.

@@ -77,6 +77,7 @@ const UserProfile: NextPageWithLayout = () => {
         setUser(updatedUser);
       });
   };
+
   if (isMobileView) {
     return (
       <ProfileMobileLayout

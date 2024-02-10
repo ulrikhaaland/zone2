@@ -105,6 +105,8 @@ export const handleOnGenerateGuide = async (
     let guideItems: GuideItem[];
     try {
       guideItems = parseJsonToGuideItems(guide);
+      guideItems[0].expanded = true;
+      guideItems[1].expanded = true;
     } catch (error) {
       await logErrorToFirestore(uid, error);
       throw new Error("Error parsing guide JSON");

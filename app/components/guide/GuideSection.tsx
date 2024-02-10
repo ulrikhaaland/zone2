@@ -5,86 +5,102 @@ import { useStore } from "@/RootStoreProvider";
 interface GuideSectionProps {
   item: GuideItem;
   isSubItem?: boolean;
+  isLast?: boolean;
+  onExpand?: (item: GuideItem) => void;
 }
 
-function GuideSection({ item, isSubItem }: GuideSectionProps) {
+const GuideSection: React.FC<GuideSectionProps> = ({
+  item,
+  isSubItem,
+  isLast,
+  onExpand,
+}) => {
   const { generalStore } = useStore();
   const { isMobileView } = generalStore;
-  const isNote = item.title.toLowerCase() === "note";
-  const hasOnlyNoteSubItems = item.subItems?.every(
-    (subItem) => subItem.title.toLowerCase() === "note"
-  );
+  const [expanded, setExpanded] = React.useState(item.expanded);
 
-  if (isMobileView) {
-    return (
-      <li
-        className={`mb-4 last:mb-0`}
-        // ${
-        //   isNote ? "bg-secondary-button p-2 opacity-70" : ""
-        // }
+  const hasSubItems = item.subItems && item.subItems.length > 0;
+
+  // Adjusted toggle function to prevent sub-subitems from toggling their expanded state
+  const handleToggleExpand = () => {
+    if (!expanded) {
+      onExpand?.(item); // Trigger the callback only when expanding
+    }
+
+    if (!isSubItem) {
+      // Allow only top-level items to toggle
+      const newExpandedState = !expanded;
+      setExpanded(newExpandedState);
+      item.expanded = newExpandedState;
+      item.subItems?.forEach(
+        (subItem) => (subItem.expanded = newExpandedState)
+      );
+    }
+  };
+
+  // Conditional class to apply the left border directly to the child container
+  const childContainerClass = isSubItem
+    ? "border-l-2 border-gray-700 pl-4 mt-2"
+    : "";
+
+  return (
+    <li
+      id={`guide-item-${item.id}`}
+      className={`mb-0 last:mb-2 ${
+        isSubItem || isLast ? "" : "border-b border-gray-700"
+      }`}
+    >
+      <div
+        className={`flex justify-between items-center cursor-pointer ${
+          isSubItem ? "py-2" : "py-4"
+        }`}
+        onClick={handleToggleExpand}
       >
         <h2
-          className={`${isSubItem ? "text-lg" : "text-xl"} font-semibold`}
-          // ${
-          //   isNote ? "text-title2" : "text-title"
-          // }
-        >
-          {item.title === "Note" ? "Consider" : item.title}
-        </h2>
-        <p className={`mt-2 ${isNote ? "text-sm" : "text-base"}`}>
-          {item.explanation.replace(/\【\d+†source】/g, "").trim()}
-        </p>
-        {item.subItems && item.subItems.length > 0 && (
-          <ul
-            className={`list-none p-0 ml-[1px] ${
-              !hasOnlyNoteSubItems ? "p-4" : ""
-            }`}
-          >
-            {item.subItems.map((subItem) => (
-              // Apply margin to subitems, and background only if not all subitems are notes
-              <div key={subItem.id} className="mt-2 text-sm">
-                <GuideSection item={subItem} isSubItem={true} />
-              </div>
-            ))}
-          </ul>
-        )}
-      </li>
-    );
-  } else
-    return (
-      <li
-        className={`mb-4 last:mb-0`}
-        // ${
-        //   isNote ? "bg-secondary-button p-2 opacity-70" : ""
-        // }
-      >
-        <h2
-          className={`text-xl font-semibold`}
-          // ${
-          //   isNote ? "text-title2" : "text-title"
-          // }
+          className={`${
+            isSubItem ? "text-lg" : "text-xl"
+          } font-semibold text-white`}
         >
           {item.title}
         </h2>
-        <p className={`mt-2 ${isNote ? "text-sm" : "text-base"}`}>
-          {item.explanation.replace(/\【\d+†source】/g, "").trim()}
-        </p>
-        {item.subItems && item.subItems.length > 0 && (
-          <ul
-            className={`list-none p-0 ml-4 mt-4 ${
-              !hasOnlyNoteSubItems ? "p-4" : ""
-            }`}
+        {!isSubItem && (
+          <svg
+            className={`w-6 h-6 transform ${expanded ? "rotate-180" : ""}`}
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
           >
-            {item.subItems.map((subItem) => (
-              // Apply margin to subitems, and background only if not all subitems are notes
-              <div key={subItem.id} className="mt-2">
-                <GuideSection item={subItem} isSubItem={true} />
-              </div>
-            ))}
-          </ul>
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M19 9l-7 7-7-7"
+            ></path>
+          </svg>
         )}
-      </li>
-    );
-}
+      </div>
+      {expanded && (
+        <>
+          <p className={`${isSubItem ? "text-sm" : "text-base"} mb-2`}>
+            {item.explanation.replace(/\【\d+†source】/g, "").trim()}
+          </p>
+          {hasSubItems && (
+            <div className={childContainerClass}>
+              <ul className="list-none">
+                {item.subItems?.map((subItem) => (
+                  <GuideSection
+                    key={subItem.id}
+                    item={{ ...subItem, expanded: true }}
+                    isSubItem={true}
+                  />
+                ))}
+              </ul>
+            </div>
+          )}
+        </>
+      )}
+    </li>
+  );
+};
 
 export default GuideSection;

@@ -283,8 +283,8 @@ export default function Questionnaire(props: QuestionnaireProps) {
               ? "65dvh"
               : "70dvh"
             : isProfile
-            ? "calc(100vh - 125px)"
-            : "calc(100vh - 160px)",
+            ? "calc(100dvh - 130px)"
+            : "calc(100dvh - 160px)",
         }}
         onScroll={handleScroll}
         ref={questionsRef} // Assign the ref to this div

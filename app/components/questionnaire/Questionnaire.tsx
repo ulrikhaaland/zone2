@@ -278,7 +278,13 @@ export default function Questionnaire(props: QuestionnaireProps) {
       <div
         className={`overflow-y-auto`}
         style={{
-          maxHeight: !isMobileView ? (isProfile ? "65dvh" : "70dvh") : "calc(100vh - 160px)",
+          maxHeight: !isMobileView
+            ? isProfile
+              ? "65dvh"
+              : "70dvh"
+            : isProfile
+            ? "calc(100vh - 125px)"
+            : "calc(100vh - 160px)",
         }}
         onScroll={handleScroll}
         ref={questionsRef} // Assign the ref to this div
@@ -343,7 +349,7 @@ export default function Questionnaire(props: QuestionnaireProps) {
           ))}
         </div>
         {isProfile && (
-          <div className="flex justify-center">
+          <div className="flex justify-center mb-8">
             <button
               className={`flex items-center font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline transition duration-150 ease-in-out 
               ${"bg-black text-whitebg border border-gray-700 transition duration-150 ease-in-out"} hover:bg-gray-900`}

@@ -67,7 +67,12 @@ export default function Guide(props: GuideProps) {
       inset-0 bg-black bg-opacity-60 rounded-lg md:border md:border-gray-700
       ${isMobileView && "mx-4"}`}
     >
-      <div className="p-4 h-full overflow-y-auto max-w-[850px] mx-auto text-whitebg custom-scrollbar">
+      <div
+        className="p-4 h-full overflow-y-auto max-w-[850px] mx-auto text-whitebg custom-scrollbar"
+        style={{
+          height: isMobileView ? "calc(100vh - 150px)" : "",
+        }}
+      >
         {getContent()}
       </div>
     </div>

@@ -82,7 +82,7 @@ const UserProfile: NextPageWithLayout = () => {
       <ProfileMobileLayout
         pageIndex={pageIndex}
         user={user}
-        guideStatus={GuideStatus.LOADING}
+        guideStatus={guideStatus}
         updateUser={updateUser}
         setPageIndex={setPageIndex}
       />

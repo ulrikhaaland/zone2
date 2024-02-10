@@ -27,7 +27,7 @@ export default function Guide(props: GuideProps) {
   const renderGuideItems = (items: GuideItem[]) => (
     <ul className="list-none p-0">
       {items.map((item) => (
-        <GuideSection key={item.id} item={item} />
+        <GuideSection key={item.id} item={item} isSubItem={false} />
       ))}
     </ul>
   );

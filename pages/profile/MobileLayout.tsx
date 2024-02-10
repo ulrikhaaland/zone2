@@ -23,7 +23,7 @@ const ProfileMobileLayout: React.FC<ProfileMobileLayoutProps> = ({
   setPageIndex,
 }) => {
   return (
-    <div className="w-full pt-16 font-custom h-[100dvh] overflow-hidden relative">
+    <div className="w-full pt-16 font-custom h-full overflow-hidden relative">
       {/* Background Image */}
       {/* Container for Background Image and Black Overlay */}
       <div
@@ -62,36 +62,9 @@ const ProfileMobileLayout: React.FC<ProfileMobileLayoutProps> = ({
           }}
         ></div>
       </div>
-      {/* Page Content */}
-      {pageIndex === 0 && guideStatus === GuideStatus.LOADING && (
-        <>
-          <h1
-            className={`text-3xl text-whitebg text-center font-bold relative z-10 ${
-              guideStatus === GuideStatus.LOADING && pageIndex === 0
-                ? "animate-pulse"
-                : ""
-            }`}
-            style={{
-              textShadow: "10px 10px 10px rgba(0,0,0,1)",
-            }}
-          >
-            Creating Guide...
-          </h1>
-          {guideStatus === GuideStatus.LOADING && (
-            <p
-              className="text-whitebg text-center text-m mt-2 mb-4 relative z-10"
-              style={{
-                textShadow: "10px 10px 10px rgba(0,0,0,1)",
-              }}
-            >
-              This can take a few minutes...
-            </p>
-          )}
-        </>
-      )}
 
       {/* Button Container */}
-      <div className="relative flex justify-center items-center md:px-6 md:pt-2 w-full mx-auto">
+      <div className="relative flex justify-center items-center mb-4 w-full mx-auto">
         <button
           className={`flex items-center font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline transition duration-150 ease-in-out ${
             pageIndex === 0
@@ -130,10 +103,35 @@ const ProfileMobileLayout: React.FC<ProfileMobileLayoutProps> = ({
           Profile
         </button>
       </div>
-
+      {pageIndex === 0 && guideStatus === GuideStatus.LOADING && (
+        <>
+          <h1
+            className={`text-3xl text-whitebg text-center font-bold relative z-10 ${
+              guideStatus === GuideStatus.LOADING && pageIndex === 0
+                ? "animate-pulse"
+                : ""
+            }`}
+            style={{
+              textShadow: "10px 10px 10px rgba(0,0,0,1)",
+            }}
+          >
+            Creating Guide...
+          </h1>
+          {guideStatus === GuideStatus.LOADING && (
+            <p
+              className="text-whitebg text-center text-m mt-2 mb-2 relative z-10"
+              style={{
+                textShadow: "10px 10px 10px rgba(0,0,0,1)",
+              }}
+            >
+              This can take a few minutes...
+            </p>
+          )}
+        </>
+      )}
       {/* Page Content */}
-      <div className="flex overflow-hidden md:rounded flex-col items-center min-h-max p-4 relative">
-        <div className="w-full h-[50dvh]">
+      <div className="flex flex-col items-center min-h-max relative">
+        <div className="w-full h-full">
           <AnimatePresence mode="wait">
             <motion.div
               className="relative z-0 flex justify-center" // Ensure content is below the overlays

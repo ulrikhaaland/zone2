@@ -250,9 +250,11 @@ export default function Questionnaire(props: QuestionnaireProps) {
 
   return (
     <div
-      className={`text-whitebg ${
+      className={`text-whitebg
+      ${!isMobileView && "bg-black bg-opacity-60"}
+      ${
         isProfile
-          ? "bg-black bg-opacity-60 rounded-lg max-w-md md:min-h-[72.5dvh] md:max-h-[72.5dvh] md:border md:border-gray-700 md:rounded-lg"
+          ? "rounded-lg max-w-md md:min-h-[72.5dvh] md:max-h-[72.5dvh] md:border md:border-gray-700 md:rounded-lg"
           : "max-w-md md:min-h-[77.5dvh] md:max-h-[77.5dvh]"
       }`}
     >
@@ -274,9 +276,9 @@ export default function Questionnaire(props: QuestionnaireProps) {
       )}
       {/* Scrollable questions section */}
       <div
-        className="overflow-y-auto"
+        className={`overflow-y-auto`}
         style={{
-          maxHeight: isProfile ? "65dvh" : isMobileView ? "75dvh" : "70dvh",
+          maxHeight: !isMobileView ? (isProfile ? "65dvh" : "70dvh") : "calc(100vh - 160px)",
         }}
         onScroll={handleScroll}
         ref={questionsRef} // Assign the ref to this div
@@ -291,7 +293,7 @@ export default function Questionnaire(props: QuestionnaireProps) {
             Provide some information about yourself
           </p>
         )}
-        <div className="p-4">
+        <div className={`p-4 ${isMobileView && !isProfile && "mb-12"}`}>
           {questions.map((question, index) => (
             <QuestionItem
               key={question.id.toString() + question.depensOnAnswer?.toString()}

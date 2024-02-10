@@ -6,6 +6,7 @@ import "./styles.css";
 import { GuideSkeleton } from "./skeleton";
 import { Create as CreateIcon } from "@mui/icons-material";
 import { useRouter } from "next/router";
+import { useStore } from "@/RootStoreProvider";
 
 interface GuideProps {
   guideItems?: GuideItem[];
@@ -13,6 +14,9 @@ interface GuideProps {
 }
 
 export default function Guide(props: GuideProps) {
+  const { generalStore } = useStore();
+  const { isMobileView } = generalStore;
+
   const router = useRouter();
 
   const [guideItems, setGuideItems] = useState<GuideItem[]>(
@@ -58,9 +62,10 @@ export default function Guide(props: GuideProps) {
 
   return (
     <div
-      className="md:min-h-[72.5dvh] min-h-[50.5dvh] md:max-h-[72.5dvh] max-h-[50.5dvh] 
+      className={`md:min-h-[72.5dvh] md:max-h-[72.5dvh] 
       justify-center items-center min-h-screen relative w-[850px] 
-        inset-0 bg-black bg-opacity-60 rounded-lg border border-gray-700"
+      inset-0 bg-black bg-opacity-60 rounded-lg md:border md:border-gray-700
+      ${isMobileView && "mx-4"}`}
     >
       <div className="p-4 h-full overflow-y-auto max-w-[850px] mx-auto text-whitebg custom-scrollbar">
         {getContent()}

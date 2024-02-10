@@ -28,7 +28,7 @@ interface HomeMobileLayoutProps {
   togglePlay: () => void;
   handleClick: React.MouseEventHandler<HTMLDivElement>;
   handleSendLink: (e: React.FormEvent<HTMLFormElement>) => void;
-  user?: User; // Define a more specific type if available
+  user?: User; 
   handleVideoPlay: () => void;
   canPlayVideo: boolean;
 }

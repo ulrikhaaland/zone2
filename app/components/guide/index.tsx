@@ -101,7 +101,7 @@ export default function Guide(props: GuideProps) {
         className="px-4 h-full overflow-y-auto max-w-[850px] mx-auto text-whitebg custom-scrollbar"
         ref={containerRef}
         style={{
-          height: isMobileView ? "calc(100vh - 150px)" : "",
+          height: isMobileView ? "calc(100dvh - 150px)" : "",
         }}
       >
         {getContent()}

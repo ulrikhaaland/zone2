@@ -96,7 +96,6 @@ const HomePage: NextPageWithLayout = () => {
   }, []);
 
   const checkSignInLink = async () => {
-    setMessage("Got here...");
     const currentUrl = window.location.href;
     if (
       isSignInWithEmailLink(auth, currentUrl) &&
@@ -105,7 +104,6 @@ const HomePage: NextPageWithLayout = () => {
     ) {
       setIsSignupLink(true);
       let email = window.localStorage.getItem("emailForSignIn");
-      setMessage("Email link clicked. Signing in...");
       if (!email) {
         email = window.prompt("Please provide your email for confirmation");
       }
@@ -126,7 +124,6 @@ const HomePage: NextPageWithLayout = () => {
                 router.push("/zone2guide");
               }
             }
-            setMessage("Could not signing in: ");
           })
           .catch((error) => {
             setMessage("Error signing in: " + error.message);

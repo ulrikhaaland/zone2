@@ -46,7 +46,7 @@ const Zone2GuideMobileLayout: React.FC<Zone2GuideMobileLayoutProps> = ({
     <div
       className="w-full font-custom relative overflow-hidden"
       style={{
-        maxHeight: "calc(100dvh - 50px)",
+        height: "calc(100dvh - 50px)",
       }}
     >
       {/* Background Image */}

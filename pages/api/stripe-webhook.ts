@@ -4,7 +4,7 @@ import { buffer } from "micro";
 import * as admin from "firebase-admin";
 import { GuideStatus } from "@/app/model/user";
 import { questToFitnessData } from "@/app/model/questionaire";
-import { handleOnGenerateGuide } from "@/app/utils/openAI";
+import { handleOnGenerateGuide } from "@/pages/api/generate";
 
 // Initialize the Firebase Admin SDK and Stripe
 if (!admin.apps.length) {
@@ -105,7 +105,7 @@ async function updateUserWithPaymentError(userId: string) {
     await userRef.update({
       paymentError: true,
       guideStatus: GuideStatus.ERROR,
-    });
+     });
     console.log(`Updated user ${userId} with paymentError: true`);
   } catch (error) {
     console.error(`Failed to update user ${userId} with payment error:`, error);

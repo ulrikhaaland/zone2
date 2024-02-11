@@ -42,6 +42,10 @@ export function parseJsonToGuideItems(jsonResponse: string): GuideItem[] {
     explanation: item.explanation.replace(/\【\d+†source】/g, "").trim(), // Remove source references
     subItems: [],
     expanded: false,
+    parentId:
+      item.parentId === null || item.parentId === undefined
+        ? null
+        : item.parentId,
   }));
 
   const guideItemsMap = new Map<number, GuideItem>(
@@ -49,9 +53,11 @@ export function parseJsonToGuideItems(jsonResponse: string): GuideItem[] {
   );
 
   guideItems.forEach((item: any) => {
-    if (item.parentId !== undefined) {
+    if (item.parentId !== null) {
       const parentItem = guideItemsMap.get(item.parentId);
       if (!parentItem) {
+        console.log(guideItemsMap);
+
         throw new Error(
           `Parent item with id ${item.parentId} not found for item ${item.id}`
         );
@@ -63,5 +69,5 @@ export function parseJsonToGuideItems(jsonResponse: string): GuideItem[] {
     }
   });
 
-  return guideItems.filter((item: any) => item.parentId === undefined);
+  return guideItems.filter((item: any) => item.parentId === null);
 }

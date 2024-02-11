@@ -36,6 +36,7 @@ export default class AuthStore {
       signOut: action,
       checkAuth: action,
       setUser: action,
+      setHasCheckedAuth: action,
       updateUserData: action,
       deleteAccount: action,
       setFromPath: action,
@@ -78,7 +79,6 @@ export default class AuthStore {
 
   updateUserData = async (newUser: User) => {
     if (this.user) {
-      console.log("Updating user data..." + newUser);
       const userData = {
         guideItems: newUser.guideItems,
         previousGuideItems:
@@ -87,6 +87,9 @@ export default class AuthStore {
         usesKG: newUser.usesKG,
         usesCM: newUser.usesCM,
         credits: newUser.credits,
+        guideStatus: newUser.guideStatus ?? GuideStatus.NONE,
+        hasPaid: newUser.hasPaid ?? false,
+        retries: newUser.retries ?? 0,
       };
 
       this.setUser(newUser);
@@ -96,24 +99,15 @@ export default class AuthStore {
     }
   };
 
-  setUser = (
+  setUser = async (
     user: User | undefined,
     firebaseUser?: FirebaseUser | undefined
   ) => {
     if (user) {
-      console.log("User is signed in");
       this.user = user;
     } else if (firebaseUser) {
       this.setOpen(false);
-      this.getUserOrCreateIfNotExists(firebaseUser);
-      this.user = {
-        uid: firebaseUser.uid!,
-        credits: 0,
-        guideItems: [],
-        questions: [],
-        usesKG: true,
-        usesCM: true,
-      };
+      this.user = await this.getUserOrCreateIfNotExists(firebaseUser);
     } else this.user = undefined;
   };
 
@@ -221,7 +215,6 @@ export default class AuthStore {
           hasPaid: data?.hasPaid,
           guideStatus: data?.guideStatus,
         };
-        console.log("User document found:", user);
         return user;
       }
     } catch (error) {
@@ -240,9 +233,9 @@ export default class AuthStore {
       usesCM: true,
       hasPaid: false,
       guideStatus: GuideStatus.NONE,
+      retries: 0,
     };
     await setDoc(doc(db, "users", uid), userData);
-    console.log("User document created successfully.");
 
     return userData;
   }

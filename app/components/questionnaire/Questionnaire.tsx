@@ -349,7 +349,7 @@ export default function Questionnaire(props: QuestionnaireProps) {
           ))}
         </div>
         {isProfile && (
-          <div className="flex justify-center mb-8">
+          <div className={`flex justify-center ${isMobileView && "mb-8"}`}>
             <button
               className={`flex items-center font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline transition duration-150 ease-in-out 
               ${"bg-black text-whitebg border border-gray-700 transition duration-150 ease-in-out"} hover:bg-gray-900`}

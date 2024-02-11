@@ -7,10 +7,11 @@ import { AppProps } from "next/app";
 import { useState, useEffect } from "react";
 import { NextRouter, useRouter } from "next/router";
 import Head from "next/head";
+import { has } from "mobx";
 
 function Layout({ children }: { children: React.ReactNode }) {
   const { authStore, generalStore } = useStore();
-  const { open, setOpen, user } = authStore;
+  const { open, setOpen, user, hasCheckedAuth } = authStore;
   const router: NextRouter = useRouter();
 
   const [showLogin, setShowLogin] = useState(false);
@@ -46,6 +47,12 @@ function Layout({ children }: { children: React.ReactNode }) {
       setShowLogin(false);
     }
   }, [open, user, isHome]);
+
+  useEffect(() => {
+    if (hasCheckedAuth && !user && !isHome) {
+      router.push("/");
+    }
+  }, [hasCheckedAuth, user, isHome]);
 
   return (
     <>

@@ -1,12 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
-import { GuideStatus } from "../../model/user";
+import { GuideStatus, User } from "../../model/user";
 import { GuideItem } from "../../model/guide";
 import GuideSection from "./GuideSection";
 import "./styles.css";
-import { GuideSkeleton } from "./skeleton";
+import { GuideSkeletonDesktop, GuideSkeletonMobile } from "./skeleton";
 import { Create as CreateIcon } from "@mui/icons-material";
+import { Replay as ReplayIcon } from "@mui/icons-material";
 import { useRouter } from "next/router";
 import { useStore } from "@/RootStoreProvider";
+import { handleOnGenerateGuide } from "@/pages/api/generate";
+import { questToFitnessData } from "@/app/model/questionaire";
 
 interface GuideProps {
   guideItems?: GuideItem[];
@@ -14,8 +17,9 @@ interface GuideProps {
 }
 
 export default function Guide(props: GuideProps) {
-  const { generalStore } = useStore();
+  const { generalStore, authStore } = useStore();
   const { isMobileView } = generalStore;
+  const { user } = authStore;
 
   const router = useRouter();
 
@@ -46,6 +50,29 @@ export default function Guide(props: GuideProps) {
   }, [expandedItemId]);
   const handleExpand = (item: GuideItem) => {
     setExpandedItemId(item.id);
+  };
+
+  const generateGuide = async () => {
+    setStatus(GuideStatus.LOADING);
+    const user: User = {
+      ...authStore.user!,
+      guideStatus: GuideStatus.LOADING,
+      retries: (authStore.user?.retries ?? 0) + 1,
+    };
+
+    authStore.updateUserData(user).then(() => {
+      const fitnessData = questToFitnessData(user!.questions);
+      fetch("/api/generate", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          fitnessData: fitnessData,
+          uid: user!.uid,
+        }),
+      });
+    });
   };
 
   const renderGuideItems = (items: GuideItem[]) => (
@@ -82,11 +109,33 @@ export default function Guide(props: GuideProps) {
         return renderGuideItems(guideItems);
       case GuideStatus.LOADING:
         // Return skeleton loader
-        return <GuideSkeleton />;
+        return isMobileView ? (
+          <GuideSkeletonMobile />
+        ) : (
+          <GuideSkeletonDesktop />
+        );
       case GuideStatus.ERROR:
-        return <p className="text-center">Error generating guide</p>;
+        return (
+          <div className="flex flex-col justify-center items-center h-full">
+            <p className="text-whitebg text-center mb-4">
+              There was an error creating your guide. Please try again.
+            </p>
+            <button
+              className="flex justify-center items-center font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline transition duration-150 ease-in-out bg-whitebg text-black border border-gray-700"
+              onClick={() => generateGuide()}
+              disabled={user !== undefined && user!.retries! >= 5}
+            >
+              <ReplayIcon className="mr-2" style={{ color: "black" }} />
+              Retry
+            </button>
+          </div>
+        );
       default:
-        return <GuideSkeleton />; // Fallback or initial loading state
+        return isMobileView ? (
+          <GuideSkeletonMobile />
+        ) : (
+          <GuideSkeletonDesktop />
+        );
     }
   };
 
@@ -98,7 +147,7 @@ export default function Guide(props: GuideProps) {
       ${isMobileView && "mx-4"}`}
     >
       <div
-        className="px-4 h-full overflow-y-auto max-w-[850px] mx-auto text-whitebg custom-scrollbar"
+        className="p-4 h-full overflow-y-auto max-w-[850px] mx-auto text-whitebg custom-scrollbar"
         ref={containerRef}
         style={{
           height: isMobileView ? "calc(100dvh - 150px)" : "",

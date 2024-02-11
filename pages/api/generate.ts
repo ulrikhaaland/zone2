@@ -1,9 +1,14 @@
 import OpenAI from "openai";
 import { MessageCreateParams } from "openai/resources/beta/threads/messages/messages.mjs";
-import { FitnessData, GuideStatus, fitnessDataToJson } from "../model/user";
+import {
+  FitnessData,
+  GuideStatus,
+  fitnessDataToJson,
+} from "../../app/model/user";
 import dotenv from "dotenv";
 import * as admin from "firebase-admin";
-import { GuideItem, parseJsonToGuideItems } from "../model/guide";
+import { GuideItem, parseJsonToGuideItems } from "../../app/model/guide";
+import { Request, Response } from "express";
 
 dotenv.config();
 
@@ -21,6 +26,29 @@ const db = admin.firestore();
 const client = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
+
+export default async function handler(req: Request, res: Response) {
+  if (req.method === "POST") {
+    // Extract fitnessData and other necessary parameters from the request body
+    const { fitnessData, uid } = req.body;
+
+    try {
+      // Your logic for generating guide
+      const guide = await handleOnGenerateGuide(fitnessData, uid); // Implement this function based on your needs
+      // Process and return the generated guide
+      res.status(200).json({ success: true, guide });
+    } catch (error) {
+      console.error("Error generating guide:", error);
+      res
+        .status(500)
+        .json({ success: false, error: "Failed to generate guide" });
+    }
+  } else {
+    // Handle any requests that aren't POST
+    res.setHeader("Allow", ["POST"]);
+    res.status(405).end(`Method ${req.method} Not Allowed`);
+  }
+}
 
 async function logErrorToFirestore(uid: string, error: unknown) {
   const errorMessage = error instanceof Error ? error.message : "Unknown error";
@@ -91,8 +119,9 @@ const generateGuide = async (
 
 export const handleOnGenerateGuide = async (
   fitnessData: FitnessData,
-  uid: string
-) => {
+  uid: string,
+  tries: number = 0
+): Promise<any> => {
   const userRef = db.collection("users").doc(uid);
 
   try {
@@ -108,6 +137,11 @@ export const handleOnGenerateGuide = async (
       guideItems[0].expanded = true;
       guideItems[1].expanded = true;
     } catch (error) {
+      console.error("Error parsing guide JSON:", error);
+      if (tries < 2) {
+        console.log("Retrying guide generation..." + "tries: " + tries);
+        return await handleOnGenerateGuide(fitnessData, uid, tries + 1);
+      }
       await logErrorToFirestore(uid, error);
       throw new Error("Error parsing guide JSON");
     }
@@ -119,6 +153,7 @@ export const handleOnGenerateGuide = async (
     await userRef.update({
       guideItems: guideItems,
       guideStatus: GuideStatus.LOADED,
+      retries: 0,
     });
   } catch (error) {
     console.error("Error in handleOnGenerateGuide:", error);

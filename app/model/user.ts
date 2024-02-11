@@ -26,6 +26,7 @@ export interface User {
   credits: number;
   hasPaid?: boolean;
   guideStatus?: GuideStatus;
+  retries?: number;
 }
 
 export interface FitnessData {

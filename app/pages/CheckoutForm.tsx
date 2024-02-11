@@ -1,12 +1,15 @@
 import React from "react";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { AiOutlineArrowLeft } from "react-icons/ai";
+import { useStore } from "@/RootStoreProvider";
 
 interface CheckoutPageProps {}
 
 const CheckoutPage = (props: CheckoutPageProps) => {
   const stripe = useStripe();
   const elements = useElements();
+  const { generalStore } = useStore();
+  const { isMobileView } = generalStore;
 
   // Add logic to handle form submission
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -22,31 +25,29 @@ const CheckoutPage = (props: CheckoutPageProps) => {
 
   return (
     <div
-      className="text-whitebg md:min-h-[77.5dvh] md:max-h-[77.5dvh] min-h-[72.5dvh] max-h-[72.5dvh]"
+      className="text-whitebg h-full md:min-h-[77.5dvh] md:max-h-[77.5dvh] overflow-y-auto"
       style={{
         textShadow: "10px 10px 10px rgba(0,0,0,1)",
+        height: "calc(100dvh - 50px)",
+        paddingBottom: isMobileView ? "150px" : "",
       }}
     >
       {/* Header */}
-      <div className="relative md:p-6 px-6">
-        <h1 className="text-3xl font-bold"
-        >
-          Your Personalised Zone 2 Training Guide
+      <div className="relative md:p-4 px-4">
+        <h1 className="text-3xl font-bold">
+          Your Personalized Zone 2 Training Guide
         </h1>
       </div>
 
       {/* Content */}
-      <div
-        className="overflow-y-auto px-6 pt-2"
-        style={{ minHeight: "65dvh", maxHeight: "65dvh" }}
-      >
+      <div className="px-4 mb-4">
         <div className="flex flex-col mb-4">
-          <span className="text-1xl font-semibold">One Time Purchase</span>
+          <span className="text-1xl font-semibold mt-4">One Time Purchase</span>
           <div className="flex items-start mt-2">
             <span className="text-3xl font-bold">$9.99</span>
           </div>
         </div>
-        <h2 className="text-xl font-bold" style={{ marginBottom: "1rem" }}>
+        <h2 className="text-xl font-bold mb-2">
           Includes:
         </h2>
         <ul className="list-disc list-inside">
@@ -77,9 +78,7 @@ const CheckoutPage = (props: CheckoutPageProps) => {
               </li>
             </ul>
           </li>
-          <li className="mb-8 md:text-lg">
-            Recovery & Preventing Overtraining{" "}
-          </li>
+          <li className="md:text-lg">Recovery & Preventing Overtraining </li>
         </ul>
       </div>
     </div>

@@ -5,6 +5,7 @@ import {
   zone2FrequencyAnswers,
 } from "../model/questionaire";
 import { AiOutlineArrowLeft } from "react-icons/ai";
+import { useStore } from "@/RootStoreProvider";
 
 // Conversion constants
 const CM_TO_FEET = 0.0328084;
@@ -19,6 +20,9 @@ export default function UserInfoConfirmationPage(
   props: UserInfoConfirmationProps
 ) {
   const { fitnessData, user } = props;
+
+  const { generalStore } = useStore();
+  const { isMobileView } = generalStore;
 
   // Convert height from cm to feet and inches
   const convertHeightToFeet = (heightInCm: number) => {
@@ -60,21 +64,20 @@ export default function UserInfoConfirmationPage(
 
   return (
     <div
-      className="text-whitebg md:min-h-[77.5dvh] md:max-h-[77.5dvh] min-h-[72.5dvh] max-h-[72.5dvh]"
+      className="text-whitebg md:min-h-[77.5dvh] md:max-h-[77.5dvh] overflow-y-auto"
       style={{
         textShadow: "10px 10px 10px rgba(0,0,0,1)",
+        height: "calc(100dvh - 50px)",
+        paddingBottom: isMobileView ? "150px" : "",
       }}
     >
       {/* Header */}
-      <div className={`relative px-6 md:pt-6`}>
+      <div className={`relative px-4 md:pt-6`}>
         <h1 className="text-3xl font-bold">Confirm your information</h1>
       </div>
 
       {/* Content */}
-      <div
-        className="overflow-y-auto p-6"
-        style={{ minHeight: "65dvh", maxHeight: "65dvh" }}
-      >
+      <div className="px-4 pt-2 mb-2">
         {/* Display each piece of fitness data */}
         <p className="mb-2">Age: {fitnessData.age}</p>
         {fitnessData.height && <p className="mb-2">Height: {getHeight()}</p>}

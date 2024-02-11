@@ -32,6 +32,7 @@ const UserProfile: NextPageWithLayout = () => {
     if (!authStore.user) {
       authStore.checkAuth();
     } else {
+      console.log("user is already logged in: ", authStore.user);
       const user = authStore.user;
       setUser(user);
       setGuideStatus(user.guideStatus);

@@ -82,7 +82,9 @@ const ProfileDesktopLayout: React.FC<ProfileDesktopLayoutProps> = ({
       {/* If guidestatus === loading show subtitle saying this can take a few minutes */}
       {guideStatus === GuideStatus.LOADING && (
         <p
-          className="text-whitebg text-center text-m mb-4 relative z-10"
+          className={`${
+            pageIndex === 1 ? "text-transparent" : "text-whitebg"
+          } text-center text-m mb-4 relative z-10`}
           style={{
             textShadow: "10px 10px 10px rgba(0,0,0,1)",
           }}

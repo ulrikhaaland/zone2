@@ -303,7 +303,7 @@ export default function Questionnaire(props: QuestionnaireProps) {
           maxHeight: !isMobileView
             ? isProfile
               ? "65dvh"
-              : "70dvh"
+              : "67.5dvh"
             : isProfile
             ? "calc(100dvh - 130px)"
             : "calc(100dvh - 160px)",

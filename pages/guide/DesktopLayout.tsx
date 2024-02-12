@@ -140,7 +140,7 @@ const Zone2GuideDesktopLayout: React.FC<Zone2GuideDesktopLayoutProps> = ({
             </motion.div>
           </AnimatePresence>
           {/* Button Container */}
-          <div className="flex justify-between items-center md:px-6 relative pt-12 md:pt-2 md-pb-0 pb-4">
+          <div className="flex bg-black justify-between items-center md:px-6 relative pt-12 md:pt-2 md-pb-0 pb-4">
             {pageIndex !== 0 ? (
               <button
                 className="flex items-center font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline

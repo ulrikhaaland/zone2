@@ -88,7 +88,7 @@ const Zone2GuideMobileLayout: React.FC<Zone2GuideMobileLayoutProps> = ({
         ></div>
       </div>
 
-      <div className="pt-24 flex overflow-hidden flex-col items-center relative">
+      <div className="pt-16 flex overflow-hidden flex-col items-center relative">
         <div
           className="w-full"
           style={{

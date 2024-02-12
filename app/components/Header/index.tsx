@@ -17,7 +17,7 @@ function Header() {
   const { isMobileView } = generalStore;
 
   const isHome = router.pathname === "/";
-  const isGuide = router.pathname === "/zone2guide";
+  const isGuide = router.pathname === "/guide";
   const isProfile = router.pathname === "/profile";
 
   const getTitle = () => {

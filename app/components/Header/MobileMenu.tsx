@@ -16,7 +16,7 @@ function MobileMenu({ isOpen, onClose, router, authStore }: MobileMenuProps) {
 
   const isHome = pathName === "/";
 
-  const isGuide = pathName === "/zone2guide";
+  const isGuide = pathName === "/guide";
 
   const isProfile = pathName === "/profile";
 
@@ -102,7 +102,7 @@ function MobileMenu({ isOpen, onClose, router, authStore }: MobileMenuProps) {
                 onClick={() => {
                   onClose();
 
-                  router.push("/zone2guide");
+                  router.push("/guide");
                 }}
                 style={{ cursor: "pointer" }}
                 className={`-mx-3 text-lg block rounded-lg px-3 py-2 text-base leading-7 font-semibold

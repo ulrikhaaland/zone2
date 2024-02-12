@@ -16,7 +16,7 @@ function WebMenu({ router, authStore }: WebMenuProps) {
 
   const isHome = pathName === "/";
 
-  const isGuide = pathName === "/zone2guide";
+  const isGuide = pathName === "/guide";
 
   const isProfile = pathName === "/profile";
 
@@ -30,7 +30,9 @@ function WebMenu({ router, authStore }: WebMenuProps) {
       }}
     >
       <p
-        onClick={() => router.push("/zone2guide")}
+        onClick={() => {
+          user ? router.push("/guide") : authStore.setOpen(!authStore.open);
+        }}
         style={{
           cursor: "pointer",
         }}

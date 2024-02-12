@@ -105,7 +105,7 @@ export const HomeMobileLayout: React.FC<HomeMobileLayoutProps> = ({
               <li>Your Expected Benefits</li>
               <li>Effective Exercise Duration, Frequency & Dose</li>
               <li>Methods For Determining Zone 2 Intensity</li>
-              <li>Your Heart Rate Zones</li>
+              <li>Your Zone 2 Heart Rate</li>
               <li>What To Think About During Zone 2 Training</li>
               <li>Realistic Goals & Expectations</li>
               <li>Recovery & Preventing Overtraining</li>

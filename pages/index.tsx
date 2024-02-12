@@ -71,7 +71,7 @@ const HomePage: NextPageWithLayout = () => {
           videoRef.current.pause();
           setIsPlaying(false);
         }
-      }, 9361.5); // Adjust the time as needed
+      }, 9161.5); // Adjust the time as needed
     }
 
     return () => clearTimeout(timer); // Cleanup to clear the timer
@@ -121,7 +121,7 @@ const HomePage: NextPageWithLayout = () => {
               ) {
                 router.push("/profile");
               } else {
-                router.push("/zone2guide");
+                router.push("/guide");
               }
             }
           })
@@ -140,7 +140,7 @@ const HomePage: NextPageWithLayout = () => {
     if (emailInputRef.current) {
       emailInputRef.current.focus();
     }
-  }, []);
+  }, [authStore.open]);
 
   if (isMobileView) {
     return (

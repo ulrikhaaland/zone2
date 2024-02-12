@@ -97,7 +97,7 @@ export default function Guide(props: GuideProps) {
             <button
               className="flex justify-center items-center font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline transition duration-150 ease-in-out bg-whitebg text-black border border-gray-700"
               onClick={() => {
-                router.push("/zone2guide");
+                router.push("/guide");
               }}
             >
               <CreateIcon className="mr-2" style={{ color: "black" }} />

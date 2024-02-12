@@ -16,7 +16,7 @@ function Layout({ children }: { children: React.ReactNode }) {
 
   const [showLogin, setShowLogin] = useState(false);
   const isMobileView = generalStore.isMobileView;
-  const isGuide = router.pathname === "/zone2guide";
+  const isGuide = router.pathname === "/guide";
 
   const isHome = router.pathname === "/";
 

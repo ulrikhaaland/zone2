@@ -143,7 +143,9 @@ export default class AuthStore {
 
     const actionCodeSettings = {
       // Dynamically set URL based on whether the code is running on localhost or not
-      url: `${isLocal ? "http://localhost:3000" : "https://zone2guide.com"}`,
+      url: `${
+        isLocal ? "http://localhost:3000" : "https://zone2guide.com"
+      }/`,
       handleCodeInApp: true,
     };
 

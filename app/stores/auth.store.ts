@@ -77,7 +77,8 @@ export default class AuthStore {
     this.fromPath = fromPath;
   };
 
-  updateUserData = async (newUser: User) => {
+  updateUserData = async (user?: User) => {
+    const newUser = user ?? this.user!;
     if (this.user) {
       const userData = {
         guideItems: newUser.guideItems,

@@ -68,6 +68,7 @@ export default function Questionnaire(props: QuestionnaireProps) {
         questionsFull[questionsFull.length - 1]
     ) {
       setCompleted(true);
+      onQuestCompleted(questions);
 
       if (canSubmit) {
         canSubmit(true);
@@ -107,7 +108,21 @@ export default function Questionnaire(props: QuestionnaireProps) {
     }
   };
 
+  const checkCompleted = () => {
+    if (questions[questions.length - 1].id === 14) {
+      let hasCompleted = true;
+      questions.forEach((question) => {
+        if (question.answer !== undefined || question.canSkip === true) {
+        } else {
+          hasCompleted = false;
+        }
+      });
+      if (hasCompleted && completed) onQuestCompleted(questions);
+    }
+  };
+
   const handleOnQuestionAnswered = (questionId: number) => {
+    checkCompleted();
     // Find the index of the last answered question
     const currentQuestionIndex = questions.findIndex(
       (q) => q.id === questionId
@@ -265,6 +280,13 @@ export default function Questionnaire(props: QuestionnaireProps) {
             isScrolled ? "shadow-[0_8px_4px_-2px_rgba(0,0,0,0.3)]" : ""
           }`}
         >
+          {/* Current question / Remaining Questions */}
+          <p className="mb-2">
+            {currentQuestionID +
+              1 +
+              "/" +
+              (questionsFull.length - 1).toString()}
+          </p>
           {/* Progress Bar */}
           <div className="h-1 bg-gray-600 md:mt-0 mb-4">
             <div

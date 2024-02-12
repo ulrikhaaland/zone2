@@ -50,7 +50,6 @@ const HomePage: NextPageWithLayout = () => {
       guideItems: user?.guideItems ?? [],
     };
     console.log(newUser);
-    authStore.updateUserData(newUser);
 
     authStore.setUser(newUser);
   };
@@ -90,6 +89,7 @@ const HomePage: NextPageWithLayout = () => {
   }, [forward]);
 
   const redirectToStripe = () => {
+    authStore.updateUserData();
     const isLocal = window.location.hostname === "localhost";
 
     const stripeUrl = isLocal

@@ -39,9 +39,8 @@ export default async function handler(
         endpointSecret
       );
       // Process the event
-      res.json({ received: true });
-
       await processStripeEvent(event);
+      res.json({ received: true });
     } catch (err: unknown) {
       handleError(err, res, "general");
     }
@@ -55,7 +54,7 @@ async function processStripeEvent(event: Stripe.Event) {
   switch (event.type) {
     case "checkout.session.completed":
       await handleCheckoutSessionCompleted(event);
-
+      
       break;
     // Handle other event types as needed
     default:
@@ -107,7 +106,7 @@ async function updateUserWithPaymentError(userId: string) {
     await userRef.update({
       paymentError: true,
       guideStatus: GuideStatus.ERROR,
-    });
+     });
     console.log(`Updated user ${userId} with paymentError: true`);
   } catch (error) {
     console.error(`Failed to update user ${userId} with payment error:`, error);

@@ -130,8 +130,8 @@ const ProfileMobileLayout: React.FC<ProfileMobileLayoutProps> = ({
         </>
       )}
       {/* Page Content */}
-      <div className="flex flex-col items-center min-h-max relative">
-        <div className="w-full h-full">
+      <div className="flex flex-col items-center relative">
+        <div className="w-full">
           <AnimatePresence mode="wait">
             <motion.div
               className="relative z-0 flex justify-center" // Ensure content is below the overlays

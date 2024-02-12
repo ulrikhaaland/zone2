@@ -48,12 +48,6 @@ export const GuideSkeletonMobile = () => (
     <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-500 max-w-[190px] mb-2.5"></div>
     <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-500 max-w-[310px] mb-2.5"></div>
     <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-500 max-w-[190px]"></div>
-    <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-500 w-64 mb-4 mt-12"></div>
-    <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-500 max-w-[210px] mb-2.5"></div>
-    <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-500 max-w-[210px] mb-2.5"></div>
-    <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-500 max-w-[350px] mb-2.5"></div>
-    <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-500 max-w-[380px] mb-2.5"></div>
-    <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-500 max-w-[350px]"></div>
     <span className="sr-only">Loading...</span>
   </div>
 );

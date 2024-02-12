@@ -26,7 +26,7 @@ export default function Guide(props: GuideProps) {
   const [guideItems, setGuideItems] = useState<GuideItem[]>(
     props.guideItems || []
   );
-  const [status, setStatus] = useState(props.status);
+  const [status, setStatus] = useState(GuideStatus.LOADING);
 
   const containerRef = useRef<HTMLDivElement>(null); // Add this line
 

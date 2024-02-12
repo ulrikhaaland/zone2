@@ -79,6 +79,7 @@ export function fitnessDataToJson(fitnessData: FitnessData): string {
     hasHeartRateMonitor: fitnessData.hasHeartRateMonitor,
     zone2HeartRateRange: fitnessData.zone2HeartRateRange,
   });
+  console.log("fitnessDataToJson", data);
   return data;
 }
 

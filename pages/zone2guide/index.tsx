@@ -90,15 +90,16 @@ const HomePage: NextPageWithLayout = () => {
   }, [forward]);
 
   const redirectToStripe = () => {
-    const stripeUrl = "https://buy.stripe.com/test_4gwaII0gpc3QfDy7ss";
+    const isLocal = window.location.hostname === "localhost";
+
+    const stripeUrl = isLocal
+      ? "https://buy.stripe.com/test_4gwaII0gpc3QfDy7ss"
+      : "https://buy.stripe.com/test_cN2044gfnd7Udvq4gh";
     const prefilledEmail = user!.firebaseUser?.email ?? "";
-    const returnUrl = `${window.location.origin}/profile?userId=${user!.uid}`;
 
     window.location.href = `${stripeUrl}?prefilled_email=${encodeURIComponent(
       prefilledEmail
-    )}&redirect_to=${encodeURIComponent(returnUrl)}&client_reference_id=${
-      user!.uid
-    }`;
+    )}&client_reference_id=${user!.uid}`;
   };
 
   useEffect(() => {

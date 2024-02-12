@@ -69,6 +69,10 @@ const HomePage: NextPageWithLayout = () => {
   };
 
   const onConfirm = (isForward: boolean) => {
+    if (pageIndex === 0) {
+      authStore.updateUserData();
+    }
+
     if (pageIndex < 2) {
       if (pageIndex === 1 && !isForward) {
         setForward(true);
@@ -89,7 +93,6 @@ const HomePage: NextPageWithLayout = () => {
   }, [forward]);
 
   const redirectToStripe = () => {
-    authStore.updateUserData();
     const isLocal = window.location.hostname === "localhost";
 
     const stripeUrl = isLocal

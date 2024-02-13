@@ -12,16 +12,14 @@ import { Request, Response } from "express";
 
 dotenv.config();
 
-// Initialize the Firebase Admin SDK with environment variables
 if (!admin.apps.length) {
   admin.initializeApp({
     credential: admin.credential.cert({
       projectId: process.env.FIREBASE_PROJECT_ID,
-      privateKey: process.env.FIREBASE_PRIVATE_KEY!.replace(/\\n/g, '\n'), // Replace escaped newlines back to actual newline characters
+      // Directly embedding the private key in the correct format
+      privateKey: `-----BEGIN PRIVATE KEY-----\n${process.env.FIREBASE_PRIVATE_KEY}\n-----END PRIVATE KEY-----`,
       clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-      // The rest of the fields are optional for initializing Firebase Admin
     }),
-    // Other initialization options if necessary
   });
 }
 

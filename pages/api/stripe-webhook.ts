@@ -92,7 +92,16 @@ async function handleCheckoutSessionCompleted(event: Stripe.Event) {
         }
 
         const fitnessData = questToFitnessData(data?.questions);
-        handleOnGenerateGuide(fitnessData, clientReferenceId);
+        fetch("/api/generate", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            fitnessData: fitnessData,
+            uid: clientReferenceId,
+          }),
+        });
       }
     } catch (error) {
       await updateUserWithPaymentError(clientReferenceId);

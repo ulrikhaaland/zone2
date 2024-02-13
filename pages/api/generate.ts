@@ -76,7 +76,7 @@ const generateGuide = async (
   try {
     const thread = previousThread ?? (await client.beta.threads.create());
 
-
+    console.log("generating guide........");
     const message: MessageCreateParams = {
       role: "user",
       content: fitnessDataToJson(fitnessData),

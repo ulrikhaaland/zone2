@@ -123,9 +123,3 @@ function handleError(err: unknown, res: NextApiResponse, context: string) {
   console.error(`${context} Error: ${errorMessage}`);
   res.status(400).send(`Webhook Error: ${errorMessage}`);
 }
-
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};

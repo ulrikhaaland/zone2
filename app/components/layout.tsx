@@ -64,7 +64,7 @@ function Layout({ children }: { children: React.ReactNode }) {
         />
         <link
           rel="preload"
-          href="/assets/images/runner/runner8.png.png"
+          href="/assets/images/runner/runner8.png"
           as="image"
         />
       </Head>

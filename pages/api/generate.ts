@@ -10,6 +10,7 @@ import * as admin from "firebase-admin";
 import { GuideItem, parseJsonToGuideItems } from "../../app/model/guide";
 import { Request, Response } from "express";
 
+dotenv.config();
 
 if (!admin.apps.length) {
   admin.initializeApp({

@@ -4,7 +4,11 @@ import { buffer } from "micro";
 import * as admin from "firebase-admin";
 import { GuideStatus } from "@/app/model/user";
 import { questToFitnessData } from "@/app/model/questionaire";
+import dotenv from "dotenv";
 import { handleOnGenerateGuide } from "@/pages/api/generate";
+
+dotenv.config();
+
 
 if (!admin.apps.length) {
   admin.initializeApp({

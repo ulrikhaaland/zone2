@@ -77,24 +77,29 @@ async function logErrorToFirestore(
   }
 }
 
-const createThreadWithTimeout = (client: OpenAI): any => {
-  return new Promise((resolve, reject) => {
-    const timeoutId = setTimeout(() => {
-      reject(new Error("Thread creation timed out"));
-    }, 10000); // Set timeout for 10 seconds
-    client.beta.threads
-      .create()
-      .then((response) => {
-        clearTimeout(timeoutId);
-        console.log("Thread created", response);
-        resolve(response);
-      })
-      .catch((err) => {
-        clearTimeout(timeoutId);
-        console.error("Error creating thread", err);
-        reject(err);
-      });
-  });
+const createThreadWithRetries = async (
+  client: OpenAI,
+  retries = 3,
+  delay = 1000
+): Promise<any> => {
+  for (let attempt = 1; attempt <= retries; attempt++) {
+    try {
+      console.log(`Attempt ${attempt}: Creating thread...`);
+      return await client.beta.threads.create();
+    } catch (error) {
+      if (error instanceof Error) {
+        console.log(`Attempt ${attempt} failed, error: ${error.message}`);
+      } else {
+        console.log(`Attempt ${attempt} failed, error: ${error}`);
+      }
+      if (attempt < retries) {
+        await new Promise((resolve) => setTimeout(resolve, delay));
+        delay *= 2; // Exponential backoff
+      } else {
+        throw error;
+      }
+    }
+  }
 };
 
 const generateGuide = async (
@@ -111,7 +116,7 @@ const generateGuide = async (
 
     let thread;
     try {
-      thread = await createThreadWithTimeout(client);
+      thread = await createThreadWithRetries(client);
       console.log("Thread created successfully", thread);
     } catch (error) {
       console.error("Failed to create thread:", error);

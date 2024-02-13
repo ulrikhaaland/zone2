@@ -75,6 +75,25 @@ async function logErrorToFirestore(
   }
 }
 
+const createThreadWithTimeout = (client: OpenAI): any => {
+  return new Promise((resolve, reject) => {
+    const timeoutId = setTimeout(() => {
+      reject(new Error("Thread creation timed out"));
+    }, 10000); // Set timeout for 10 seconds
+
+    client.beta.threads
+      .create()
+      .then((response) => {
+        clearTimeout(timeoutId);
+        resolve(response);
+      })
+      .catch((err) => {
+        clearTimeout(timeoutId);
+        reject(err);
+      });
+  });
+};
+
 const generateGuide = async (
   fitnessData: FitnessData
 ): Promise<string | undefined> => {
@@ -89,7 +108,7 @@ const generateGuide = async (
 
     let thread;
     try {
-      thread = await client.beta.threads.create();
+      thread = await createThreadWithTimeout(client);
       console.log("Thread created successfully", thread);
     } catch (error) {
       console.error("Failed to create thread:", error);

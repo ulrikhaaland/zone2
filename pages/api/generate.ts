@@ -82,15 +82,16 @@ const createThreadWithTimeout = (client: OpenAI): any => {
     const timeoutId = setTimeout(() => {
       reject(new Error("Thread creation timed out"));
     }, 10000); // Set timeout for 10 seconds
-
     client.beta.threads
       .create()
       .then((response) => {
         clearTimeout(timeoutId);
+        console.log("Thread created", response);
         resolve(response);
       })
       .catch((err) => {
         clearTimeout(timeoutId);
+        console.error("Error creating thread", err);
         reject(err);
       });
   });

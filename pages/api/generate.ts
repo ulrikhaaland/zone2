@@ -127,10 +127,14 @@ export const handleOnGenerateGuide = async (
   fitnessData: FitnessData,
   uid: string,
   tries: number = 0,
-  dbAdmin: admin.firestore.Firestore
+  dbAdmin: admin.firestore.Firestore,
+  ref?: admin.firestore.DocumentReference<
+    admin.firestore.DocumentData,
+    admin.firestore.DocumentData
+  >
 ): Promise<any> => {
   const db = dbAdmin ?? database;
-  const userRef = db.collection("users").doc(uid);
+  const userRef = ref ?? db.collection("users").doc(uid);
 
   console.log("RUNNING......" + "path:" + userRef.path + "uid:" + uid);
 

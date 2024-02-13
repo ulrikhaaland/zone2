@@ -93,7 +93,7 @@ async function handleCheckoutSessionCompleted(event: Stripe.Event) {
 
         const fitnessData = questToFitnessData(data?.questions);
 
-        handleOnGenerateGuide(fitnessData, clientReferenceId, 0, db);
+        handleOnGenerateGuide(fitnessData, clientReferenceId, 0, db, userRef);
       }
     } catch (error) {
       await updateUserWithPaymentError(clientReferenceId);

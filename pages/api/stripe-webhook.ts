@@ -6,6 +6,8 @@ import { GuideStatus } from "@/app/model/user";
 import { questToFitnessData } from "@/app/model/questionaire";
 import { handleOnGenerateGuide } from "@/pages/api/generate";
 
+export const maxDuration = 300; // This function can run for a maximum of 5 seconds
+
 if (!admin.apps.length) {
   const admin = require("firebase-admin");
 

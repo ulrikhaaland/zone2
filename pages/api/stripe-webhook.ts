@@ -6,11 +6,15 @@ import { GuideStatus } from "@/app/model/user";
 import { questToFitnessData } from "@/app/model/questionaire";
 import { handleOnGenerateGuide } from "@/pages/api/generate";
 
-// Initialize the Firebase Admin SDK directly with credentials from environment variables
+// Initialize the Firebase Admin SDK with environment variables
 if (!admin.apps.length) {
-  const firebaseConfig = JSON.parse(process.env.FIREBASE_CONFIG_JSON!); // Ensure this variable is set in your environment
   admin.initializeApp({
-    credential: admin.credential.cert(firebaseConfig),
+    credential: admin.credential.cert({
+      projectId: process.env.FIREBASE_PROJECT_ID,
+      privateKey: process.env.FIREBASE_PRIVATE_KEY!.replace(/\\n/g, "\n"), // Replace escaped newlines back to actual newline characters
+      clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+      // The rest of the fields are optional for initializing Firebase Admin
+    }),
     // Other initialization options if necessary
   });
 }

@@ -30,8 +30,6 @@ export default async function handler(req: Request, res: Response) {
     const { fitnessData, uid } = req.body;
 
     try {
-      res.status(200).json({ success: true });
-
       // Your logic for generating guide
       const guide = await handleOnGenerateGuide(fitnessData, uid, 0, database); // Implement this function based on your needs
       // Process and return the generated guide
@@ -130,6 +128,8 @@ export const handleOnGenerateGuide = async (
 ): Promise<any> => {
   const db = dbAdmin ?? database;
   const userRef = db.collection("users").doc(uid);
+
+  console.log("RUNNING......");
 
   try {
     const guide = await generateGuide(fitnessData);

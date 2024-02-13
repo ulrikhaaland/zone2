@@ -109,7 +109,7 @@ const HomePage: NextPageWithLayout = () => {
       }
       if (email) {
         window.localStorage.setItem("emailForSignIn", email);
-        setMessage("confirming sign in...");
+        setMessage("");
 
         authStore
           .confirmSignInWithEmailLink(email, currentUrl)

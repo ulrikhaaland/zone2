@@ -115,7 +115,7 @@ const ProfileMobileLayout: React.FC<ProfileMobileLayoutProps> = ({
               textShadow: "10px 10px 10px rgba(0,0,0,1)",
             }}
           >
-            Creating Guide...
+            Generating Guide...
           </h1>
           {guideStatus === GuideStatus.LOADING && (
             <p

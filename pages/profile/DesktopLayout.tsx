@@ -76,7 +76,7 @@ const ProfileDesktopLayout: React.FC<ProfileDesktopLayoutProps> = ({
         {pageIndex === 1
           ? "Profile"
           : guideStatus === GuideStatus.LOADING
-          ? "Creating Guide..."
+          ? "Generating Guide..."
           : "Your Personalized Fitness Guide"}
       </h1>
       {/* If guidestatus === loading show subtitle saying this can take a few minutes */}

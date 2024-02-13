@@ -80,7 +80,7 @@ async function logErrorToFirestore(
 const createThreadWithRetries = async (
   client: OpenAI,
   retries = 3,
-  delay = 1000
+  delay = 10000
 ): Promise<any> => {
   for (let attempt = 1; attempt <= retries; attempt++) {
     try {

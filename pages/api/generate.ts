@@ -80,6 +80,10 @@ const generateGuide = async (
   previousThread?: OpenAI.Beta.Threads.Thread
 ): Promise<string | undefined> => {
   try {
+    const client = new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY,
+    });
+    console.log("creating thread......." + client);
     const thread = previousThread ?? (await client.beta.threads.create());
 
     console.log("generating guide........");

@@ -82,8 +82,19 @@ const generateGuide = async (
     const client = new OpenAI({
       apiKey: process.env.OPENAI_API_KEY,
     });
-    console.log("creating thread......." + client);
-    const thread = await client.beta.threads.create();
+    console.log(
+      "Creating thread....... API Key present:",
+      !!process.env.OPENAI_API_KEY
+    );
+
+    let thread;
+    try {
+      thread = await client.beta.threads.create();
+      console.log("Thread created successfully", thread);
+    } catch (error) {
+      console.error("Failed to create thread:", error);
+      throw error; // Re-throw the error or handle it appropriately
+    }
 
     console.log("generating guide........");
     const message: MessageCreateParams = {

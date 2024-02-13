@@ -93,7 +93,7 @@ async function handleCheckoutSessionCompleted(event: Stripe.Event) {
 
         const fitnessData = questToFitnessData(data?.questions);
 
-        await fetch("https://zone2-liard.vercel.app/api/generate", {
+        fetch("https://zone2-liard.vercel.app/api/generate", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

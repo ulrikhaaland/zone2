@@ -6,15 +6,15 @@ import { GuideStatus } from "@/app/model/user";
 import { questToFitnessData } from "@/app/model/questionaire";
 import { handleOnGenerateGuide } from "@/pages/api/generate";
 
-// Initialize the Firebase Admin SDK and Stripe
+// Initialize the Firebase Admin SDK directly with credentials from environment variables
 if (!admin.apps.length) {
+  const firebaseConfig = JSON.parse(process.env.FIREBASE_CONFIG_JSON!); // Ensure this variable is set in your environment
   admin.initializeApp({
-    credential: admin.credential.cert(
-      process.env.GOOGLE_APPLICATION_CREDENTIALS!
-    ),
+    credential: admin.credential.cert(firebaseConfig),
     // Other initialization options if necessary
   });
 }
+
 const db = admin.firestore();
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET!;
@@ -54,7 +54,7 @@ async function processStripeEvent(event: Stripe.Event) {
   switch (event.type) {
     case "checkout.session.completed":
       await handleCheckoutSessionCompleted(event);
-      
+
       break;
     // Handle other event types as needed
     default:
@@ -106,7 +106,7 @@ async function updateUserWithPaymentError(userId: string) {
     await userRef.update({
       paymentError: true,
       guideStatus: GuideStatus.ERROR,
-     });
+    });
     console.log(`Updated user ${userId} with paymentError: true`);
   } catch (error) {
     console.error(`Failed to update user ${userId} with payment error:`, error);

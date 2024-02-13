@@ -12,12 +12,11 @@ import { Request, Response } from "express";
 
 dotenv.config();
 
-// Initialize the Firebase Admin SDK and Stripe
+// Initialize the Firebase Admin SDK directly with credentials from environment variables
 if (!admin.apps.length) {
+  const firebaseConfig = JSON.parse(process.env.FIREBASE_CONFIG_JSON!); // Ensure this variable is set in your environment
   admin.initializeApp({
-    credential: admin.credential.cert(
-      process.env.GOOGLE_APPLICATION_CREDENTIALS!
-    ),
+    credential: admin.credential.cert(firebaseConfig),
     // Other initialization options if necessary
   });
 }

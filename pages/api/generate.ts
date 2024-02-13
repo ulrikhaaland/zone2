@@ -118,6 +118,7 @@ const generateGuide = async (
 
     return await getRunStatus(thread.id, run.id);
   } catch (error: any) {
+    console.error("Error generating guide:", error);
     // Handle errors that occur during the guide generation process
     throw new Error(`Guide generation failed: ${error.message}`);
   }

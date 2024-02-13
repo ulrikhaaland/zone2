@@ -19,7 +19,7 @@ if (!admin.apps.length) {
   });
 }
 
-const db = admin.firestore();
+const database = admin.firestore();
 const client = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
@@ -33,7 +33,7 @@ export default async function handler(req: Request, res: Response) {
       res.status(200).json({ success: true });
 
       // Your logic for generating guide
-      const guide = await handleOnGenerateGuide(fitnessData, uid); // Implement this function based on your needs
+      const guide = await handleOnGenerateGuide(fitnessData, uid, 0, database); // Implement this function based on your needs
       // Process and return the generated guide
       res.status(200).json({ success: true, guide });
     } catch (error) {
@@ -49,7 +49,13 @@ export default async function handler(req: Request, res: Response) {
   }
 }
 
-async function logErrorToFirestore(uid: string, error: unknown) {
+async function logErrorToFirestore(
+  uid: string,
+  error: unknown,
+  dbAdmin: admin.firestore.Firestore
+) {
+  const db = dbAdmin ?? database;
+
   const errorMessage = error instanceof Error ? error.message : "Unknown error";
   const errorRef = db.collection("errors").doc(uid);
   // update user doc
@@ -119,8 +125,10 @@ const generateGuide = async (
 export const handleOnGenerateGuide = async (
   fitnessData: FitnessData,
   uid: string,
-  tries: number = 0
+  tries: number = 0,
+  dbAdmin: admin.firestore.Firestore
 ): Promise<any> => {
+  const db = dbAdmin ?? database;
   const userRef = db.collection("users").doc(uid);
 
   try {
@@ -139,9 +147,9 @@ export const handleOnGenerateGuide = async (
       console.error("Error parsing guide JSON:", error);
       if (tries < 2) {
         console.log("Retrying guide generation..." + "tries: " + tries);
-        return await handleOnGenerateGuide(fitnessData, uid, tries + 1);
+        return await handleOnGenerateGuide(fitnessData, uid, tries + 1, db);
       }
-      await logErrorToFirestore(uid, error);
+      await logErrorToFirestore(uid, error, db);
       throw new Error("Error parsing guide JSON");
     }
 
@@ -156,7 +164,7 @@ export const handleOnGenerateGuide = async (
     });
   } catch (error) {
     console.error("Error in handleOnGenerateGuide:", error);
-    await logErrorToFirestore(uid, error);
+    await logErrorToFirestore(uid, error, db);
 
     // Attempt to update the Firestore document with error information
     try {

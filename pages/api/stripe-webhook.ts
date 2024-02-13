@@ -93,29 +93,7 @@ async function handleCheckoutSessionCompleted(event: Stripe.Event) {
 
         const fitnessData = questToFitnessData(data?.questions);
 
-        fetch("https://zone2-liard.vercel.app/api/generate", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            fitnessData: fitnessData,
-            uid: clientReferenceId,
-          }),
-        })
-          .then((response) => {
-            if (!response.ok) {
-              throw new Error("Network response was not ok");
-            }
-            return response.json(); // or .text() if the response is not JSON
-          })
-          .then((data) => console.log(data))
-          .catch((error) =>
-            console.error(
-              "There has been a problem with your fetch operation:",
-              error
-            )
-          );
+        handleOnGenerateGuide(fitnessData, clientReferenceId, 0, db);
       }
     } catch (error) {
       await updateUserWithPaymentError(clientReferenceId);

@@ -301,8 +301,6 @@ export function questToFitnessData(answers: Question[]): FitnessData {
     };
   }
 
-  console.log(zone2HeartRateRange);
-
   let additionalInformation: string | undefined = undefined;
 
   const addAnswer = answers.find(

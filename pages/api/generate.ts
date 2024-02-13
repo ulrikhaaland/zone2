@@ -76,7 +76,6 @@ const generateGuide = async (
   try {
     const thread = previousThread ?? (await client.beta.threads.create());
 
-    console.log("generating guide...");
 
     const message: MessageCreateParams = {
       role: "user",
@@ -97,6 +96,7 @@ const generateGuide = async (
       do {
         await new Promise((resolve) => setTimeout(resolve, 1000)); // Wait for 1 second
         status = await client.beta.threads.runs.retrieve(threadId, runId);
+        console.log("Run status:", status.status);
       } while (status.status !== "completed");
 
       const messageList = await client.beta.threads.messages.list(threadId);

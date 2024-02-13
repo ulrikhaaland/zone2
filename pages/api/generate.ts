@@ -10,13 +10,12 @@ import { GuideItem, parseJsonToGuideItems } from "../../app/model/guide";
 import { Request, Response } from "express";
 
 if (!admin.apps.length) {
+  const admin = require("firebase-admin");
+
+  let serviceAccount = require("../../zone2program-a24ce-3eff7214d07d.json");
+
   admin.initializeApp({
-    credential: admin.credential.cert({
-      projectId: process.env.FIREBASE_PROJECT_ID,
-      // Directly embedding the private key in the correct format
-      privateKey: `-----BEGIN PRIVATE KEY-----\n${process.env.FIREBASE_PRIVATE_KEY}\n-----END PRIVATE KEY-----`,
-      clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-    }),
+    credential: admin.credential.cert(serviceAccount),
   });
 }
 

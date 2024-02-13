@@ -76,15 +76,14 @@ async function logErrorToFirestore(
 }
 
 const generateGuide = async (
-  fitnessData: FitnessData,
-  previousThread?: OpenAI.Beta.Threads.Thread
+  fitnessData: FitnessData
 ): Promise<string | undefined> => {
   try {
     const client = new OpenAI({
       apiKey: process.env.OPENAI_API_KEY,
     });
     console.log("creating thread......." + client);
-    const thread = previousThread ?? (await client.beta.threads.create());
+    const thread = await client.beta.threads.create();
 
     console.log("generating guide........");
     const message: MessageCreateParams = {
@@ -133,7 +132,7 @@ export const handleOnGenerateGuide = async (
   const db = dbAdmin ?? database;
   const userRef = db.collection("users").doc(uid);
 
-  console.log("RUNNING......");
+  console.log("RUNNING......" + "path:" + userRef.path + "uid:" + uid);
 
   try {
     const guide = await generateGuide(fitnessData);

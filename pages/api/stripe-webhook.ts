@@ -62,6 +62,7 @@ async function processStripeEvent(event: Stripe.Event) {
     // Handle other event types as needed
     default:
       console.log(`Unhandled event type ${event.type}`);
+      console.log(`Unhandled event type ${event.type}`);
   }
 }
 

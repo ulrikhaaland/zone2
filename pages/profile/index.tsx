@@ -9,7 +9,7 @@ import { Question, questToFitnessData } from "@/app/model/questionaire";
 import { observer } from "mobx-react";
 import ProfileDesktopLayout from "./DesktopLayout";
 import ProfileMobileLayout from "./MobileLayout";
-import { handleOnGenerateGuide } from "@/functions/src";
+import { handleOnGenerateGuide } from "../api/generate";
 
 const UserProfile: NextPageWithLayout = () => {
   const { authStore, generalStore } = useStore();
@@ -45,8 +45,7 @@ const UserProfile: NextPageWithLayout = () => {
         setGuideStatus(authStore.user.guideStatus);
         handleOnGenerateGuide(
           questToFitnessData(authStore.user.questions),
-          authStore.user.uid,
-          0
+          authStore.user.uid
         );
         console.log("user is in guide loading status: ", authStore.user);
 

@@ -52,7 +52,7 @@ export default async function handler(req: Request, res: Response) {
 async function logErrorToFirestore(
   uid: string,
   error: unknown,
-  dbAdmin: admin.firestore.Firestore
+  dbAdmin?: admin.firestore.Firestore
 ) {
   const db = dbAdmin ?? database;
 
@@ -106,9 +106,6 @@ const generateGuide = async (
   fitnessData: FitnessData
 ): Promise<string | undefined> => {
   try {
-    const client = new OpenAI({
-      apiKey: process.env.OPENAI_API_KEY,
-    });
     console.log(
       "Creating thread....... API Key present:",
       !!process.env.OPENAI_API_KEY
@@ -166,7 +163,7 @@ export const handleOnGenerateGuide = async (
   fitnessData: FitnessData,
   uid: string,
   tries: number = 0,
-  dbAdmin: admin.firestore.Firestore,
+  dbAdmin?: admin.firestore.Firestore,
   ref?: admin.firestore.DocumentReference<
     admin.firestore.DocumentData,
     admin.firestore.DocumentData

@@ -116,7 +116,7 @@ const generateGuide = async (
 
     let thread;
     try {
-      thread = await createThreadWithRetries(client);
+      thread = await client.beta.threads.create();
       console.log("Thread created successfully", thread);
     } catch (error) {
       console.error("Failed to create thread:", error);

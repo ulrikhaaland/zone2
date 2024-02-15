@@ -39,7 +39,10 @@ const UserProfile: NextPageWithLayout = () => {
       console.log("user is already logged in: ", authStore.user);
       const user = authStore.user;
       setUser(user);
-
+      const guideStatus =
+        user.guideStatus === GuideStatus.HASPAID
+          ? GuideStatus.LOADING
+          : user.guideStatus;
       if (
         user.guideStatus === GuideStatus.HASPAID &&
         user.hasPaid &&
@@ -93,7 +96,7 @@ const UserProfile: NextPageWithLayout = () => {
           unsubscribe?.();
         };
       } else {
-        setGuideStatus(user.guideStatus);
+        setGuideStatus(guideStatus);
       }
     }
   }, [authStore.user]);

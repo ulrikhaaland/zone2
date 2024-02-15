@@ -28,6 +28,8 @@ export interface User {
   hasPaid?: boolean;
   guideStatus?: GuideStatus;
   retries?: number;
+  guideGenerationThreadId?: string;
+  guideGenerationRunId?: string;
 }
 
 export interface FitnessData {

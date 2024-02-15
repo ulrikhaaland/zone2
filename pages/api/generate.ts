@@ -21,41 +21,36 @@ if (!admin.apps.length) {
   });
 }
 
-const database = admin.firestore();
+const db = admin.firestore();
 const client = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
 export default async function handler(req: Request, res: Response) {
   if (req.method === "POST") {
-    // Extract fitnessData and other necessary parameters from the request body
     const { fitnessData, uid } = req.body;
 
     try {
-      // Your logic for generating guide
-      const guide = await handleOnGenerateGuide(fitnessData, uid, 0, database); // Implement this function based on your needs
-      // Process and return the generated guide
-      res.status(200).json({ success: true, guide });
+      // Initiate guide generation and get the thread and run IDs
+      await handleOnGenerateGuide(fitnessData, uid);
+
+      // Respond with success and indicate that the guide generation is in progress
+      res
+        .status(202)
+        .json({ success: true, message: "Guide generation initiated" });
     } catch (error) {
-      console.error("Error generating guide:", error);
+      console.error("Error initiating guide generation:", error);
       res
         .status(500)
-        .json({ success: false, error: "Failed to generate guide" });
+        .json({ success: false, error: "Failed to initiate guide generation" });
     }
   } else {
-    // Handle any requests that aren't POST
     res.setHeader("Allow", ["POST"]);
     res.status(405).end(`Method ${req.method} Not Allowed`);
   }
 }
 
-async function logErrorToFirestore(
-  uid: string,
-  error: unknown,
-  dbAdmin?: admin.firestore.Firestore
-) {
-  const db = dbAdmin ?? database;
-
+async function logErrorToFirestore(uid: string, error: unknown) {
   const errorMessage = error instanceof Error ? error.message : "Unknown error";
   const errorRef = db.collection("errors").doc(uid);
   // update user doc
@@ -64,6 +59,7 @@ async function logErrorToFirestore(
     const userRef = db.collection("users").doc(uid);
     await userRef.update({
       guideStatus: GuideStatus.ERROR,
+      errorMessage: errorMessage,
     });
     await errorRef.set(
       {
@@ -159,68 +155,68 @@ const generateGuide = async (
   }
 };
 
+const initiateGuideGeneration = async (
+  fitnessData: FitnessData
+): Promise<{ threadId: string; runId: string }> => {
+  console.log(
+    "Creating thread....... API Key present:",
+    !!process.env.OPENAI_API_KEY
+  );
+
+  const thread = await client.beta.threads.create();
+  console.log("Thread created successfully", thread);
+
+  const message: MessageCreateParams = {
+    role: "user",
+    content: fitnessDataToJson(fitnessData),
+  };
+
+  await client.beta.threads.messages.create(thread.id, message);
+
+  const run = await client.beta.threads.runs.create(thread.id, {
+    assistant_id: "asst_P04Kgk0OWercjCtYJtNzUV8G",
+  });
+
+  console.log(
+    "Guide generation initiated. Thread ID:",
+    thread.id,
+    "Run ID:",
+    run.id
+  );
+
+  // Return the thread and run IDs to the caller
+  return { threadId: thread.id, runId: run.id };
+};
+
 export const handleOnGenerateGuide = async (
   fitnessData: FitnessData,
   uid: string,
-  tries: number = 0,
-  dbAdmin?: admin.firestore.Firestore,
-  ref?: admin.firestore.DocumentReference<
-    admin.firestore.DocumentData,
-    admin.firestore.DocumentData
-  >
-): Promise<any> => {
-  const db = dbAdmin ?? database;
-  const userRef = ref ?? db.collection("users").doc(uid);
+  dbAdmin?: admin.firestore.Firestore
+): Promise<void> => {
+  const userRef = db.collection("users").doc(uid);
 
   console.log("RUNNING......" + "path:" + userRef.path + "uid:" + uid);
 
   try {
-    const guide = await generateGuide(fitnessData);
-    if (!guide || guide.length === 0) {
-      throw new Error("Guide was empty or undefined");
-    }
+    const { threadId, runId } = await initiateGuideGeneration(fitnessData);
 
-    console.log("Guide generated successfully:");
-    let guideItems: GuideItem[];
-    try {
-      guideItems = parseJsonToGuideItems(guide);
-      guideItems[0].expanded = true;
-      guideItems[1].expanded = true;
-    } catch (error) {
-      console.error("Error parsing guide JSON:", error);
-      if (tries < 2) {
-        console.log("Retrying guide generation..." + "tries: " + tries);
-        return await handleOnGenerateGuide(fitnessData, uid, tries + 1, db);
-      }
-      await logErrorToFirestore(uid, error, db);
-      throw new Error("Error parsing guide JSON");
-    }
-
-    if (guideItems.length === 0) {
-      throw new Error("No guide items generated from JSON");
-    }
-
+    // Update the user document with the thread and run IDs
     await userRef.update({
-      guideItems: guideItems,
-      guideStatus: GuideStatus.LOADED,
-      retries: 0,
+      guideGenerationThreadId: threadId,
+      guideGenerationRunId: runId,
     });
-  } catch (error) {
-    console.error("Error in handleOnGenerateGuide:", error);
-    await logErrorToFirestore(uid, error, db);
 
-    // Attempt to update the Firestore document with error information
-    try {
-      await userRef.update({
-        guideStatus: GuideStatus.ERROR,
-        errorMessage:
-          error instanceof Error ? error.message : "An unknown error occurred",
-      });
-    } catch (updateError) {
-      console.error(
-        "Failed to update Firestore with error status:",
-        updateError
-      );
-    }
+    console.log(
+      "Guide generation initiated. Thread ID:",
+      threadId,
+      "Run ID:",
+      runId
+    );
+
+    // Respond immediately to the client that the guide generation has been initiated
+    // This part would be handled by your Express handler, responding with success and the IDs
+  } catch (error) {
+    console.error("Error initiating guide generation:", error);
+    await logErrorToFirestore(uid, error);
   }
 };

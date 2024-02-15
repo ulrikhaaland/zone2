@@ -81,6 +81,7 @@ export default class AuthStore {
     const newUser = user ?? this.user!;
     if (this.user) {
       const userData = {
+        uid: newUser.uid,
         guideItems: newUser.guideItems,
         previousGuideItems:
           newUser.previousGuideItems ?? newUser.guideItems ?? [],
@@ -91,6 +92,8 @@ export default class AuthStore {
         guideStatus: newUser.guideStatus ?? GuideStatus.NONE,
         hasPaid: newUser.hasPaid ?? false,
         retries: newUser.retries ?? 0,
+        guideGenerationRunId: newUser.guideGenerationRunId ?? null,
+        guideGenerationThreadId: newUser.guideGenerationThreadId ?? null,
       };
 
       this.setUser(newUser);
@@ -215,6 +218,9 @@ export default class AuthStore {
           usesCM: data?.usesCM,
           hasPaid: data?.hasPaid,
           guideStatus: data?.guideStatus,
+          retries: data?.retries,
+          guideGenerationRunId: data?.guideGenerationRunId,
+          guideGenerationThreadId: data?.guideGenerationThreadId,
         };
         return user;
       }
@@ -257,7 +263,7 @@ export default class AuthStore {
       userDocRef,
       (doc) => {
         if (doc.exists()) {
-          const data = doc.data();  
+          const data = doc.data();
           // Assuming GuideStatus.LOADING is a valid enum or constant value
           if (
             data.guideStatus !== undefined &&

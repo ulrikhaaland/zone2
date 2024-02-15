@@ -46,7 +46,8 @@ const UserProfile: NextPageWithLayout = () => {
         !isFetching.current
       ) {
         isFetching.current = true;
-        authStore.setUser({ ...user, guideStatus: GuideStatus.LOADING });
+        user.guideStatus = GuideStatus.LOADING;
+        authStore.setUser(user);
         setGuideStatus(GuideStatus.LOADING);
 
         updateDoc(doc(db, "users", user.uid), {

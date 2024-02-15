@@ -1,5 +1,5 @@
 import { ReactElement, useEffect, useState } from "react";
-import { NextPageWithLayout, auth } from "../_app";
+import { NextPageWithLayout, auth, db } from "../_app";
 import { useStore } from "@/RootStoreProvider";
 import { GuideStatus, User } from "@/app/model/user";
 import Guide from "@/app/components/guide";
@@ -10,6 +10,7 @@ import { observer } from "mobx-react";
 import ProfileDesktopLayout from "./DesktopLayout";
 import ProfileMobileLayout from "./MobileLayout";
 import { handleOnGenerateGuide } from "../api/generate";
+import { doc, updateDoc } from "firebase/firestore";
 
 const UserProfile: NextPageWithLayout = () => {
   const { authStore, generalStore } = useStore();
@@ -36,9 +37,14 @@ const UserProfile: NextPageWithLayout = () => {
       console.log("user is already logged in: ", authStore.user);
       const user = authStore.user;
       setUser(user);
-      setGuideStatus(user.guideStatus);
 
-      if (user.guideStatus === GuideStatus.LOADING && user.hasPaid) {
+      if (user.guideStatus === GuideStatus.HASPAID && user.hasPaid) {
+        setGuideStatus(GuideStatus.LOADING);
+        // update user doc with guidestatus
+        updateDoc(doc(db, "users", user.uid), {
+          guideStatus: GuideStatus.LOADING,
+        });
+
         const fitnessData = questToFitnessData(user!.questions);
         fetch("/api/generate", {
           method: "POST",
@@ -76,6 +82,8 @@ const UserProfile: NextPageWithLayout = () => {
             unsubscribe();
           }
         };
+      } else {
+        setGuideStatus(user.guideStatus);
       }
     }
   }, [authStore, authStore.user]);

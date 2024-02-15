@@ -10,6 +10,7 @@ import {
 
 export enum GuideStatus {
   NONE = "NONE",
+  HASPAID = "HASPAID",
   LOADING = "LOADING",
   LOADED = "LOADED",
   ERROR = "ERROR",

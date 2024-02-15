@@ -78,7 +78,7 @@ async function handleCheckoutSessionCompleted(event: Stripe.Event) {
       const userRef = db.collection("users").doc(clientReferenceId);
       await userRef.update({
         hasPaid: true,
-        guideStatus: GuideStatus.LOADING,
+        guideStatus: GuideStatus.HASPAID,
       });
       console.log("User document updated with hasPaid = true");
 

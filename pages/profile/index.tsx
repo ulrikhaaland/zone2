@@ -30,6 +30,9 @@ const UserProfile: NextPageWithLayout = () => {
     authStore.updateUserData(updatedUser);
   };
 
+  // Inside your component
+  const [isFetching, setIsFetching] = useState(false);
+
   useEffect(() => {
     if (!authStore.user) {
       authStore.checkAuth();
@@ -38,56 +41,62 @@ const UserProfile: NextPageWithLayout = () => {
       const user = authStore.user;
       setUser(user);
 
-      if (user.guideStatus === GuideStatus.LOADING && user.hasPaid) {
-        // authStore.setUser({ ...user, guideStatus: GuideStatus.LOADING });
-        // setGuideStatus(GuideStatus.LOADING);
-        // // update user doc with guidestatus
-        // updateDoc(doc(db, "users", user.uid), {
-        //   guideStatus: GuideStatus.LOADING,
-        // });
+      if (
+        user.guideStatus === GuideStatus.HASPAID &&
+        user.hasPaid &&
+        !isFetching
+      ) {
+        setIsFetching(true); // Set flag to prevent re-entry
+        authStore.setUser({ ...user, guideStatus: GuideStatus.LOADING });
+        setGuideStatus(GuideStatus.LOADING);
 
-        // const fitnessData = questToFitnessData(user!.questions);
-        // fetch("/api/generate", {
-        //   method: "POST",
-        //   headers: {
-        //     "Content-Type": "application/json",
-        //   },
-        //   body: JSON.stringify({
-        //     fitnessData: fitnessData,
-        //     uid: user!.uid,
-        //   }),
-        // });
+        updateDoc(doc(db, "users", user.uid), {
+          guideStatus: GuideStatus.LOADING,
+        }).then(() => {
+          fetch("/api/generate", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              fitnessData: questToFitnessData(user!.questions),
+              uid: user!.uid,
+            }),
+          })
+            .then(() => {
+              setIsFetching(false); // Reset flag after fetch completes
+            })
+            .catch((error) => {
+              console.error("Fetch error:", error);
+              setIsFetching(false); // Ensure flag is reset even if fetch fails
+            });
+        });
+
         console.log("user is in guide loading status: ", user);
 
         // Setup listener for guideStatus updates
         const unsubscribe = authStore.listenToUserGuideStatus(
-          (newGuideStatus: GuideStatus) => {
+          (newGuideStatus) => {
             console.log("new guide status: ", newGuideStatus);
             if (newGuideStatus === GuideStatus.LOADED) {
-              // Unsubscribe when guideStatus becomes LOADED
               console.log("Guide is loaded, unsubscribing from updates.");
               onGuideLoaded();
-              if (typeof unsubscribe === "function") {
-                unsubscribe();
-              }
+              unsubscribe?.();
             } else {
-              // Handle other guide status updates here
               onGuideLoaded();
             }
           }
         );
 
-        // Cleanup function to unsubscribe, only if unsubscribe is a function
+        // Cleanup function to unsubscribe
         return () => {
-          if (typeof unsubscribe === "function") {
-            unsubscribe();
-          }
+          unsubscribe?.();
         };
       } else {
         setGuideStatus(user.guideStatus);
       }
     }
-  }, [authStore, authStore.user]);
+  }, [authStore, authStore.user, user, isFetching]); // Note: Added isFetching to the dependencies
 
   const onGuideLoaded = () => {
     authStore

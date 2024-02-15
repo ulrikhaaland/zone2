@@ -257,6 +257,7 @@ export default class AuthStore {
       userDocRef,
       (doc) => {
         if (doc.exists()) {
+          console.log("User document data:", doc.data());
           const data = doc.data();
           // Assuming GuideStatus.LOADING is a valid enum or constant value
           if (

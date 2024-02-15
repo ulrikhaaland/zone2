@@ -114,7 +114,7 @@ export default function Guide(props: GuideProps) {
         ) : (
           <GuideSkeletonDesktop />
         );
-      case GuideStatus.ERROR:
+      case GuideStatus.ERROR || GuideStatus.HASPAID:
         return (
           <div className="flex flex-col justify-center items-center h-full">
             <p className="text-whitebg text-center mb-4">

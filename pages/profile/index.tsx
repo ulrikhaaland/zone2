@@ -95,7 +95,7 @@ const UserProfile: NextPageWithLayout = () => {
         setGuideStatus(user.guideStatus);
       }
     }
-  }, [authStore.user]); // Note: Added isFetching to the dependencies
+  }, [authStore.user]);
 
   const onGuideLoaded = () => {
     authStore

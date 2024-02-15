@@ -38,16 +38,19 @@ const UserProfile: NextPageWithLayout = () => {
       setUser(user);
       setGuideStatus(user.guideStatus);
 
-      if (
-        authStore.user.guideStatus === GuideStatus.LOADING &&
-        authStore.user.hasPaid
-      ) {
-        setGuideStatus(authStore.user.guideStatus);
-        handleOnGenerateGuide(
-          questToFitnessData(authStore.user.questions),
-          authStore.user.uid
-        );
-        console.log("user is in guide loading status: ", authStore.user);
+      if (user.guideStatus === GuideStatus.LOADING && user.hasPaid) {
+        const fitnessData = questToFitnessData(user!.questions);
+        fetch("/api/generate", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            fitnessData: fitnessData,
+            uid: user!.uid,
+          }),
+        });
+        console.log("user is in guide loading status: ", user);
 
         // Setup listener for guideStatus updates
         const unsubscribe = authStore.listenToUserGuideStatus(

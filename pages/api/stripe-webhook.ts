@@ -84,6 +84,7 @@ async function handleCheckoutSessionCompleted(event: Stripe.Event) {
 
       const doc = await userRef.get();
 
+      //TODO: handle in client
       if (doc.exists) {
         const data = doc.data();
 
@@ -94,9 +95,7 @@ async function handleCheckoutSessionCompleted(event: Stripe.Event) {
           });
         }
 
-        const fitnessData = questToFitnessData(data?.questions);
-
-        handleOnGenerateGuide(fitnessData, clientReferenceId, 0, db, userRef);
+        return;
       }
     } catch (error) {
       await updateUserWithPaymentError(clientReferenceId);

@@ -33,30 +33,30 @@ const UserProfile: NextPageWithLayout = () => {
   useEffect(() => {
     if (!authStore.user) {
       authStore.checkAuth();
-    } else {
+    } else if (!user) {
       console.log("user is already logged in: ", authStore.user);
       const user = authStore.user;
       setUser(user);
 
-      if (user.guideStatus === GuideStatus.HASPAID && user.hasPaid) {
-        authStore.setUser({ ...user, guideStatus: GuideStatus.LOADING });
-        setGuideStatus(GuideStatus.LOADING);
-        // update user doc with guidestatus
-        updateDoc(doc(db, "users", user.uid), {
-          guideStatus: GuideStatus.LOADING,
-        });
+      if (user.guideStatus === GuideStatus.LOADING && user.hasPaid) {
+        // authStore.setUser({ ...user, guideStatus: GuideStatus.LOADING });
+        // setGuideStatus(GuideStatus.LOADING);
+        // // update user doc with guidestatus
+        // updateDoc(doc(db, "users", user.uid), {
+        //   guideStatus: GuideStatus.LOADING,
+        // });
 
-        const fitnessData = questToFitnessData(user!.questions);
-        fetch("/api/generate", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            fitnessData: fitnessData,
-            uid: user!.uid,
-          }),
-        });
+        // const fitnessData = questToFitnessData(user!.questions);
+        // fetch("/api/generate", {
+        //   method: "POST",
+        //   headers: {
+        //     "Content-Type": "application/json",
+        //   },
+        //   body: JSON.stringify({
+        //     fitnessData: fitnessData,
+        //     uid: user!.uid,
+        //   }),
+        // });
         console.log("user is in guide loading status: ", user);
 
         // Setup listener for guideStatus updates

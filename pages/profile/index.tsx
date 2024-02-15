@@ -39,6 +39,7 @@ const UserProfile: NextPageWithLayout = () => {
       setUser(user);
 
       if (user.guideStatus === GuideStatus.HASPAID && user.hasPaid) {
+        authStore.setUser({ ...user, guideStatus: GuideStatus.LOADING });
         setGuideStatus(GuideStatus.LOADING);
         // update user doc with guidestatus
         updateDoc(doc(db, "users", user.uid), {

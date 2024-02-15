@@ -74,7 +74,11 @@ const UserProfile: NextPageWithLayout = () => {
               isFetching.current = false;
             });
         });
+      } else {
+        setGuideStatus(guideStatus);
+      }
 
+      if (guideStatus === GuideStatus.LOADING) {
         console.log("user is in guide loading status: ", user);
 
         // Setup listener for guideStatus updates
@@ -95,8 +99,6 @@ const UserProfile: NextPageWithLayout = () => {
         return () => {
           unsubscribe?.();
         };
-      } else {
-        setGuideStatus(guideStatus);
       }
     }
   }, [authStore.user]);

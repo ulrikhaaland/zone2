@@ -1,4 +1,4 @@
-import { ReactElement, useEffect, useState } from "react";
+import { ReactElement, useEffect, useRef, useState } from "react";
 import { NextPageWithLayout, auth, db } from "../_app";
 import { useStore } from "@/RootStoreProvider";
 import { GuideStatus, User } from "@/app/model/user";
@@ -30,8 +30,7 @@ const UserProfile: NextPageWithLayout = () => {
     authStore.updateUserData(updatedUser);
   };
 
-  // Inside your component
-  const [isFetching, setIsFetching] = useState(false);
+  const isFetching = useRef<boolean>(false);
 
   useEffect(() => {
     if (!authStore.user) {
@@ -44,9 +43,9 @@ const UserProfile: NextPageWithLayout = () => {
       if (
         user.guideStatus === GuideStatus.HASPAID &&
         user.hasPaid &&
-        !isFetching
+        !isFetching.current
       ) {
-        setIsFetching(true); // Set flag to prevent re-entry
+        isFetching.current = true;
         authStore.setUser({ ...user, guideStatus: GuideStatus.LOADING });
         setGuideStatus(GuideStatus.LOADING);
 
@@ -64,11 +63,11 @@ const UserProfile: NextPageWithLayout = () => {
             }),
           })
             .then(() => {
-              setIsFetching(false); // Reset flag after fetch completes
+              isFetching.current = false;
             })
             .catch((error) => {
               console.error("Fetch error:", error);
-              setIsFetching(false); // Ensure flag is reset even if fetch fails
+              isFetching.current = false;
             });
         });
 

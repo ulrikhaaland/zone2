@@ -267,7 +267,10 @@ export default class AuthStore {
             console.log("Guide Status updated:", data.guideStatus);
             // Call the callback function with the new guide status
             onGuideStatusUpdate(data.guideStatus);
-          } else if (data.guideStatus === GuideStatus.LOADING) {
+          } else if (
+            data.guideStatus === GuideStatus.LOADING ||
+            data.guideStatus === GuideStatus.HASPAID
+          ) {
             console.log("Guide status is loading, no action taken.");
           } else {
             console.log("No guideStatus found in user document");

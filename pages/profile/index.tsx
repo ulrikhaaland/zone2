@@ -12,7 +12,7 @@ import ProfileMobileLayout from "./MobileLayout";
 import { handleOnGenerateGuide } from "../api/generate";
 import { doc, updateDoc } from "firebase/firestore";
 
-type RunInfo = {
+export type RunInfo = {
   threadId: string | undefined;
   runId: string | undefined;
 };
@@ -40,6 +40,7 @@ const UserProfile: NextPageWithLayout = () => {
   };
 
   const isFetching = useRef<boolean>(false);
+  const isSubscribed = useRef<boolean>(false);
 
   const generateGuide = (user: User) => {
     isFetching.current = true;
@@ -60,13 +61,13 @@ const UserProfile: NextPageWithLayout = () => {
           uid: user!.uid,
         }),
       })
-        .then(async () => {
+        .then(async (value) => {
+          const response = await value.json();
+          const runInfo = response.runInfo;
+          console.log("Run info: ", runInfo);
+          setRunInfo(runInfo);
           console.log("Guide generation request sent.");
           isFetching.current = false;
-          const userData = await authStore.getUserOrCreateIfNotExists(
-            authStore.user!.firebaseUser!
-          );
-          authStore.setUser(userData);
         })
         .catch((error) => {
           console.error("Fetch error:", error);
@@ -98,18 +99,18 @@ const UserProfile: NextPageWithLayout = () => {
       );
       const { status } = await response.json();
       if (status === "completed") {
-        const user = await authStore.getUserOrCreateIfNotExists(
-          authStore.user!.firebaseUser!
-        );
-        setGuideStatus(GuideStatus.LOADED);
-        console.log("Guide is loaded, updating user data." + user.guideItems);
-        authStore.updateUserData({
-          ...user,
-          guideGenerationRunId: undefined,
-          guideGenerationThreadId: undefined,
+        setRunInfo({
+          threadId: undefined,
+          runId: undefined,
         });
-      } else {
+      } else if (status === "in_progress") {
         console.log("Guide generation status: ", status);
+      } else {
+        setRunInfo({
+          threadId: undefined,
+          runId: undefined,
+        });
+        setGuideStatus(GuideStatus.ERROR);
       }
     } catch (error) {
       console.error("Error checking run status:", error);
@@ -136,31 +137,50 @@ const UserProfile: NextPageWithLayout = () => {
       } else {
         setGuideStatus(guideStatus);
       }
-
-      if (guideStatus === GuideStatus.LOADING) {
-        console.log("user is in guide loading status: ", user);
-
-        // Setup listener for guideStatus updates
-        const unsubscribe = authStore.listenToUserGuideStatus(
-          (newGuideStatus) => {
-            console.log("new guide status: ", newGuideStatus);
-            if (newGuideStatus === GuideStatus.LOADED) {
-              console.log("Guide is loaded, unsubscribing from updates.");
-              onGuideLoaded();
-              unsubscribe?.();
-            } else {
-              onGuideLoaded();
-            }
-          }
-        );
-
-        // Cleanup function to unsubscribe
-        return () => {
-          unsubscribe?.();
-        };
-      }
     }
   }, [authStore.user]);
+
+  const getRunInfo = async () => {
+    if (runInfo.threadId === undefined && runInfo.runId === undefined) {
+      const user = await authStore.getUserOrCreateIfNotExists(
+        authStore.user!.firebaseUser!
+      );
+      setRunInfo({
+        threadId: user.guideGenerationThreadId,
+        runId: user.guideGenerationRunId,
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (guideStatus === GuideStatus.LOADING && !isSubscribed.current) {
+      getRunInfo();
+
+      isSubscribed.current = true;
+      console.log("user is in guide loading status: ", user);
+
+      // Setup listener for guideStatus updates
+      const unsubscribe = authStore.listenToUserGuideStatus(
+        (newGuideStatus) => {
+          console.log("new guide status: ", newGuideStatus);
+          if (newGuideStatus === GuideStatus.LOADED) {
+            console.log("Guide is loaded, unsubscribing from updates.");
+            onGuideLoaded();
+            unsubscribe?.();
+            isSubscribed.current = false;
+          } else {
+            onGuideLoaded();
+          }
+        }
+      );
+
+      // Cleanup function to unsubscribe
+      return () => {
+        isSubscribed.current = false;
+        unsubscribe?.();
+      };
+    }
+  }, [guideStatus]);
 
   useEffect(() => {
     if (
@@ -197,6 +217,7 @@ const UserProfile: NextPageWithLayout = () => {
         guideStatus={guideStatus}
         updateUser={updateUser}
         setPageIndex={setPageIndex}
+        genGuide={() => generateGuide(user!)}
       />
     );
   } else {
@@ -207,6 +228,7 @@ const UserProfile: NextPageWithLayout = () => {
         guideStatus={guideStatus}
         updateUser={updateUser}
         setPageIndex={setPageIndex}
+        genGuide={() => generateGuide(user!)}
       />
     );
   }

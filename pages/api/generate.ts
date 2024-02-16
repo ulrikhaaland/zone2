@@ -6,8 +6,8 @@ import {
   fitnessDataToJson,
 } from "../../app/model/user";
 import * as admin from "firebase-admin";
-import { GuideItem, parseJsonToGuideItems } from "../../app/model/guide";
 import { Request, Response } from "express";
+import { RunInfo } from "../profile";
 
 export const maxDuration = 600; // This function can run for a maximum of 5 seconds
 
@@ -28,16 +28,24 @@ const client = new OpenAI({
 
 export default async function handler(req: Request, res: Response) {
   if (req.method === "POST") {
-    const { fitnessData, uid } = req.body;
+    const { fitnessData, uid, key } = req.body;
+
+    if (!fitnessData || !uid) {
+      return res.status(400).json({ error: "Missing fitnessData or uid" });
+    }
 
     try {
       // Initiate guide generation and get the thread and run IDs
-      await handleOnGenerateGuide(fitnessData, uid);
+      const runInfo = await handleOnGenerateGuide(fitnessData, uid);
 
       // Respond with success and indicate that the guide generation is in progress
       res
         .status(202)
-        .json({ success: true, message: "Guide generation initiated" });
+        .json({
+          success: true,
+          runInfo: runInfo,
+          message: "Guide generation initiated",
+        });
     } catch (error) {
       console.error("Error initiating guide generation:", error);
       res
@@ -190,9 +198,8 @@ const initiateGuideGeneration = async (
 
 export const handleOnGenerateGuide = async (
   fitnessData: FitnessData,
-  uid: string,
-  dbAdmin?: admin.firestore.Firestore
-): Promise<void> => {
+  uid: string
+): Promise<RunInfo> => {
   const userRef = db.collection("users").doc(uid);
 
   console.log("RUNNING......" + "path:" + userRef.path + "uid:" + uid);
@@ -201,22 +208,18 @@ export const handleOnGenerateGuide = async (
     const { threadId, runId } = await initiateGuideGeneration(fitnessData);
 
     // Update the user document with the thread and run IDs
-    await userRef.update({
+    userRef.update({
       guideGenerationThreadId: threadId,
       guideGenerationRunId: runId,
     });
 
-    console.log(
-      "Guide generation initiated. Thread ID:",
-      threadId,
-      "Run ID:",
-      runId
-    );
+    return { threadId, runId };
 
     // Respond immediately to the client that the guide generation has been initiated
     // This part would be handled by your Express handler, responding with success and the IDs
   } catch (error) {
     console.error("Error initiating guide generation:", error);
     await logErrorToFirestore(uid, error);
+    throw error;
   }
 };

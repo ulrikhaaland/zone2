@@ -13,6 +13,7 @@ interface ProfileMobileLayoutProps {
   guideStatus: GuideStatus | undefined;
   updateUser: (questions: Question[]) => void;
   setPageIndex: (index: number) => void;
+  genGuide: () => void;
 }
 
 const ProfileMobileLayout: React.FC<ProfileMobileLayoutProps> = ({
@@ -21,6 +22,7 @@ const ProfileMobileLayout: React.FC<ProfileMobileLayoutProps> = ({
   guideStatus,
   updateUser,
   setPageIndex,
+  genGuide,
 }) => {
   return (
     <div className="w-full pt-16 font-custom h-full overflow-hidden relative">
@@ -149,6 +151,7 @@ const ProfileMobileLayout: React.FC<ProfileMobileLayoutProps> = ({
                   key={guideStatus}
                   guideItems={user.guideItems}
                   status={guideStatus!}
+                  generateGuide={() => genGuide()}
                 />
               )}
               {pageIndex === 1 && user && (

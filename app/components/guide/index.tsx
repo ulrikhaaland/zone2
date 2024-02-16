@@ -14,6 +14,7 @@ import { questToFitnessData } from "@/app/model/questionaire";
 interface GuideProps {
   guideItems?: GuideItem[];
   status: GuideStatus;
+  generateGuide: () => void;
 }
 
 export default function Guide(props: GuideProps) {
@@ -52,28 +53,7 @@ export default function Guide(props: GuideProps) {
     setExpandedItemId(item.id);
   };
 
-  const generateGuide = async () => {
-    setStatus(GuideStatus.LOADING);
-    const user: User = {
-      ...authStore.user!,
-      guideStatus: GuideStatus.LOADING,
-      retries: (authStore.user?.retries ?? 0) + 1,
-    };
-
-    authStore.updateUserData(user).then(() => {
-      const fitnessData = questToFitnessData(user!.questions);
-      fetch("/api/generate", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          fitnessData: fitnessData,
-          uid: user!.uid,
-        }),
-      });
-    });
-  };
+  
 
   const renderGuideItems = (items: GuideItem[]) => (
     <ul className="list-none p-0">
@@ -122,7 +102,7 @@ export default function Guide(props: GuideProps) {
             </p>
             <button
               className="flex justify-center items-center font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline transition duration-150 ease-in-out bg-whitebg text-black border border-gray-700"
-              onClick={() => generateGuide()}
+              onClick={() => props.generateGuide()}
               disabled={user !== undefined && user!.retries! >= 5}
             >
               <ReplayIcon className="mr-2" style={{ color: "black" }} />

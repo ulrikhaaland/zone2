@@ -13,6 +13,7 @@ interface ProfileDesktopLayoutProps {
   guideStatus: GuideStatus | undefined;
   updateUser: (questions: Question[]) => void;
   setPageIndex: (index: number) => void;
+  genGuide: () => void;
 }
 
 const ProfileDesktopLayout: React.FC<ProfileDesktopLayoutProps> = ({
@@ -21,6 +22,7 @@ const ProfileDesktopLayout: React.FC<ProfileDesktopLayoutProps> = ({
   guideStatus,
   updateUser,
   setPageIndex,
+  genGuide,
 }) => {
   return (
     <div className="w-full font-custom h-screen overflow-hidden relative">
@@ -153,6 +155,7 @@ const ProfileDesktopLayout: React.FC<ProfileDesktopLayoutProps> = ({
                   key={guideStatus}
                   guideItems={user.guideItems}
                   status={guideStatus!}
+                  generateGuide={() => genGuide()}
                 />
               )}
               {pageIndex === 1 && user && (

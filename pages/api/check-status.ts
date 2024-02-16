@@ -70,13 +70,16 @@ export default async function handler(req: Request, res: Response) {
         guideItems[1].expanded = true;
       } catch (error) {
         console.error("Error parsing guide JSON:", error);
-
         await logErrorToFirestore(uid, error);
+        res.status(200).json({ status: "error" });
+
         throw new Error("Error parsing guide JSON");
       }
 
       if (guideItems.length === 0) {
         await logErrorToFirestore(uid, "No guide items generated from JSON");
+        res.status(200).json({ status: "error" });
+
         throw new Error("No guide items generated from JSON");
       }
 
@@ -84,6 +87,8 @@ export default async function handler(req: Request, res: Response) {
         guideItems: guideItems,
         guideStatus: GuideStatus.LOADED,
         retries: 0,
+        guideGenerationRunId: null,
+        guideGenerationThreadId: null,
       });
 
       res.status(200).json({ status: "completed" });

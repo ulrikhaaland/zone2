@@ -44,7 +44,7 @@ const CheckoutPage = (props: CheckoutPageProps) => {
         <div className="flex flex-col mb-4">
           <span className="text-1xl font-semibold mt-4">One Time Purchase</span>
           <div className="flex items-start mt-2">
-            <span className="text-3xl font-bold">$9.99</span>
+            <span className="text-3xl font-bold">$6.99</span>
           </div>
         </div>
         <h2 className="text-xl font-bold mb-2">

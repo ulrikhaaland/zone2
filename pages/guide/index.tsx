@@ -96,8 +96,8 @@ const HomePage: NextPageWithLayout = () => {
     const isLocal = window.location.hostname === "localhost";
 
     const stripeUrl = isLocal
-      ? "https://buy.stripe.com/28o034f8xeAZczC7ss"
-      : "https://buy.stripe.com/test_cN2044gfnd7Udvq4gh";
+      ? "https://buy.stripe.com/test_4gwaII0gpc3QfDy7ss"
+      : "https://buy.stripe.com/28o034f8xeAZczC7ss";
     const prefilledEmail = user!.firebaseUser?.email ?? "";
 
     window.location.href = `${stripeUrl}?prefilled_email=${encodeURIComponent(

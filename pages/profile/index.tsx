@@ -39,13 +39,21 @@ const UserProfile: NextPageWithLayout = () => {
     authStore.updateUserData(updatedUser);
   };
 
+  useEffect(() => {
+    if (user) {
+      setGuideStatus(user.guideStatus);
+    }
+  }, [user]);
+
   const isFetching = useRef<boolean>(false);
   const isSubscribed = useRef<boolean>(false);
 
   const generateGuide = (user: User) => {
     isFetching.current = true;
-    user.guideStatus = GuideStatus.LOADING;
-    authStore.setUser(user);
+    const newUser = { ...user, guideStatus: GuideStatus.LOADING };
+    authStore.setUser(newUser);
+    console.log("user is in guide loading status: ", newUser.guideStatus);
+    setUser(newUser);
     setGuideStatus(GuideStatus.LOADING);
 
     updateDoc(doc(db, "users", user.uid), {
@@ -123,11 +131,7 @@ const UserProfile: NextPageWithLayout = () => {
     } else if (!user) {
       console.log("user is already logged in: ", authStore.user);
       const user = authStore.user;
-      setUser(user);
-      const guideStatus =
-        user.guideStatus === GuideStatus.HASPAID
-          ? GuideStatus.LOADING
-          : user.guideStatus;
+
       if (
         user.guideStatus === GuideStatus.HASPAID &&
         user.hasPaid &&
@@ -135,7 +139,9 @@ const UserProfile: NextPageWithLayout = () => {
       ) {
         generateGuide(user);
       } else {
-        setGuideStatus(guideStatus);
+        if (isFetching.current) {
+          setUser({ ...user, guideStatus: GuideStatus.LOADING });
+        } else setUser(user);
       }
     }
   }, [authStore.user]);

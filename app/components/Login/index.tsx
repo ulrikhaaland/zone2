@@ -16,6 +16,8 @@ export default function Login() {
 
   const isGuide = router.pathname === "/guide";
 
+  const isHeartRateZones = router.pathname === "/heartratecalculator";
+
   const [emailSent, setEmailSent] = useState(false);
 
   const [loading, setLoading] = useState(false);
@@ -72,9 +74,22 @@ export default function Login() {
     }
   }, [router]);
 
+  const getTitle = () => {
+    if (emailSent) return "Check your email";
+    let pageString = "";
+
+    if (isGuide) {
+      pageString = " to get your guide";
+    }
+    if (isHeartRateZones) {
+      pageString = " to get your heart rate zones";
+    }
+    return "Please sign up" + pageString;
+  };
+
   return (
     <div
-      className="flex text-whitebg"
+      className="flex text-whitebg w-full"
       style={{
         position: "fixed",
         top: "50%",
@@ -84,8 +99,8 @@ export default function Login() {
         textShadow: "10px 10px 10px rgba(0,0,0,1)",
       }}
     >
-      <div className="p-10 xs:p-0 mx-auto w-full md:max-w-md">
-        <IconButton
+      <div className="px-4 xs:p-0 mx-auto w-full md:max-w-md">
+        {/* <IconButton
           sx={{
             position: "relative",
             top: 0,
@@ -102,14 +117,10 @@ export default function Login() {
           }}
         >
           <CloseIcon className="my-2" />
-        </IconButton>
-        <div className="bg-black bg-opacity-80 p-8 rounded-lg border border-gray-700 text-whitebg">
-          <div className="px-5 pt-7">
-            <h2 className="text-3xl font-bold mb-6">
-              {emailSent
-                ? "Email Sent!"
-                : `Please sign up ${isGuide ? "to get your guide" : ""}`}
-            </h2>
+        </IconButton> */}
+        <div className="bg-black bg-opacity-80 md:p-12 p-8 rounded-lg border border-gray-700 text-whitebg">
+          <div className="md:px-5">
+            <h2 className="text-3xl font-bold mb-6">{getTitle()}</h2>
             {!message ? (
               <form onSubmit={handleSendLink} className="flex flex-col gap-6">
                 <input

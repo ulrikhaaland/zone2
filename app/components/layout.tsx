@@ -22,7 +22,9 @@ function Layout({ children }: { children: React.ReactNode }) {
 
   const getShowHeader = (): boolean => {
     if (isMobileView) {
-      if (!user) return false;
+      if (!user) {
+        if (isHome) return false;
+      }
 
       return true;
       if (isGuide) {
@@ -50,7 +52,7 @@ function Layout({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (hasCheckedAuth && !user && !isHome) {
-      router.push("/");
+      setOpen(true);
     }
   }, [hasCheckedAuth, user, isHome]);
 
@@ -70,7 +72,7 @@ function Layout({ children }: { children: React.ReactNode }) {
       </Head>
       {getShowHeader() && <Header></Header>}
       <div
-        className={`font-custom ${"bg-black"} text-black w-full`} // pt-18 provides padding top to account for the fixed header
+        className={`font-custom ${"bg-black"} text-black w-full`}
         style={{
           height: `100dvh`,
           display: "flex",
@@ -85,7 +87,7 @@ function Layout({ children }: { children: React.ReactNode }) {
         sx={{ zIndex: 100 }}
         open={open && showLogin}
         onClick={() => {
-          if (isGuide && !user) return;
+          if (!user) return;
           setOpen(false);
           authStore.setFromPath(undefined);
         }}

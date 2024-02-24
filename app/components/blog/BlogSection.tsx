@@ -1,15 +1,15 @@
 import React from "react";
-import { GuideItem } from "@/app/model/guide";
+import { BlogItem } from "@/app/model/guide";
 import { useStore } from "@/RootStoreProvider";
 
-interface GuideSectionProps {
-  item: GuideItem;
+interface BlogSectionProps {
+  item: BlogItem;
   isSubItem?: boolean;
   isLast?: boolean;
-  onExpand?: (item: GuideItem) => void;
+  onExpand?: (item: BlogItem) => void;
 }
 
-const GuideSection: React.FC<GuideSectionProps> = ({
+const BlogSection: React.FC<BlogSectionProps> = ({
   item,
   isSubItem,
   isLast,
@@ -88,7 +88,7 @@ const GuideSection: React.FC<GuideSectionProps> = ({
             <div className={childContainerClass}>
               <ul className="list-none">
                 {item.subItems?.map((subItem) => (
-                  <GuideSection
+                  <BlogSection
                     key={subItem.id}
                     item={{ ...subItem, expanded: true }}
                     isSubItem={true}
@@ -103,4 +103,4 @@ const GuideSection: React.FC<GuideSectionProps> = ({
   );
 };
 
-export default GuideSection;
+export default BlogSection;

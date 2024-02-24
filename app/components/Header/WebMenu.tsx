@@ -20,6 +20,8 @@ function WebMenu({ router, authStore }: WebMenuProps) {
 
   const isProfile = pathName === "/profile";
 
+  const isHeartRateZones = pathName === "/heartratecalculator";
+
   useEffect(() => {}, [authStore.user, router.pathname, pathName]);
 
   return (
@@ -31,7 +33,7 @@ function WebMenu({ router, authStore }: WebMenuProps) {
     >
       <p
         onClick={() => {
-          user ? router.push("/guide") : authStore.setOpen(!authStore.open);
+          router.push("/guide");
         }}
         style={{
           cursor: "pointer",
@@ -47,20 +49,27 @@ function WebMenu({ router, authStore }: WebMenuProps) {
       >
         Create Zone 2 Guide
       </p>
-      {/* <p
-        onClick={() => router.push("/zone2-calculator")}
-        style={{ cursor: "pointer" }}
-        className="text-lg font-semibold leading-6 text-whitebg group-hover:text-secondary-button"
-      >
-        Zone 2 Heart Rate Calculator
-      </p>
       <p
+        onClick={() => router.push("/heartratecalculator")}
+        style={{ cursor: "pointer" }}
+        className={`text-lg font-semibold leading-6 
+        ${isHome && "text-whitebg hover:text-gray-300"}  
+        ${
+          isHeartRateZones
+            ? "text-whitebg hover:text-gray-300"
+            : !isHome && "text-gray-500 hover:text-gray-300"
+        }
+        `}
+      >
+        Training Zones
+      </p>
+      {/* <p
         onClick={() => router.push("/zone2-content")}
         style={{ cursor: "pointer" }}
         className="text-lg font-semibold leading-6 text-whitebg group-hover:text-secondary-button"
       >
         Zone 2 Content
-      </p> */}
+      </p>  */}
 
       {!user ||
         (user?.hasPaid && (

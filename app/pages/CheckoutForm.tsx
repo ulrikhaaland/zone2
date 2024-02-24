@@ -1,27 +1,11 @@
 import React from "react";
-import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
-import { AiOutlineArrowLeft } from "react-icons/ai";
 import { useStore } from "@/RootStoreProvider";
 
 interface CheckoutPageProps {}
 
 const CheckoutPage = (props: CheckoutPageProps) => {
-  const stripe = useStripe();
-  const elements = useElements();
   const { generalStore } = useStore();
   const { isMobileView } = generalStore;
-
-  // Add logic to handle form submission
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    if (!stripe || !elements) {
-      // Stripe.js has not yet loaded.
-      return;
-    }
-
-    // Add logic to create a payment method and handle the payment
-  };
 
   return (
     <div
@@ -47,9 +31,7 @@ const CheckoutPage = (props: CheckoutPageProps) => {
             <span className="text-3xl font-bold">$6.99</span>
           </div>
         </div>
-        <h2 className="text-xl font-bold mb-2">
-          Includes:
-        </h2>
+        <h2 className="text-xl font-bold mb-2">Includes:</h2>
         <ul className="list-disc list-inside">
           <li className="md:mb-2 mb-0 md:text-lg">Expected Benefits</li>
           <li className="md:mb-2 mb-0 md:text-lg">

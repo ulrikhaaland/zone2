@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { GuideStatus, User } from "../../model/user";
-import { GuideItem } from "../../model/guide";
-import GuideSection from "./GuideSection";
+import { BlogItem } from "../../model/guide";
+import GuideSection from "../blog/BlogSection";
 import "./styles.css";
 import { GuideSkeletonDesktop, GuideSkeletonMobile } from "./skeleton";
 import { Create as CreateIcon } from "@mui/icons-material";
@@ -12,7 +12,7 @@ import { handleOnGenerateGuide } from "@/pages/api/generate";
 import { questToFitnessData } from "@/app/model/questionaire";
 
 interface GuideProps {
-  guideItems?: GuideItem[];
+  guideItems?: BlogItem[];
   status: GuideStatus;
   generateGuide: () => void;
 }
@@ -24,7 +24,7 @@ export default function Guide(props: GuideProps) {
 
   const router = useRouter();
 
-  const [guideItems, setGuideItems] = useState<GuideItem[]>(
+  const [guideItems, setGuideItems] = useState<BlogItem[]>(
     props.guideItems || []
   );
   const [status, setStatus] = useState(props.status);
@@ -49,13 +49,11 @@ export default function Guide(props: GuideProps) {
       }
     }
   }, [expandedItemId]);
-  const handleExpand = (item: GuideItem) => {
+  const handleExpand = (item: BlogItem) => {
     setExpandedItemId(item.id);
   };
 
-  
-
-  const renderGuideItems = (items: GuideItem[]) => (
+  const renderGuideItems = (items: BlogItem[]) => (
     <ul className="list-none p-0">
       {items.map((item, index) => (
         <GuideSection

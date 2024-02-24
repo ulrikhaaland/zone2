@@ -15,6 +15,7 @@ export interface Question {
   canSkip?: boolean;
   hasSkipped?: boolean;
   description: string;
+  hrZoneDescription?: string;
   jumpToQuestionId?: number;
   placeholder?: string;
   hasError?: boolean;
@@ -39,6 +40,8 @@ export const questionnaireList: Question[] = [
     identifier: "age",
     description:
       "Your age helps us tailor an exercise program that's appropriate for your life stage, considering factors like metabolism, recovery time, and exercise capacity.",
+    hrZoneDescription:
+      "If you don't know your resting and maximal heart rate we will use your age to calculate your heart rate zones.",
     placeholder: "Enter your age",
   },
   {
@@ -159,6 +162,8 @@ export const questionnaireList: Question[] = [
     identifier: "restingHeartRate",
     description:
       "Your resting heart rate is a key indicator of your cardiovascular health and fitness level. It helps us tailor the intensity of your exercises and monitor your improvements over time.",
+    hrZoneDescription:
+      "Your resting heart rate, or pulse, is the number of times your heart beats per minute when you are at rest — such as when you are relaxed, sitting or lying down.",
     placeholder: "Enter your resting heart rate in bpm",
   },
   {
@@ -169,6 +174,8 @@ export const questionnaireList: Question[] = [
     identifier: "maxHeartRate",
     description:
       "Knowing your maximum heart rate is crucial for calculating the appropriate heart rate zones for your training, especially in cardiovascular exercises like Zone 2 training.",
+    hrZoneDescription:
+      "Your maximum heart rate is the highest heart rate you can achieve during maximal or exhaustive exercise.",
     placeholder: "Enter your max heart rate in bpm",
   },
   {

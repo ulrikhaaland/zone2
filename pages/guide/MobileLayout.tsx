@@ -83,112 +83,116 @@ const Zone2GuideMobileLayout: React.FC<Zone2GuideMobileLayoutProps> = ({
         ></div>
       </div>
 
-      <div className="pt-16 flex overflow-y-auto flex-col items-center relative">
-        <div
-          className="w-full"
-          style={{
-            height: "calc(100dvh - 50px)",
-          }}
-        >
-          <AnimatePresence mode="wait">
-            <motion.div
-              className="relative z-0" // Ensure content is below the overlays
-              key={pageIndex}
-              initial={{ opacity: 0, x: getInitial() }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{
-                opacity: 0,
-                x: pageIndex === 1 ? (forward ? -100 : 100) : getExit(),
-              }}
-              transition={{ duration: 0.25 }}
-            >
-              {pageIndex === 0 && (
-                <Questionnaire
-                  key={userID}
-                  onQuestCompleted={handleOnQuestCompleted}
-                  user={
-                    user ?? {
-                      uid: "0",
-                      questions: [],
-                      guideItems: [],
-                      firebaseUser: undefined,
-                      usesCM: true,
-                      usesKG: true,
-                      credits: 0,
+      {user && (
+        <div className="pt-16 flex overflow-y-auto flex-col items-center relative">
+          <div
+            className="w-full"
+            style={{
+              height: "calc(100dvh - 50px)",
+            }}
+          >
+            <AnimatePresence mode="wait">
+              <motion.div
+                className="relative z-0" // Ensure content is below the overlays
+                key={pageIndex}
+                initial={{ opacity: 0, x: getInitial() }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{
+                  opacity: 0,
+                  x: pageIndex === 1 ? (forward ? -100 : 100) : getExit(),
+                }}
+                transition={{ duration: 0.25 }}
+              >
+                {pageIndex === 0 && (
+                  <Questionnaire
+                    key={userID}
+                    onQuestCompleted={handleOnQuestCompleted}
+                    user={
+                      user ?? {
+                        uid: "0",
+                        questions: [],
+                        guideItems: [],
+                        firebaseUser: undefined,
+                        usesCM: true,
+                        usesKG: true,
+                        credits: 0,
+                      }
                     }
-                  }
-                  questions={questions}
-                  canSubmit={setCanSubmit}
-                  isProfile={false}
-                />
-              )}
-              {pageIndex === 1 && (
-                <UserInfoConfirmationPage
-                  fitnessData={questToFitnessData(questions!)} // Adjust accordingly if you have a different method to transform questions to fitnessData
-                  user={user!}
-                />
-              )}
-              {pageIndex === 2 && (
-                <Elements stripe={stripePromise}>
-                  <CheckoutPage />
-                </Elements>
-              )}
-            </motion.div>
-          </AnimatePresence>
+                    questions={questions}
+                    canSubmit={setCanSubmit}
+                    isProfile={false}
+                  />
+                )}
+                {pageIndex === 1 && (
+                  <UserInfoConfirmationPage
+                    fitnessData={questToFitnessData(questions!)} // Adjust accordingly if you have a different method to transform questions to fitnessData
+                    user={user!}
+                  />
+                )}
+                {pageIndex === 2 && (
+                  <Elements stripe={stripePromise}>
+                    <CheckoutPage />
+                  </Elements>
+                )}
+              </motion.div>
+            </AnimatePresence>
+          </div>
         </div>
-      </div>
+      )}
       {/* Button Container */}
-      <div className="fixed bg-black h-[80px] flex justify-between items-center px-4 py-6 inset-x-0 bottom-0  left-0 right-0 z-20">
-        {pageIndex !== 0 ? (
-          <button
-            className="flex items-center font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline
+      {user && (
+        <div className="fixed bg-black h-[80px] flex justify-between items-center px-4 py-6 inset-x-0 bottom-0  left-0 right-0 z-20">
+          {pageIndex !== 0 ? (
+            <button
+              className="flex items-center font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline
                 bg-black text-whitebg border border-gray-700 transition duration-150 ease-in-out hover:bg-gray-900"
-            type="button"
-            onClick={() => onBack(forward)}
-          >
-            <AiOutlineArrowLeft className="mr-2" /> Back
-          </button>
-        ) : (
-          <button
-            className="flex opacity-0 items-center font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline
+              type="button"
+              onClick={() => onBack(forward)}
+            >
+              <AiOutlineArrowLeft className="mr-2" /> Back
+            </button>
+          ) : (
+            <button
+              className="flex opacity-0 items-center font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline
                 bg-black text-whitebg border border-gray-700 transition duration-150 ease-in-out hover:bg-gray-900"
-            type="button"
-            disabled={true}
-            onClick={() => onBack(forward)}
+              type="button"
+              disabled={true}
+              onClick={() => onBack(forward)}
+            >
+              <AiOutlineArrowLeft className="mr-2" /> Back
+            </button>
+          )}
+          {/* Pagination dots */}
+          <div className="flex items-center">
+            {[0, 1, 2].map((index) => (
+              <span
+                key={index}
+                className={`h-2 w-2 mx-1 rounded-full ${
+                  pageIndex === index ? "bg-whitebg" : "bg-gray-600"
+                }`}
+              ></span>
+            ))}
+          </div>
+          <button
+            className={`font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline transition duration-150 ease-in-out ${
+              canSubmit
+                ? "bg-blue-600 hover:bg-blue-800 text-whitebg"
+                : "bg-secondary-button-dark text-whitebg opacity-50 cursor-not-allowed"
+            }`}
+            type="submit"
+            disabled={!canSubmit}
+            onClick={(e) => {
+              if (canSubmit) {
+                onConfirm(forward);
+              } else {
+                e.preventDefault();
+              }
+            }}
           >
-            <AiOutlineArrowLeft className="mr-2" /> Back
+            {pageIndex !== 2 ? "Continue" : "Purchase"}
           </button>
-        )}
-        {/* Pagination dots */}
-        <div className="flex items-center">
-          {[0, 1, 2].map((index) => (
-            <span
-              key={index}
-              className={`h-2 w-2 mx-1 rounded-full ${
-                pageIndex === index ? "bg-whitebg" : "bg-gray-600"
-              }`}
-            ></span>
-          ))}
         </div>
-        <button
-          className={`font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline transition duration-150 ease-in-out ${
-            canSubmit
-              ? "bg-blue-600 hover:bg-blue-800 text-whitebg"
-              : "bg-secondary-button-dark text-whitebg opacity-50 cursor-not-allowed"
-          }`}
-          type="submit"
-          disabled={!canSubmit}
-          onClick={(e) => {
-            if (canSubmit) {
-              onConfirm(forward);
-            } else {
-              e.preventDefault();
-            }
-          }}
-        >
-          {pageIndex !== 2 ? "Continue" : "Purchase"}
-        </button>
-      </div>
+      )}
     </div>
   );
 };

@@ -1,6 +1,7 @@
 import {
   HeartRateZone,
   calculateHeartRateZones,
+  zoneDescriptions,
 } from "../utils/HRZonesCalculator";
 import { FitnessLevel, FitnessData } from "./user";
 
@@ -147,7 +148,7 @@ export const questionnaireList: Question[] = [
   },
   {
     id: 10,
-    question: "Do you prefer doing the [chosen exercise] indoors or outdoors?",
+    question: "Do you prefer doing the [chosen exercise] indoors, outdoors, or both?",
     answerType: AnswerType.SELECT,
     availableAnswers: ["Indoors", "Outdoors", "Both"],
     identifier: "indoorOutdoorBoth",
@@ -303,8 +304,9 @@ export function questToFitnessData(answers: Question[]): FitnessData {
   } else {
     zone2HeartRateRange = {
       name: "Zone 2",
-      lowerLimit: 170 - age,
-      higherLimit: 180 - age,
+      lowerLimit: 168 - age,
+      upperLimit: 180 - age,
+      description: zoneDescriptions[1],
     };
   }
 

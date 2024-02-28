@@ -1,7 +1,7 @@
 // import firebase user
 import * as firebaseAuth from "firebase/auth";
 import { HeartRateZone } from "../utils/HRZonesCalculator";
-import { GuideItem } from "./guide";
+import { BlogItem } from "./guide";
 import {
   Question,
   cardioFrequencyAnswers,
@@ -18,8 +18,10 @@ export enum GuideStatus {
 
 export interface User {
   firebaseUser?: firebaseAuth.User;
-  guideItems: GuideItem[];
-  previousGuideItems?: GuideItem[];
+  guideItems: BlogItem[];
+  previousGuideItems?: BlogItem[];
+  fitnessData?: FitnessData;
+  heartRateZones?: HeartRateZone[];
   questions: Question[];
   usesKG: boolean;
   usesCM: boolean;

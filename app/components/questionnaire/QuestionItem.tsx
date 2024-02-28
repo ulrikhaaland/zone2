@@ -430,6 +430,7 @@ export default function QuestionItem(props: QuestionItemProps) {
     }
     return question.question;
   };
+  
   return (
     <animated.div style={anim} className="mb-4">
       <div className="mb-4">

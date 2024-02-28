@@ -51,7 +51,7 @@ const BlogSection: React.FC<BlogSectionProps> = ({
       }`}
     >
       <div
-        className={`flex justify-between items-center cursor-pointer ${
+        className={`flex justify-between items-start cursor-pointer ${
           isSubItem ? "py-2" : "py-4"
         }`}
         onClick={handleToggleExpand}

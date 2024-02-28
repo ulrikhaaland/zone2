@@ -19,6 +19,7 @@ import {
 import { GuideStatus, User } from "../model/user";
 import { auth, db, provider } from "../../pages/_app";
 import { makeObservable, observable, action } from "mobx";
+import { questToFitnessData } from "../model/questionaire";
 
 export default class AuthStore {
   open: boolean = false;
@@ -57,7 +58,7 @@ export default class AuthStore {
         this.setUser(undefined);
         console.log("User is signed out");
       }
-      this.hasCheckedAuth = true;
+      this.setHasCheckedAuth(true);
     });
   };
 
@@ -213,6 +214,7 @@ export default class AuthStore {
           credits: data?.credits,
           guideItems: data?.guideItems,
           previousGuideItems: data?.previousGuideItems,
+          fitnessData: data.questions && questToFitnessData(data?.questions),
           questions: data?.questions,
           usesKG: data?.usesKG,
           usesCM: data?.usesCM,

@@ -1,5 +1,6 @@
 import { AnswerType, Question } from "@/app/model/questionaire";
 import { User } from "@/app/model/user";
+import { on } from "events";
 import { useRouter } from "next/router";
 import { KeyboardEvent, use, useEffect, useRef, useState } from "react";
 import { AiOutlineInfoCircle } from "react-icons/ai";
@@ -20,7 +21,7 @@ export default function HRQuestionItem(props: HRQuestionItemProps) {
 
   const router = useRouter();
 
-  const [answer, setAnswer] = useState<any>(question.answer);
+  const [answer, setAnswer] = useState<string>(question.answer);
   const [showDescription, setShowDescription] = useState(false);
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -61,6 +62,13 @@ export default function HRQuestionItem(props: HRQuestionItemProps) {
     }
   };
 
+  useEffect(() => {
+    if (answer !== question.answer) {
+      setAnswer(question.answer);
+      onAnswer(question.answer);
+    }
+  }, [question.answer, answer, onAnswer]);
+
   return (
     <animated.div style={anim} className="mb-4">
       <div className="mb-4">
@@ -86,7 +94,7 @@ export default function HRQuestionItem(props: HRQuestionItemProps) {
               textShadow: "10px 10px 10px rgba(0,0,0,1)",
             }}
           >
-            {question.hrZoneDescription}
+            {question.hrZoneDescription ?? question.description}
           </p>
         )}
         <input
@@ -97,8 +105,10 @@ export default function HRQuestionItem(props: HRQuestionItemProps) {
           placeholder={question.placeholder}
           value={answer}
           onChange={(e) => {
-            question.answer = e.target.value;
-            setAnswer(e.target.value);
+            const value = e.target.value;
+            question.answer = value;
+            onAnswer(value);
+            setAnswer(value);
           }}
           autoFocus={autoFocus}
           onKeyDown={handleKeyPress}

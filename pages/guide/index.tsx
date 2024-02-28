@@ -32,7 +32,6 @@ const HomePage: NextPageWithLayout = () => {
 
   useEffect(() => {
     if (user && user?.uid !== userID) {
-      console.log("setting user");
       setUserID(user?.uid);
       const newQuestions = user?.questions;
       if (newQuestions) {
@@ -49,7 +48,6 @@ const HomePage: NextPageWithLayout = () => {
       questions: questions,
       guideItems: user?.guideItems ?? [],
     };
-    console.log(newUser);
 
     authStore.setUser(newUser);
   };
@@ -87,10 +85,6 @@ const HomePage: NextPageWithLayout = () => {
       redirectToStripe();
     }
   };
-
-  useEffect(() => {
-    console.log("forward");
-  }, [forward]);
 
   const redirectToStripe = () => {
     const isLocal = window.location.hostname === "localhost";

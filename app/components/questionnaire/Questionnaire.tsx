@@ -34,7 +34,6 @@ export default function Questionnaire(props: QuestionnaireProps) {
       : [questionsFull[0]]
   );
   const [completed, setCompleted] = useState(props.questions ? true : false);
-  const [chosenExercise, setChosenExercise] = useState<string | undefined>();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isScrolling, setIsScrolling] = useState(false); // New state to track scrolling
   const [currentQuestionID, setCurrentQuestionID] = useState<number>(
@@ -132,11 +131,6 @@ export default function Questionnaire(props: QuestionnaireProps) {
 
     let currentQuestion = questions[currentQuestionIndex];
 
-    // handle chosen exercise
-    if (currentQuestion.identifier === "exerciseModality") {
-      setChosenExercise(currentQuestion.answer);
-    }
-
     // has answered all questions
 
     if (previousQuestion) {
@@ -227,7 +221,6 @@ export default function Questionnaire(props: QuestionnaireProps) {
       nextQuestion.hasSkipped = false;
       setQuestions([...currentQuestions, nextQuestion]);
     } else {
-      console.log("completed");
       onQuestCompleted(questions);
       setCompleted(true);
       handleSubmit(new Event("submit"));
@@ -329,7 +322,7 @@ export default function Questionnaire(props: QuestionnaireProps) {
               completed={completed}
               displayError={hasError && question.hasError === true}
               onAnswer={(val) => handleOnQuestionAnswered(question.id)}
-              chosenExercise={chosenExercise?.toLowerCase()}
+              chosenExercise={questions.find((q) => q.id === 9)?.answer?.toLowerCase()}
               user={user}
               isProfile={isProfile}
               onFocusCurrent={(id) => {

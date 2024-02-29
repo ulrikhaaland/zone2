@@ -1,5 +1,5 @@
 // pages/api/check-status.js
-import { GuideItem, parseJsonToGuideItems } from "@/app/model/guide";
+import { BlogItem, parseJsonToGuideItems } from "@/app/model/guide";
 import { GuideStatus } from "@/app/model/user";
 import OpenAI from "openai";
 import { handleOnGenerateGuide } from "./generate";
@@ -63,7 +63,7 @@ export default async function handler(req: Request, res: Response) {
       const content = dataList[0]
         .content[0] as OpenAI.Beta.Threads.Messages.MessageContentText;
       const guide = content.text.value;
-      let guideItems: GuideItem[];
+      let guideItems: BlogItem[];
       try {
         guideItems = parseJsonToGuideItems(guide);
         guideItems[0].expanded = true;

@@ -297,6 +297,7 @@ export function questToFitnessData(answers: Question[]): FitnessData {
   let zone2HeartRateRange: HeartRateZone | undefined = undefined;
   if (maxHeartRate && restingHeartRate) {
     heartRateZones = calculateHeartRateZones(
+      undefined,
       Number(maxHeartRate),
       Number(restingHeartRate)
     );

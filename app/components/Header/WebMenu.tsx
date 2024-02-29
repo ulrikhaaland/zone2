@@ -71,10 +71,9 @@ function WebMenu({ router, authStore }: WebMenuProps) {
         Zone 2 Content
       </p>  */}
 
-      {!user ||
-        (user?.hasPaid && (
-          <p
-            className={`text-lg font-semibold leading-6 group-hover:text-secondary-button
+      {user?.hasPaid && (
+        <p
+          className={`text-lg font-semibold leading-6 group-hover:text-secondary-button
             ${isHome && "text-whitebg hover:text-gray-300"}  
             ${
               isProfile
@@ -82,17 +81,17 @@ function WebMenu({ router, authStore }: WebMenuProps) {
                 : !isHome && "text-gray-500 hover:text-gray-300"
             }
             `}
-            onClick={() => {
-              if (!user) {
-                authStore.setOpen(true);
-                return;
-              } else router.push("/profile");
-            }}
-            style={{ cursor: "pointer" }}
-          >
-            {!user ? "Log in" : "Profile"}
-          </p>
-        ))}
+          onClick={() => {
+            if (!user) {
+              authStore.setOpen(true);
+              return;
+            } else router.push("/profile");
+          }}
+          style={{ cursor: "pointer" }}
+        >
+          {!user ? "Log in" : "Profile"}
+        </p>
+      )}
     </div>
   );
 }

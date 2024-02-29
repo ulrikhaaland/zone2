@@ -91,6 +91,7 @@ const HomePage: NextPageWithLayout = () => {
           hasPaid: true,
         };
         authStore.setUser(newUser);
+        authStore.updateUserData(newUser);
         router.push("/profile");
       } else redirectToStripe();
     }

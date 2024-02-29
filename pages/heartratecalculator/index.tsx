@@ -1,6 +1,6 @@
 import { ReactElement, useEffect, useState } from "react";
 import { NextPageWithLayout } from "../_app";
-import MenuBookIcon from "@mui/icons-material/MenuBook";
+import CategoryIcon from "@mui/icons-material/Category";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { useStore } from "@/RootStoreProvider";
 import { AnimatePresence, motion } from "framer-motion";
@@ -12,13 +12,14 @@ import {
   calculateHeartRateZones,
 } from "@/app/utils/HRZonesCalculator";
 import { observer } from "mobx-react";
+import { User } from "@/app/model/user";
 
 const questions = questionnaireList;
 
 export const HeartRateZonesPage: NextPageWithLayout = () => {
   const { generalStore, authStore } = useStore();
   const isMobileView = generalStore.isMobileView;
-  const [user, setUser] = useState(authStore.user);
+  const [user, setUser] = useState<User | undefined>();
   const [pageIndex, setPageIndex] = useState(0);
   const [ageQ, setAgeQ] = useState<Question | undefined>();
   const [restingHeartRateQ, setRestingHeartRateQ] = useState<
@@ -31,6 +32,7 @@ export const HeartRateZonesPage: NextPageWithLayout = () => {
 
   useEffect(() => {
     if (!user && authStore.user) {
+      console.log("User is not set");
       // Update user state when authStore.user changes and the current user state is not set
       const user = authStore.user;
       setUser(user);
@@ -132,7 +134,7 @@ export const HeartRateZonesPage: NextPageWithLayout = () => {
               type="button"
               onClick={() => setPageIndex(0)}
             >
-              <MenuBookIcon
+              <CategoryIcon
                 className="mr-2"
                 style={{ color: pageIndex === 0 ? "black" : "white" }}
               />

@@ -43,6 +43,7 @@ const HomePage: NextPageWithLayout = () => {
   const togglePlay = () => {
     if (videoRef.current) {
       if (videoRef.current.paused) {
+        setIsMuted(false);
         videoRef.current.play();
         setIsPlaying(true);
         setVideoStarted(true); // Set video started to true when video plays

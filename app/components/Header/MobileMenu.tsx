@@ -20,6 +20,8 @@ function MobileMenu({ isOpen, onClose, router, authStore }: MobileMenuProps) {
 
   const isProfile = pathName === "/profile";
 
+  const isZones = pathName === "/heartratecalculator";
+
   useEffect(() => {}, [authStore.user, router.pathname, pathName]);
 
   return (
@@ -115,26 +117,23 @@ function MobileMenu({ isOpen, onClose, router, authStore }: MobileMenuProps) {
               >
                 Create Zone 2 Guide
               </p>
-              {/* <p
-                onClick={() => {
-                  router.push("/zone2-calculator");
-                  onClose();
-                }}
-                style={{ cursor: "pointer" }}
-                className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-              >
-                Zone 2 Heart Rate Calculator
-              </p>
+
               <p
                 onClick={() => {
-                  router.push("/zone2-content");
                   onClose();
+                  router.push("/heartratecalculator");
                 }}
                 style={{ cursor: "pointer" }}
-                className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                className={`-mx-3 block text-lg rounded-lg px-3 py-2 text-base leading-7 font-semibold
+                    ${
+                      isZones
+                        ? "text-whitebg hover:text-gray-300"
+                        : "text-gray-500 hover:text-gray-300"
+                    }
+                    `}
               >
-                Zone 2 Content
-              </p> */}
+                Training Zones
+              </p>
               {!user ||
                 (user?.hasPaid && (
                   <p

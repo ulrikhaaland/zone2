@@ -19,6 +19,7 @@ function Header() {
   const isHome = router.pathname === "/";
   const isGuide = router.pathname === "/guide";
   const isProfile = router.pathname === "/profile";
+  const isZones = router.pathname === "/heartratecalculator";
 
   const getTitle = () => {
     if (isMobileView) {
@@ -26,6 +27,8 @@ function Header() {
         return "Create Guide";
       } else if (isProfile) {
         return "Profile";
+      } else if (isZones) {
+        return "Training Zones";
       }
     }
 

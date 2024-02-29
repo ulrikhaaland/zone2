@@ -35,7 +35,12 @@ const UserProfile: NextPageWithLayout = () => {
   const [guideStatus, setGuideStatus] = useState(user?.guideStatus);
 
   const updateUser = (questions: Question[]) => {
-    const updatedUser = { ...user!, questions: questions };
+    const updatedUser = {
+      ...user!,
+      questions: questions,
+      guideGenerationThreadId: runInfo.threadId,
+      guideGenerationRunId: runInfo.runId,
+    };
     authStore.updateUserData(updatedUser);
   };
 

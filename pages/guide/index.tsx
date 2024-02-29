@@ -90,6 +90,7 @@ const HomePage: NextPageWithLayout = () => {
           guideStatus: GuideStatus.HASPAID,
           hasPaid: true,
         };
+        authStore.setUser(newUser);
         router.push("/profile");
       } else redirectToStripe();
     }

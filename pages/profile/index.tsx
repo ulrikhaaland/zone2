@@ -134,7 +134,6 @@ const UserProfile: NextPageWithLayout = () => {
     if (!authStore.user) {
       authStore.checkAuth();
     } else if (!user) {
-      console.log("user is already logged in: ", authStore.user);
       const user = authStore.user;
 
       if (

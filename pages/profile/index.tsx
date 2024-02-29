@@ -150,6 +150,8 @@ const UserProfile: NextPageWithLayout = () => {
           setUser({ ...user, guideStatus: GuideStatus.LOADING });
         } else setUser(user);
       }
+    } else {
+      console.log("Didnt work");
     }
   }, [authStore.user]);
 

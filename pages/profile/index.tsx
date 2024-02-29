@@ -133,7 +133,10 @@ const UserProfile: NextPageWithLayout = () => {
   useEffect(() => {
     if (!authStore.user) {
       authStore.checkAuth();
-    } else if (!user) {
+    } else if (
+      !user ||
+      (user?.guideStatus === GuideStatus.HASPAID && user?.hasPaid === true)
+    ) {
       const user = authStore.user;
 
       if (

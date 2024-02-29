@@ -10,6 +10,8 @@ import {
 
 export enum GuideStatus {
   NONE = "NONE",
+  // Gets free guide
+  FREEBIE = "FREEBIE",
   HASPAID = "HASPAID",
   LOADING = "LOADING",
   LOADED = "LOADED",

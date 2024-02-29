@@ -15,6 +15,7 @@ import {
   updateDoc,
   onSnapshot,
   Unsubscribe,
+  getCountFromServer,
 } from "firebase/firestore";
 import { GuideStatus, User } from "../model/user";
 import { auth, db, provider } from "../../pages/_app";
@@ -233,6 +234,11 @@ export default class AuthStore {
   }
 
   async createUser(uid: string): Promise<User> {
+    // Check firestore collection for amount of user documents
+    const userCollection = collection(db, "users");
+    const userCollectionSnapshot = await getCountFromServer(userCollection);
+    const userCount = userCollectionSnapshot.data().count;
+
     const userData: User = {
       uid: uid,
       credits: 1000,
@@ -241,7 +247,7 @@ export default class AuthStore {
       usesKG: true,
       usesCM: true,
       hasPaid: false,
-      guideStatus: GuideStatus.NONE,
+      guideStatus: userCount < 50 ? GuideStatus.FREEBIE : GuideStatus.NONE,
       retries: 0,
     };
     await setDoc(doc(db, "users", uid), userData);

@@ -1,7 +1,7 @@
 "use client";
 import "../../app/globals.css";
 import React, { ReactElement, useEffect, useState } from "react";
-import { User } from "../../app/model/user";
+import { GuideStatus, User } from "../../app/model/user";
 import { Question } from "../../app/model/questionaire";
 import { loadStripe } from "@stripe/stripe-js";
 import { NextPageWithLayout } from "@/pages/_app";
@@ -9,6 +9,7 @@ import { useStore } from "@/RootStoreProvider";
 import { observer } from "mobx-react";
 import Zone2GuideDesktopLayout from "./DesktopLayout";
 import Zone2GuideMobileLayout from "./MobileLayout";
+import { useRouter } from "next/router";
 
 const stripePromise = loadStripe(
   "pk_test_51Oc6ntFwAwE234wG9Lu3IfmZQXEv7nHPJx7alrzq00EzVaO74jpv7RifR5iRrkjvTS8BSv67QvoQJz2W2ccTt2bC00gLDhFGLf"
@@ -16,6 +17,7 @@ const stripePromise = loadStripe(
 
 const HomePage: NextPageWithLayout = () => {
   const { authStore, generalStore } = useStore();
+  const router = useRouter();
 
   const { user } = authStore;
   const { isMobileView } = generalStore;
@@ -82,7 +84,14 @@ const HomePage: NextPageWithLayout = () => {
         setPreviousPageIndex(pageIndex);
       }
     } else {
-      redirectToStripe();
+      if (user?.guideStatus === GuideStatus.FREEBIE) {
+        const newUser: User = {
+          ...user,
+          guideStatus: GuideStatus.HASPAID,
+          hasPaid: true,
+        };
+        router.push("/profile");
+      } else redirectToStripe();
     }
   };
 

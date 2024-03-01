@@ -85,6 +85,8 @@ const HomePage: NextPageWithLayout = () => {
         ...user!,
         questions: questions!,
         guideItems: user?.guideItems ?? [],
+        hasDeclinedReview: false,
+        hasReviewed: false,
       };
       if (user?.guideStatus === GuideStatus.FREEBIE) {
         const newNewUser: User = {

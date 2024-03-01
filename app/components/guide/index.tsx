@@ -15,6 +15,7 @@ interface GuideProps {
   guideItems?: BlogItem[];
   status: GuideStatus;
   generateGuide: () => void;
+  onScrolledToTopOrBottom?: (scrolledTopOrBottom: boolean) => void;
 }
 
 export default function Guide(props: GuideProps) {
@@ -48,7 +49,33 @@ export default function Guide(props: GuideProps) {
         });
       }
     }
+    const handleScroll = () => {
+      if (!containerRef.current) return;
+
+      const { scrollTop, scrollHeight, clientHeight } = containerRef.current;
+      const scrolledToTop = scrollTop === 0;
+      const scrolledToBottom = scrollTop + clientHeight >= scrollHeight;
+
+      if (scrolledToTop || scrolledToBottom) {
+        // Call the prop function with true when scrolled to top or bottom
+        props.onScrolledToTopOrBottom?.(true);
+      } else {
+        // Optionally, call the prop function with false when not at edges
+        // This is useful if you want to toggle some state based on scroll position
+        props.onScrolledToTopOrBottom?.(false);
+      }
+    };
+
+    // Add the scroll event listener
+    const currentContainer = containerRef.current;
+    currentContainer?.addEventListener("scroll", handleScroll);
+
+    // Cleanup function to remove the event listener
+    return () => {
+      currentContainer?.removeEventListener("scroll", handleScroll);
+    };
   }, [expandedItemId]);
+
   const handleExpand = (item: BlogItem) => {
     setExpandedItemId(item.id);
   };

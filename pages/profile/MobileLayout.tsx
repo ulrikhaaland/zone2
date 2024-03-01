@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { GuideStatus, User } from "@/app/model/user";
 import Guide from "@/app/components/guide";
 import Questionnaire from "@/app/components/questionnaire/Questionnaire";
@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Question } from "@/app/model/questionaire";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import FeedbackFAB from "@/app/components/feedback";
 
 interface ProfileMobileLayoutProps {
   pageIndex: number;
@@ -24,6 +25,9 @@ const ProfileMobileLayout: React.FC<ProfileMobileLayoutProps> = ({
   setPageIndex,
   genGuide,
 }) => {
+  const [scrolledToTopOrBottom, setScrolledToTopOrBottom] = useState(true);
+  const [feedbackExpanded, setFeedbackExpanded] = useState(false);
+
   return (
     <div className="w-full pt-16 font-custom h-full overflow-hidden relative">
       {/* Background Image */}
@@ -152,6 +156,9 @@ const ProfileMobileLayout: React.FC<ProfileMobileLayoutProps> = ({
                   guideItems={user.guideItems}
                   status={guideStatus!}
                   generateGuide={() => genGuide()}
+                  onScrolledToTopOrBottom={(scrolled) => {
+                    setScrolledToTopOrBottom(scrolled);
+                  }}
                 />
               )}
               {pageIndex === 1 && user && (
@@ -169,6 +176,21 @@ const ProfileMobileLayout: React.FC<ProfileMobileLayoutProps> = ({
           </AnimatePresence>
         </div>
       </div>
+      {feedbackExpanded && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-20" // Backdrop with semi-transparent background
+          onClick={() => setFeedbackExpanded(false)} // Close feedback form when backdrop is clicked
+        ></div>
+      )}
+      {scrolledToTopOrBottom &&
+        user?.guideItems &&
+        user?.guideItems?.length > 0 &&
+        user!.hasReviewed === false && (
+          <FeedbackFAB
+            onExpand={setFeedbackExpanded}
+            expanded={feedbackExpanded}
+          />
+        )}
     </div>
   );
 };

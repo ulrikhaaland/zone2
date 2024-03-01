@@ -6,6 +6,11 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Question } from "@/app/model/questionaire";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import IconButton from "@mui/material/IconButton";
+import TextField from "@mui/material/TextField";
+import ExpandLessIcon from "@mui/icons-material/ExpandLess";
+import FeedbackComponent from "@/app/components/feedback";
+import FeedbackFAB from "@/app/components/feedback";
 
 interface ProfileDesktopLayoutProps {
   pageIndex: number;
@@ -173,6 +178,7 @@ const ProfileDesktopLayout: React.FC<ProfileDesktopLayoutProps> = ({
           </AnimatePresence>
         </div>
       </div>
+      <FeedbackFAB />
     </div>
   );
 };

@@ -101,7 +101,7 @@ export default class AuthStore {
       this.setUser(newUser);
 
       // Here, userData contains all fields from the User object.
-      updateDoc(doc(db, "users", this.user.uid), userData);
+      await updateDoc(doc(db, "users", this.user.uid), userData);
     }
   };
 

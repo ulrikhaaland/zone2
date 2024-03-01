@@ -96,6 +96,8 @@ export default class AuthStore {
         retries: newUser.retries ?? 0,
         guideGenerationRunId: newUser.guideGenerationRunId ?? null,
         guideGenerationThreadId: newUser.guideGenerationThreadId ?? null,
+        hasReviewed: newUser.hasReviewed ?? false,
+        hasDeclinedReview: newUser.hasDeclinedReview ?? false,
       };
 
       this.setUser(newUser);
@@ -224,6 +226,8 @@ export default class AuthStore {
           retries: data?.retries,
           guideGenerationRunId: data?.guideGenerationRunId,
           guideGenerationThreadId: data?.guideGenerationThreadId,
+          hasReviewed: data?.hasReviewed,
+          hasDeclinedReview: data?.hasDeclinedReview,
         };
         return user;
       }
@@ -249,6 +253,8 @@ export default class AuthStore {
       hasPaid: false,
       guideStatus: userCount < 50 ? GuideStatus.FREEBIE : GuideStatus.NONE,
       retries: 0,
+      hasReviewed: false,
+      hasDeclinedReview: false,
     };
     await setDoc(doc(db, "users", uid), userData);
 

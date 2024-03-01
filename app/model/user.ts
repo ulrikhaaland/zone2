@@ -34,6 +34,8 @@ export interface User {
   retries?: number;
   guideGenerationThreadId?: string;
   guideGenerationRunId?: string;
+  hasReviewed?: boolean;
+  hasDeclinedReview?: boolean;
 }
 
 export interface FitnessData {

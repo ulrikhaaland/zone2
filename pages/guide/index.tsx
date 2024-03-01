@@ -92,7 +92,7 @@ const HomePage: NextPageWithLayout = () => {
           guideStatus: GuideStatus.HASPAID,
           hasPaid: true,
         };
-        await authStore.updateUserData(newUser);
+        await authStore.updateUserData(newNewUser);
         router.push("/profile");
       } else {
         await authStore.updateUserData(newUser);

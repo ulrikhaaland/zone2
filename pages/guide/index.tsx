@@ -10,6 +10,7 @@ import { observer } from "mobx-react";
 import Zone2GuideDesktopLayout from "./DesktopLayout";
 import Zone2GuideMobileLayout from "./MobileLayout";
 import { useRouter } from "next/router";
+import { a } from "react-spring";
 
 const stripePromise = loadStripe(
   "pk_test_51Oc6ntFwAwE234wG9Lu3IfmZQXEv7nHPJx7alrzq00EzVaO74jpv7RifR5iRrkjvTS8BSv67QvoQJz2W2ccTt2bC00gLDhFGLf"
@@ -68,11 +69,7 @@ const HomePage: NextPageWithLayout = () => {
     }
   };
 
-  const onConfirm = (isForward: boolean) => {
-    if (pageIndex === 0) {
-      authStore.updateUserData();
-    }
-
+  const onConfirm = async (isForward: boolean) => {
     if (pageIndex < 2) {
       if (pageIndex === 1 && !isForward) {
         setForward(true);
@@ -84,16 +81,23 @@ const HomePage: NextPageWithLayout = () => {
         setPreviousPageIndex(pageIndex);
       }
     } else {
+      const newUser: User = {
+        ...user!,
+        questions: questions!,
+        guideItems: user?.guideItems ?? [],
+      };
       if (user?.guideStatus === GuideStatus.FREEBIE) {
-        const newUser: User = {
-          ...user,
+        const newNewUser: User = {
+          ...newUser,
           guideStatus: GuideStatus.HASPAID,
           hasPaid: true,
         };
-        authStore.setUser(newUser);
-        authStore.updateUserData(newUser);
+        await authStore.updateUserData(newUser);
         router.push("/profile");
-      } else redirectToStripe();
+      } else {
+        await authStore.updateUserData(newUser);
+        redirectToStripe();
+      }
     }
   };
 

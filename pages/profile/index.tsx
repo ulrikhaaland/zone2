@@ -57,7 +57,6 @@ const UserProfile: NextPageWithLayout = () => {
     isFetching.current = true;
     const newUser = { ...user, guideStatus: GuideStatus.LOADING };
     authStore.setUser(newUser);
-    console.log("user is in guide loading status: ", newUser.guideStatus);
     setUser(newUser);
     setGuideStatus(GuideStatus.LOADING);
 
@@ -77,7 +76,6 @@ const UserProfile: NextPageWithLayout = () => {
         .then(async (value) => {
           const response = await value.json();
           const runInfo = response.runInfo;
-          console.log("Run info: ", runInfo);
           setRunInfo(runInfo);
           console.log("Guide generation request sent.");
           isFetching.current = false;
@@ -150,8 +148,6 @@ const UserProfile: NextPageWithLayout = () => {
           setUser({ ...user, guideStatus: GuideStatus.LOADING });
         } else setUser(user);
       }
-    } else {
-      console.log("Didnt work");
     }
   }, [authStore.user]);
 
@@ -172,12 +168,10 @@ const UserProfile: NextPageWithLayout = () => {
       getRunInfo();
 
       isSubscribed.current = true;
-      console.log("user is in guide loading status: ", user);
 
       // Setup listener for guideStatus updates
       const unsubscribe = authStore.listenToUserGuideStatus(
         (newGuideStatus) => {
-          console.log("new guide status: ", newGuideStatus);
           if (newGuideStatus === GuideStatus.LOADED) {
             console.log("Guide is loaded, unsubscribing from updates.");
             onGuideLoaded();
@@ -206,7 +200,6 @@ const UserProfile: NextPageWithLayout = () => {
       !runInfo.threadId &&
       !runInfo.runId
     ) {
-      console.log("user has a runId and threadId: ", user);
       setRunInfo({
         threadId: authStore.user.guideGenerationThreadId,
         runId: authStore.user.guideGenerationRunId,

@@ -79,7 +79,7 @@ export default class AuthStore {
     this.fromPath = fromPath;
   };
 
-  updateUserData = async (user?: User) => {
+  updateUserData = async (user?: User): Promise<void> => {
     const newUser = user ?? this.user!;
     if (this.user) {
       const userData = {
@@ -101,7 +101,7 @@ export default class AuthStore {
       this.setUser(newUser);
 
       // Here, userData contains all fields from the User object.
-      await updateDoc(doc(db, "users", this.user.uid), userData);
+      return await updateDoc(doc(db, "users", this.user.uid), userData);
     }
   };
 

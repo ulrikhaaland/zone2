@@ -64,15 +64,17 @@ const UserProfile: NextPageWithLayout = () => {
     updateDoc(doc(db, "users", user.uid), {
       guideStatus: GuideStatus.LOADING,
     }).then(() => {
+      const body = JSON.stringify({
+        fitnessData: questToFitnessData(user!.questions),
+        uid: user!.uid,
+      });
+      console.log(body);
       fetch("/api/generate", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          fitnessData: questToFitnessData(user!.questions),
-          uid: user!.uid,
-        }),
+        body: body,
       })
         .then(async (value) => {
           const response = await value.json();

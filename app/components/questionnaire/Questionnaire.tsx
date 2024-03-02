@@ -219,6 +219,14 @@ export default function Questionnaire(props: QuestionnaireProps) {
         canSubmit!(false);
       }
       nextQuestion.hasSkipped = false;
+      // if (nextQuestion.id === 12 && nextQuestion.answer?.length > 0) {
+      //   console.log("skip");
+      //   setQuestions([
+      //     ...currentQuestions,
+      //     nextQuestion,
+      //     questionsFull.find((q) => q.id === 13)!,
+      //   ]);
+      // } else
       setQuestions([...currentQuestions, nextQuestion]);
     } else {
       onQuestCompleted(questions);
@@ -325,6 +333,7 @@ export default function Questionnaire(props: QuestionnaireProps) {
                 .find((q) => q.id === 9)
                 ?.answer?.toLowerCase()}
               user={user}
+              hasNext={index < questions.length - 1}
               isProfile={isProfile}
               onFocusCurrent={(id) => {
                 if (id === questions[questions.length - 1].id) {

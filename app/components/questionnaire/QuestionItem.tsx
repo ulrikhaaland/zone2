@@ -18,6 +18,7 @@ const POUNDS_TO_KG_CONVERSION_FACTOR = 0.453592;
 interface QuestionItemProps {
   question: Question;
   onAnswer: (answer: any) => void;
+  hasNext: boolean;
   chosenExercise?: string;
   autoFocus?: boolean;
   user: User;
@@ -41,6 +42,7 @@ export default function QuestionItem(props: QuestionItemProps) {
     completed,
     isProfile,
     isMobileView,
+    hasNext,
   } = props;
   const [answer, setAnswer] = useState<any>(question.answer);
   const [showDescription, setShowDescription] = useState(false);
@@ -84,6 +86,9 @@ export default function QuestionItem(props: QuestionItemProps) {
 
   useEffect(() => {
     setFeetAndInches();
+    if (question.answer?.length > 0 && (!hasNext || question.id === 12)) {
+      onAnswer(question.answer);
+    }
   }, []);
 
   useEffect(() => {

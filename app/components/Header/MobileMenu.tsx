@@ -99,59 +99,69 @@ function MobileMenu({ isOpen, onClose, router, authStore }: MobileMenuProps) {
         </div>
         <div className="mt-6 flow-root">
           <div className="-my-6 divide-y divide-gray-500/10">
-            <div className="space-y-2 py-6">
-              <p
-                onClick={() => {
-                  onClose();
+            <div
+              className="space-y-2 py-6"
+              style={{
+                textShadow: "10px 10px 10px rgba(0,0,0,1)",
+              }}
+            >
+              <div className="border-b border-gray-500">
+                <p
+                  onClick={() => {
+                    onClose();
 
-                  router.push("/guide");
-                }}
-                style={{ cursor: "pointer" }}
-                className={`-mx-3 text-lg block rounded-lg px-3 py-2 text-base leading-7 font-semibold
+                    router.push("/guide");
+                  }}
+                  style={{ cursor: "pointer" }}
+                  className={`-mx-3 text-lg block rounded-lg px-3 py-2 text-base leading-7 font-semibold
                 ${
                   isGuide
                     ? "text-whitebg hover:text-gray-300"
                     : "text-gray-500 hover:text-gray-300"
                 }
                 `}
-              >
-                Create Zone 2 Guide
-              </p>
-
-              <p
-                onClick={() => {
-                  onClose();
-                  router.push("/heartratecalculator");
-                }}
-                style={{ cursor: "pointer" }}
-                className={`-mx-3 block text-lg rounded-lg px-3 py-2 text-base leading-7 font-semibold
+                >
+                  Create Zone 2 Guide
+                </p>
+              </div>
+              <div className="border-b border-gray-500">
+                <p
+                  onClick={() => {
+                    onClose();
+                    router.push("/heartratecalculator");
+                  }}
+                  style={{ cursor: "pointer" }}
+                  className={`-mx-3 block text-lg rounded-lg px-3 py-2 text-base leading-7 font-semibold
                     ${
                       isZones
                         ? "text-whitebg hover:text-gray-300"
                         : "text-gray-500 hover:text-gray-300"
                     }
                     `}
-              >
-                Training Zones
-              </p>
+                >
+                  Training Zones
+                </p>
+              </div>
               {!user ||
                 (user?.hasPaid && (
-                  <p
-                    onClick={() => {
-                      onClose();
-                      router.push("/profile");
-                    }}
-                    style={{ cursor: "pointer" }}
-                    className={`-mx-3 block text-lg rounded-lg px-3 py-2 text-base leading-7 font-semibold
+                  <div className="border-b border-gray-500">
+                    <p
+                      onClick={() => {
+                        onClose();
+                        router.push("/profile");
+                      }}
+                      style={{ cursor: "pointer" }}
+                      className={`-mx-3 block text-lg rounded-lg px-3 py-2 text-base leading-7 font-semibold
                     ${
                       isProfile
                         ? "text-whitebg hover:text-gray-300"
                         : "text-gray-500 hover:text-gray-300"
                     }
                     `}
-                  >
-                    Profile
-                  </p>
+                    >
+                      Profile
+                    </p>
+                  </div>
                 ))}
             </div>
           </div>

@@ -129,6 +129,31 @@ const UserProfile: NextPageWithLayout = () => {
     }
   };
 
+  const handleShowFeedback = (user: User) => {
+    const showFeedback =
+      user.guideItems !== undefined &&
+      user.guideItems?.length > 0 &&
+      user.hasReviewed === false &&
+      guideStatus === GuideStatus.LOADED;
+    setShowFeedback(showFeedback);
+  };
+
+  const handleSetRunInfo = (user: User) => {
+    if (
+      user &&
+      user.guideGenerationRunId &&
+      user.guideGenerationThreadId &&
+      !isFetching.current &&
+      !runInfo.threadId &&
+      !runInfo.runId
+    ) {
+      setRunInfo({
+        threadId: user.guideGenerationThreadId,
+        runId: user.guideGenerationRunId,
+      });
+    }
+  };
+
   useEffect(() => {
     if (!authStore.user) {
       authStore.checkAuth();
@@ -150,34 +175,16 @@ const UserProfile: NextPageWithLayout = () => {
           setUser({ ...user, guideStatus: GuideStatus.LOADING });
         } else setUser(user);
       }
-      return;
     }
 
     const userScope = authStore.user;
     setUser(userScope);
 
     /// Handle show feedback
-    const showFeedback =
-      userScope?.guideItems !== undefined &&
-      userScope?.guideItems?.length > 0 &&
-      userScope!.hasReviewed === false &&
-      guideStatus === GuideStatus.LOADED;
-    setShowFeedback(showFeedback);
+    handleShowFeedback(userScope);
 
     /// Handle runInfo
-    if (
-      userScope &&
-      userScope.guideGenerationRunId &&
-      userScope.guideGenerationThreadId &&
-      !isFetching.current &&
-      !runInfo.threadId &&
-      !runInfo.runId
-    ) {
-      setRunInfo({
-        threadId: userScope.guideGenerationThreadId,
-        runId: userScope.guideGenerationRunId,
-      });
-    }
+    handleSetRunInfo(userScope);
   }, [authStore.user]);
 
   const getRunInfo = async () => {
@@ -202,6 +209,7 @@ const UserProfile: NextPageWithLayout = () => {
       const unsubscribe = authStore.listenToUserGuideStatus(
         (newGuideStatus) => {
           if (newGuideStatus === GuideStatus.LOADED) {
+            handleShowFeedback(authStore.user!);
             console.log("Guide is loaded, unsubscribing from updates.");
             onGuideLoaded();
             unsubscribe?.();

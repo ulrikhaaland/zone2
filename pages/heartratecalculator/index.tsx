@@ -46,6 +46,9 @@ export const HeartRateZonesPage: NextPageWithLayout = () => {
       const age = updateQuestion(0);
       const rhr = updateQuestion(11);
       const mhr = updateQuestion(12);
+      if ((age?.answer && mhr && mhr?.answer === "") || !mhr?.answer) {
+        mhr!.answer = (220 - Number(age?.answer)).toString();
+      }
       setAgeQ(age);
       setRestingHeartRateQ(rhr);
       setMaxHeartRateQ(mhr);

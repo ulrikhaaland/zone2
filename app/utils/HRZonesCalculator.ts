@@ -26,7 +26,7 @@ export const zoneDescriptions: HRZoneDescription[] = [
     example: "Light cycling or jogging, focusing on recovery.",
   },
   {
-    title: "Zone 2: Aerobic/Endurance",
+    title: "Zone 2: Aerobic",
     characteristics:
       "Maximizes fat oxidation and lactate clearance capacity. Threshold before shifting to fast-twitch muscle fibers.",
     energySource: "Fat as primary fuel source, alongside glucose.",

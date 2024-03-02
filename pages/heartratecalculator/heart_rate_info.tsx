@@ -1,7 +1,7 @@
 import { Question } from "@/app/model/questionaire";
 import { User } from "@/app/model/user";
 import HRQuestionItem from "./heart_rate_question_item";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 interface HeartRateInfoProps {
   questions: Question[];
@@ -20,6 +20,16 @@ const HeartRateInfo: React.FC<HeartRateInfoProps> = ({
 }) => {
   const [focusIndex, setFocusIndex] = useState(0);
   const [canSubmit, setCanSubmit] = useState(questions[2].answer !== undefined);
+
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
+  const handleKeyPress = (event: React.KeyboardEvent) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      event.stopPropagation();
+      if (canSubmit) onCalculateHRZones();
+    }
+  };
 
   return (
     <div
@@ -42,7 +52,7 @@ const HeartRateInfo: React.FC<HeartRateInfoProps> = ({
                   questions[2].answer = 220 - Number(value);
                 }
               }
-              const maxHr = questions[2].answer.toString();
+              const maxHr = questions[2].answer?.toString();
               if (!maxHr || (maxHr && maxHr.trim().length < 3)) {
                 if (canSubmit) setCanSubmit(false);
               } else {
@@ -54,6 +64,7 @@ const HeartRateInfo: React.FC<HeartRateInfoProps> = ({
             onFocusNext={(id) => {
               if (index === 0) setFocusIndex(1);
               else if (index === 1) setFocusIndex(2);
+              else if (index === 2) buttonRef.current?.focus();
               if (
                 id === 0 &&
                 (questions[2].answer === undefined ||
@@ -75,8 +86,10 @@ const HeartRateInfo: React.FC<HeartRateInfoProps> = ({
             ? "bg-blue-600 hover:bg-blue-800 text-whitebg"
             : "bg-secondary-button-dark text-whitebg opacity-50 cursor-not-allowed"
         }`}
+        ref={buttonRef}
         type="submit"
         disabled={!canSubmit}
+        onKeyDown={handleKeyPress}
         onClick={(e) => {
           if (canSubmit) {
             onCalculateHRZones();

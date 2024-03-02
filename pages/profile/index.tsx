@@ -33,7 +33,7 @@ const UserProfile: NextPageWithLayout = () => {
   const [pageIndex, setPageIndex] = useState(0);
 
   const [guideStatus, setGuideStatus] = useState(user?.guideStatus);
-  const [showFeedback, setShowFeedback] = useState(true);
+  const [showFeedback, setShowFeedback] = useState(false);
 
   const updateUser = (questions: Question[]) => {
     const updatedUser = {

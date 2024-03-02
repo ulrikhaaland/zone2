@@ -21,7 +21,7 @@ export default function HRQuestionItem(props: HRQuestionItemProps) {
 
   const router = useRouter();
 
-  const [answer, setAnswer] = useState<string>(question.answer);
+  const [answer, setAnswer] = useState<string>(question.answer ?? "");
   const [showDescription, setShowDescription] = useState(false);
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -54,6 +54,8 @@ export default function HRQuestionItem(props: HRQuestionItemProps) {
 
   const handleKeyPress = (event: KeyboardEvent) => {
     if (event.key === "Enter") {
+      event.preventDefault();
+      event.stopPropagation();
       if (inputRef.current) {
         inputRef.current.blur();
       }
@@ -63,11 +65,10 @@ export default function HRQuestionItem(props: HRQuestionItemProps) {
   };
 
   useEffect(() => {
-    if (answer !== question.answer) {
+    if (answer !== question.answer && question.answer !== undefined) {
       setAnswer(question.answer);
-      onAnswer(question.answer);
     }
-  }, [question.answer, answer, onAnswer]);
+  }, [question.answer]);
 
   return (
     <animated.div style={anim} className="mb-4">
@@ -106,9 +107,10 @@ export default function HRQuestionItem(props: HRQuestionItemProps) {
           value={answer}
           onChange={(e) => {
             const value = e.target.value;
+            setAnswer(value);
+
             question.answer = value;
             onAnswer(value);
-            setAnswer(value);
           }}
           autoFocus={autoFocus}
           onKeyDown={handleKeyPress}

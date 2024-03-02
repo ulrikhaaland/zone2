@@ -50,6 +50,12 @@ const UserProfile: NextPageWithLayout = () => {
     }
   }, [user]);
 
+  const showFeedback: boolean =
+    user?.guideItems !== undefined &&
+    user?.guideItems?.length > 0 &&
+    user!.hasReviewed === false &&
+    guideStatus === GuideStatus.LOADED;
+
   const isFetching = useRef<boolean>(false);
   const isSubscribed = useRef<boolean>(false);
 
@@ -226,6 +232,7 @@ const UserProfile: NextPageWithLayout = () => {
         updateUser={updateUser}
         setPageIndex={setPageIndex}
         genGuide={() => generateGuide(user!)}
+        showFeedback={showFeedback}
       />
     );
   } else {
@@ -237,6 +244,7 @@ const UserProfile: NextPageWithLayout = () => {
         updateUser={updateUser}
         setPageIndex={setPageIndex}
         genGuide={() => generateGuide(user!)}
+        showFeedback={showFeedback}
       />
     );
   }

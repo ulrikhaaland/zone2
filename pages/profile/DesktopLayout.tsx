@@ -6,10 +6,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Question } from "@/app/model/questionaire";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import IconButton from "@mui/material/IconButton";
-import TextField from "@mui/material/TextField";
-import ExpandLessIcon from "@mui/icons-material/ExpandLess";
-import FeedbackComponent from "@/app/components/feedback";
 import FeedbackFAB from "@/app/components/feedback";
 
 interface ProfileDesktopLayoutProps {
@@ -19,6 +15,7 @@ interface ProfileDesktopLayoutProps {
   updateUser: (questions: Question[]) => void;
   setPageIndex: (index: number) => void;
   genGuide: () => void;
+  showFeedback: boolean;
 }
 
 const ProfileDesktopLayout: React.FC<ProfileDesktopLayoutProps> = ({
@@ -28,6 +25,7 @@ const ProfileDesktopLayout: React.FC<ProfileDesktopLayoutProps> = ({
   updateUser,
   setPageIndex,
   genGuide,
+  showFeedback,
 }) => {
   return (
     <div className="w-full font-custom h-screen overflow-hidden relative">
@@ -178,7 +176,7 @@ const ProfileDesktopLayout: React.FC<ProfileDesktopLayoutProps> = ({
           </AnimatePresence>
         </div>
       </div>
-      <FeedbackFAB />
+      {showFeedback && <FeedbackFAB />}
     </div>
   );
 };

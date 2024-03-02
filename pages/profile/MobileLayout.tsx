@@ -15,6 +15,7 @@ interface ProfileMobileLayoutProps {
   updateUser: (questions: Question[]) => void;
   setPageIndex: (index: number) => void;
   genGuide: () => void;
+  showFeedback: boolean;
 }
 
 const ProfileMobileLayout: React.FC<ProfileMobileLayoutProps> = ({
@@ -24,6 +25,7 @@ const ProfileMobileLayout: React.FC<ProfileMobileLayoutProps> = ({
   updateUser,
   setPageIndex,
   genGuide,
+  showFeedback,
 }) => {
   const [scrolledToTopOrBottom, setScrolledToTopOrBottom] = useState(true);
   const [feedbackExpanded, setFeedbackExpanded] = useState(false);
@@ -182,15 +184,12 @@ const ProfileMobileLayout: React.FC<ProfileMobileLayoutProps> = ({
           onClick={() => setFeedbackExpanded(false)} // Close feedback form when backdrop is clicked
         ></div>
       )}
-      {scrolledToTopOrBottom &&
-        user?.guideItems &&
-        user?.guideItems?.length > 0 &&
-        user!.hasReviewed === false && (
-          <FeedbackFAB
-            onExpand={setFeedbackExpanded}
-            expanded={feedbackExpanded}
-          />
-        )}
+      {scrolledToTopOrBottom && showFeedback && (
+        <FeedbackFAB
+          onExpand={setFeedbackExpanded}
+          expanded={feedbackExpanded}
+        />
+      )}
     </div>
   );
 };

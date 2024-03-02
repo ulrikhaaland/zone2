@@ -26,6 +26,7 @@ interface QuestionItemProps {
   displayError: boolean;
   completed: boolean;
   isProfile?: boolean;
+  isMobileView?: boolean;
 }
 
 export default function QuestionItem(props: QuestionItemProps) {
@@ -39,6 +40,7 @@ export default function QuestionItem(props: QuestionItemProps) {
     displayError,
     completed,
     isProfile,
+    isMobileView,
   } = props;
   const [answer, setAnswer] = useState<any>(question.answer);
   const [showDescription, setShowDescription] = useState(false);
@@ -103,8 +105,19 @@ export default function QuestionItem(props: QuestionItemProps) {
       if (question.id === 0 && completed) {
         return;
       }
-      inputRef.current.focus();
-      onFocusCurrent(question.id);
+      // if input ref has focus return
+      if (document.activeElement === inputRef.current) {
+        return;
+      }
+      if (isMobileView && question.id === 11) {
+        setTimeout(() => {
+          inputRef.current?.focus();
+          onFocusCurrent(question.id);
+        }, 100);
+      } else {
+        inputRef.current?.focus();
+        onFocusCurrent(question.id);
+      }
     }
   }, [autoFocus]);
 
@@ -356,7 +369,8 @@ export default function QuestionItem(props: QuestionItemProps) {
               value={answer}
               onChange={(e) => handleOnAnswer(e.target.value)}
               autoFocus={
-                (question.id === 0 && !completed) || (autoFocus && !completed)
+                (question.id !== 11 && question.id === 0 && !completed) ||
+                (autoFocus && !completed && question.id !== 11)
               }
               onKeyDown={handleKeyPress}
             />
@@ -430,7 +444,7 @@ export default function QuestionItem(props: QuestionItemProps) {
     }
     return question.question;
   };
-  
+
   return (
     <animated.div style={anim} className="mb-4">
       <div className="mb-4">

@@ -217,7 +217,10 @@ export default class AuthStore {
           credits: data?.credits,
           guideItems: data?.guideItems,
           previousGuideItems: data?.previousGuideItems,
-          fitnessData: data.questions && questToFitnessData(data?.questions),
+          fitnessData:
+            data.questions &&
+            data.questions.length > 0 &&
+            questToFitnessData(data?.questions),
           questions: data?.questions,
           usesKG: data?.usesKG,
           usesCM: data?.usesCM,

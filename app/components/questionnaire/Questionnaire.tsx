@@ -230,11 +230,9 @@ export default function Questionnaire(props: QuestionnaireProps) {
   const handleSubmit = (event: any) => {
     let hasError = false;
     const currentQuestions = [...questions];
-    let indexOfError;
     currentQuestions.forEach((question) => {
       if (question.hasError === true) {
         hasError = true;
-        indexOfError = currentQuestions.indexOf(question);
       } else {
         question.hasError = false;
       }
@@ -320,9 +318,12 @@ export default function Questionnaire(props: QuestionnaireProps) {
               key={question.id.toString() + question.depensOnAnswer?.toString()}
               question={question}
               completed={completed}
+              isMobileView={isMobileView}
               displayError={hasError && question.hasError === true}
               onAnswer={(val) => handleOnQuestionAnswered(question.id)}
-              chosenExercise={questions.find((q) => q.id === 9)?.answer?.toLowerCase()}
+              chosenExercise={questions
+                .find((q) => q.id === 9)
+                ?.answer?.toLowerCase()}
               user={user}
               isProfile={isProfile}
               onFocusCurrent={(id) => {

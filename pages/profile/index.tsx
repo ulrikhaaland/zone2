@@ -33,6 +33,7 @@ const UserProfile: NextPageWithLayout = () => {
   const [pageIndex, setPageIndex] = useState(0);
 
   const [guideStatus, setGuideStatus] = useState(user?.guideStatus);
+  const [showFeedback, setShowFeedback] = useState(true);
 
   const updateUser = (questions: Question[]) => {
     const updatedUser = {
@@ -49,12 +50,6 @@ const UserProfile: NextPageWithLayout = () => {
       setGuideStatus(user.guideStatus);
     }
   }, [user]);
-
-  const showFeedback: boolean =
-    user?.guideItems !== undefined &&
-    user?.guideItems?.length > 0 &&
-    user!.hasReviewed === false &&
-    guideStatus === GuideStatus.LOADED;
 
   const isFetching = useRef<boolean>(false);
   const isSubscribed = useRef<boolean>(false);
@@ -137,6 +132,7 @@ const UserProfile: NextPageWithLayout = () => {
   useEffect(() => {
     if (!authStore.user) {
       authStore.checkAuth();
+      return;
     } else if (
       !user ||
       (user?.guideStatus === GuideStatus.HASPAID && user?.hasPaid === true)
@@ -154,6 +150,33 @@ const UserProfile: NextPageWithLayout = () => {
           setUser({ ...user, guideStatus: GuideStatus.LOADING });
         } else setUser(user);
       }
+      return;
+    }
+
+    const userScope = authStore.user;
+    setUser(userScope);
+
+    /// Handle show feedback
+    const showFeedback =
+      userScope?.guideItems !== undefined &&
+      userScope?.guideItems?.length > 0 &&
+      userScope!.hasReviewed === false &&
+      guideStatus === GuideStatus.LOADED;
+    setShowFeedback(showFeedback);
+
+    /// Handle runInfo
+    if (
+      userScope &&
+      userScope.guideGenerationRunId &&
+      userScope.guideGenerationThreadId &&
+      !isFetching.current &&
+      !runInfo.threadId &&
+      !runInfo.runId
+    ) {
+      setRunInfo({
+        threadId: userScope.guideGenerationThreadId,
+        runId: userScope.guideGenerationRunId,
+      });
     }
   }, [authStore.user]);
 
@@ -196,22 +219,6 @@ const UserProfile: NextPageWithLayout = () => {
       };
     }
   }, [guideStatus]);
-
-  useEffect(() => {
-    if (
-      authStore.user &&
-      authStore.user.guideGenerationRunId &&
-      authStore.user.guideGenerationThreadId &&
-      !isFetching.current &&
-      !runInfo.threadId &&
-      !runInfo.runId
-    ) {
-      setRunInfo({
-        threadId: authStore.user.guideGenerationThreadId,
-        runId: authStore.user.guideGenerationRunId,
-      });
-    }
-  }, [authStore.user]);
 
   const onGuideLoaded = () => {
     authStore

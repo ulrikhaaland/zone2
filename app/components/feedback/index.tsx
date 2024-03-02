@@ -15,8 +15,9 @@ interface FeedbackFABProps {
 
 const FeedbackFAB = (props: FeedbackFABProps) => {
   const { onExpand } = props;
-  const { authStore } = useStore();
+  const { authStore, generalStore } = useStore();
   const { user } = authStore;
+  const isMobileView = generalStore.isMobileView;
 
   const [expanded, setExpanded] = useState(props.expanded || false);
   const [positiveFeedback, setPositiveFeedback] = useState("");
@@ -49,19 +50,9 @@ const FeedbackFAB = (props: FeedbackFABProps) => {
       const uid = user?.uid; // You need to obtain this from your auth context/store
       const guideItems = user?.guideItems;
       // Ensure all necessary data is available
-      if (
-        !uid ||
-        !positiveFeedback ||
-        !negativeFeedback ||
-        !guideItems ||
-        guideItems.length < 1
-      ) {
-        console.error("Missing required fields for feedback upload.");
-        return;
-      }
 
       const newUser: User = {
-        ...user,
+        ...user!,
         hasReviewed: true,
       };
 
@@ -94,7 +85,10 @@ const FeedbackFAB = (props: FeedbackFABProps) => {
   return (
     <div className="fixed bottom-4 right-4 flex flex-col items-end z-30">
       {expanded && (
-        <div className="absolute bottom-16 right-0 mb-4 w-80 p-4 bg-black bg-opacity-60 rounded-lg border border-gray-700 z-0">
+        <div
+          className={`absolute bottom-12 right-0 mb-4 p-4 bg-black bg-opacity-60 rounded-lg border border-gray-700 z-0
+                    ${isMobileView ? "w-[92.5dvw]" : "w-80"}`}
+        >
           <IconButton
             className="absolute top-0 right-0 text-white"
             onClick={toggleExpand}

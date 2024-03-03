@@ -211,7 +211,7 @@ const UserProfile: NextPageWithLayout = () => {
       const unsubscribe = authStore.listenToUserGuideStatus(
         (newGuideStatus) => {
           if (newGuideStatus === GuideStatus.LOADED) {
-            handleShowFeedback(authStore.user!);
+            setShowFeedback(true);
             console.log("Guide is loaded, unsubscribing from updates.");
             onGuideLoaded();
             unsubscribe?.();

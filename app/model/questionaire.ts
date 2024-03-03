@@ -148,7 +148,8 @@ export const questionnaireList: Question[] = [
   },
   {
     id: 10,
-    question: "Do you prefer doing the [chosen exercise] indoors, outdoors, or both?",
+    question:
+      "Do you prefer doing the [chosen exercise] indoors, outdoors, or both?",
     answerType: AnswerType.SELECT,
     availableAnswers: ["Indoors", "Outdoors", "Both"],
     identifier: "indoorOutdoorBoth",
@@ -339,7 +340,11 @@ export function questToFitnessData(answers: Question[]): FitnessData {
     indoorOutdoorBoth: indoorOutdoorBoth,
     hasHeartRateMonitor: hasHeartRateMonitor,
     heartRateZones: heartRateZones,
-    zone2HeartRateRange: zone2HeartRateRange,
+    zone2HeartRateRange: {
+      name: zone2HeartRateRange.name,
+      lowerLimit: zone2HeartRateRange.lowerLimit,
+      upperLimit: zone2HeartRateRange.upperLimit,
+    },
     additionalInformation: additionalInformation,
   };
 }

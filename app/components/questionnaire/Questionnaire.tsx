@@ -356,7 +356,7 @@ export default function Questionnaire(props: QuestionnaireProps) {
                   if (!completed)
                     questionsRef.current?.scrollTo({
                       top: questionsRef.current.scrollHeight,
-                      behavior: "smooth",
+                      behavior: "instant",
                     });
                 }
               }}

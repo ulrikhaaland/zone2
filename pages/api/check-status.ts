@@ -69,6 +69,7 @@ export default async function handler(req: Request, res: Response) {
         guideItems[0].expanded = true;
         guideItems[1].expanded = true;
       } catch (error) {
+        console.log(guide);
         console.error("Error parsing guide JSON:", error);
         await logErrorToFirestore(uid, error);
         res.status(200).json({ status: "error" });
@@ -116,6 +117,8 @@ async function logErrorToFirestore(uid: string, error: unknown) {
     await userRef.update({
       guideStatus: GuideStatus.ERROR,
       errorMessage: errorMessage,
+      guideGenerationRunId: null,
+      guideGenerationThreadId: null,
     });
     await errorRef.set(
       {

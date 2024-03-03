@@ -1,6 +1,6 @@
 export type HeartRateZone = {
   name: string;
-  description?: HRZoneDescription;
+  description: HRZoneDescription;
   lowerLimit: number;
   upperLimit: number;
   expanded?: boolean;

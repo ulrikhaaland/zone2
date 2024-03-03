@@ -60,7 +60,7 @@ export interface FitnessData {
   hasHeartRateMonitor: boolean;
   // minutes per week
   heartRateZones?: HeartRateZone[];
-  zone2HeartRateRange: HeartRateZone;
+  zone2HeartRateRange: any;
   additionalInformation?: string;
 }
 

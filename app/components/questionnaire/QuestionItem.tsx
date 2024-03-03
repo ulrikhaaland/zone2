@@ -106,6 +106,7 @@ export default function QuestionItem(props: QuestionItemProps) {
 
   useEffect(() => {
     // Auto-focus on the input field if autoFocus is true
+
     if (autoFocus && inputRef.current) {
       if (question.id === 0 && completed) {
         return;
@@ -118,7 +119,7 @@ export default function QuestionItem(props: QuestionItemProps) {
         setTimeout(() => {
           inputRef.current?.focus();
           onFocusCurrent(question.id);
-        }, 100);
+        }, 200);
       } else {
         inputRef.current?.focus();
         onFocusCurrent(question.id);

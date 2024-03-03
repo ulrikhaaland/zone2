@@ -33,7 +33,13 @@ export default function Questionnaire(props: QuestionnaireProps) {
       ? props.questions
       : [questionsFull[0]]
   );
-  const [completed, setCompleted] = useState(props.questions ? true : false);
+  const [completed, setCompleted] = useState(
+    props.questions &&
+      props.questions.length > 10 &&
+      props.questions[props.questions.length - 1].id === 14
+      ? true
+      : false
+  );
   const [isScrolled, setIsScrolled] = useState(false);
   const [isScrolling, setIsScrolling] = useState(false); // New state to track scrolling
   const [currentQuestionID, setCurrentQuestionID] = useState<number>(
@@ -219,15 +225,22 @@ export default function Questionnaire(props: QuestionnaireProps) {
         canSubmit!(false);
       }
       nextQuestion.hasSkipped = false;
-      // if (nextQuestion.id === 12 && nextQuestion.answer?.length > 0) {
-      //   console.log("skip");
-      //   setQuestions([
-      //     ...currentQuestions,
-      //     nextQuestion,
-      //     questionsFull.find((q) => q.id === 13)!,
-      //   ]);
-      // } else
-      setQuestions([...currentQuestions, nextQuestion]);
+      if (
+        nextQuestion.id === 12 &&
+        nextQuestion.answer &&
+        nextQuestion.answer !== ""
+      ) {
+        console.log("skip");
+        setQuestions([
+          ...currentQuestions,
+          nextQuestion,
+          questionsFull.find((q) => q.id === 13)!,
+        ]);
+      } else {
+        console.log(nextQuestion.id + " " + nextQuestion.answer);
+
+        setQuestions([...currentQuestions, nextQuestion]);
+      }
     } else {
       onQuestCompleted(questions);
       setCompleted(true);
@@ -284,7 +297,9 @@ export default function Questionnaire(props: QuestionnaireProps) {
             {currentQuestionID +
               1 +
               "/" +
-              (questionsFull.length - 1).toString()}
+              (questionsFull.length - 1).toString() +
+              " " +
+              "Questions"}
           </p>
           {/* Progress Bar */}
           <div className="h-1 bg-gray-600 md:mt-0 mb-4">

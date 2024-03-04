@@ -41,7 +41,8 @@ export default function Questionnaire(props: QuestionnaireProps) {
       : false
   );
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isScrolling, setIsScrolling] = useState(false); // New state to track scrolling
+  const isScrolling = useRef<boolean>(false);
+
   const [currentQuestionID, setCurrentQuestionID] = useState<number>(
     questions[questions.length - 1]?.id ?? 0
   );
@@ -104,11 +105,11 @@ export default function Questionnaire(props: QuestionnaireProps) {
       }
 
       // Set scrolling to true
-      setIsScrolling(true);
+      isScrolling.current = true;
 
       // Set a timer to set scrolling to false after a delay
       scrollTimerRef.current = setTimeout(() => {
-        setIsScrolling(false);
+        isScrolling.current = false;
       }, 50); // Delay of 500ms
     }
   };
@@ -376,7 +377,7 @@ export default function Questionnaire(props: QuestionnaireProps) {
                   });
               }}
               autoFocus={
-                !isScrolling && // Check if not scrolling
+                !isScrolling.current && // Check if not scrolling
                 (question.id === focusQuestionId ||
                   (index === questions.length - 1 &&
                     questions[questions.length - 2].answerType ===

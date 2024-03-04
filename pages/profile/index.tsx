@@ -11,6 +11,7 @@ import ProfileDesktopLayout from "./DesktopLayout";
 import ProfileMobileLayout from "./MobileLayout";
 import { handleOnGenerateGuide } from "../api/generate";
 import { doc, updateDoc } from "firebase/firestore";
+import { run } from "node:test";
 
 export type RunInfo = {
   threadId: string | undefined;
@@ -164,11 +165,16 @@ const UserProfile: NextPageWithLayout = () => {
       (user?.guideStatus === GuideStatus.HASPAID && user?.hasPaid === true)
     ) {
       const user = authStore.user;
+      console.log(user.guideGenerationRunId, user.guideGenerationThreadId);
 
       if (
-        user.guideStatus === GuideStatus.HASPAID &&
-        user.hasPaid &&
-        !isFetching.current
+        (user.guideStatus === GuideStatus.HASPAID &&
+          user.hasPaid &&
+          !isFetching.current) ||
+        (user.guideStatus === GuideStatus.LOADING &&
+          !isFetching.current &&
+          user.guideGenerationThreadId === null &&
+          user.guideGenerationRunId === null)
       ) {
         generateGuide(user);
       } else {

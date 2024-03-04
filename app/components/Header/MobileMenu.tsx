@@ -121,7 +121,7 @@ function MobileMenu({ isOpen, onClose, router, authStore }: MobileMenuProps) {
                 }
                 `}
                 >
-                  Create Zone 2 Guide
+                  Create Guide
                 </p>
               </div>
               <div className="border-b border-gray-500">

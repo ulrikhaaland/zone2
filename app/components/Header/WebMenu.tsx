@@ -47,7 +47,7 @@ function WebMenu({ router, authStore }: WebMenuProps) {
         }
         `}
       >
-        Create Zone 2 Guide
+        Create Guide
       </p>
       <p
         onClick={() => router.push("/heartratecalculator")}

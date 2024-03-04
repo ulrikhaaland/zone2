@@ -339,7 +339,6 @@ export function questToFitnessData(answers: Question[]): FitnessData {
     currentAverageWeeklyCardio: currentAverageWeeklyCardio,
     indoorOutdoorBoth: indoorOutdoorBoth,
     hasHeartRateMonitor: hasHeartRateMonitor,
-    heartRateZones: heartRateZones,
     zone2HeartRateRange: {
       name: zone2HeartRateRange.name,
       lowerLimit: zone2HeartRateRange.lowerLimit,

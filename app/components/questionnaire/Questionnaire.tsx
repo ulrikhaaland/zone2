@@ -231,15 +231,12 @@ export default function Questionnaire(props: QuestionnaireProps) {
         nextQuestion.answer &&
         nextQuestion.answer !== ""
       ) {
-        console.log("skip");
         setQuestions([
           ...currentQuestions,
           nextQuestion,
           questionsFull.find((q) => q.id === 13)!,
         ]);
       } else {
-        console.log(nextQuestion.id + " " + nextQuestion.answer);
-
         setQuestions([...currentQuestions, nextQuestion]);
       }
     } else {

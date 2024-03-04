@@ -68,7 +68,6 @@ const UserProfile: NextPageWithLayout = () => {
         fitnessData: questToFitnessData(user!.questions),
         uid: user!.uid,
       });
-      console.log(body);
       fetch("/api/generate", {
         method: "POST",
         headers: {
@@ -136,7 +135,7 @@ const UserProfile: NextPageWithLayout = () => {
       user.guideItems !== undefined &&
       user.guideItems?.length > 0 &&
       user.hasReviewed === false &&
-      guideStatus === GuideStatus.LOADED;
+      user.guideStatus === GuideStatus.LOADED;
     setShowFeedback(showFeedback);
   };
 
@@ -181,7 +180,6 @@ const UserProfile: NextPageWithLayout = () => {
 
     const userScope = authStore.user;
     setUser(userScope);
-
     /// Handle show feedback
     handleShowFeedback(userScope);
 

@@ -132,7 +132,7 @@ const ProfileMobileLayout: React.FC<ProfileMobileLayoutProps> = ({
                 textShadow: "10px 10px 10px rgba(0,0,0,1)",
               }}
             >
-              This can take a few minutes...
+              This will take a few minutes...
             </p>
           )}
         </>

@@ -44,7 +44,7 @@ const Zone2GuideDesktopLayout: React.FC<Zone2GuideDesktopLayoutProps> = ({
 }) => {
   return (
     <div
-      className="w-full font-custom justify-center relative"
+      className="w-full font-custom justify-center h-full relative"
       style={
         {
           // max height 100dvh - 16rem

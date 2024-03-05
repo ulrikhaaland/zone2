@@ -128,10 +128,10 @@ export default function UserInfoConfirmationPage(
           {fitnessData.hasHeartRateMonitor ? "Yes" : "No"}
         </p>
         {fitnessData.additionalInformation && (
-          <div className="mb-2">
-            <span className="block mb-1">Additional Information:</span>
-            <div className="bg-gray-100 p-2 rounded-md">
-              <p className="whitespace-pre-line text-sm">
+          <div className="mb-2 flex">
+            <span className="block mb-1">Additional Information:{" "}</span>
+            <div className="rounded-md">
+              <p className="whitespace-pre-line text-m ml-1">
                 {fitnessData.additionalInformation}
               </p>
             </div>

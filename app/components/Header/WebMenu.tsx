@@ -92,6 +92,7 @@ function WebMenu({ router, authStore }: WebMenuProps) {
           {!user ? "Log in" : "Profile"}
         </p>
       )}
+
     </div>
   );
 }

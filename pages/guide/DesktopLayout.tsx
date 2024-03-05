@@ -43,7 +43,14 @@ const Zone2GuideDesktopLayout: React.FC<Zone2GuideDesktopLayoutProps> = ({
   setCanSubmit,
 }) => {
   return (
-    <div className="w-full font-custom md:h-screen min-h-[100dvh] relative">
+    <div
+      className="w-full font-custom justify-center relative"
+      style={
+        {
+          // max height 100dvh - 16rem
+        }
+      }
+    >
       {/* Background Image */}
       {/* Container for Background Image and Black Overlay */}
       <div
@@ -83,7 +90,6 @@ const Zone2GuideDesktopLayout: React.FC<Zone2GuideDesktopLayoutProps> = ({
         ></div>
       </div>
 
-      {/* Page Content */}
       <h1
         className="text-5xl text-whitebg text-center font-bold pt-6 mb-4 relative z-10"
         style={{
@@ -92,6 +98,7 @@ const Zone2GuideDesktopLayout: React.FC<Zone2GuideDesktopLayoutProps> = ({
       >
         Zone 2 Guide Creation
       </h1>
+
       {user && (
         <div className="flex overflow-hidden flex-col items-center min-h-max p-4 relative">
           <div className="w-full md:border md:border-gray-700 md:rounded-lg bg-black bg-opacity-60 rounded-lg md:overflow-hidden max-w-md md:shadow-md md:min-h-[83.5dvh] md:max-h-[87.5dvh] min-h-[86.5dvh] max-h-[86.5dvh]">

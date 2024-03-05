@@ -1,15 +1,17 @@
-export interface BlogItem {
+export interface GuideItem {
   id: number;
   title: string;
   explanation: string;
   image?: string;
   link?: string;
   expanded: boolean;
-  subItems?: BlogItem[];
+  subItems?: GuideItem[];
   parentId?: number;
+  videoLink?: string;
+  blogPostLink?: string;
 }
 
-export function parseJsonToGuideItems(jsonResponse: string): BlogItem[] {
+export function parseJsonToGuideItems(jsonResponse: string): GuideItem[] {
   let trimmedResponse;
 
   // Attempt to trim the response and catch any potential errors
@@ -48,7 +50,7 @@ export function parseJsonToGuideItems(jsonResponse: string): BlogItem[] {
         : item.parentId,
   }));
 
-  const guideItemsMap = new Map<number, BlogItem>(
+  const guideItemsMap = new Map<number, GuideItem>(
     guideItems.map((item: any) => [item.id, item])
   );
 

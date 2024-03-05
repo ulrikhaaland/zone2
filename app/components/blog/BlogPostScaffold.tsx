@@ -1,5 +1,5 @@
 import { useStore } from "@/RootStoreProvider";
-import { BlogPost } from "@/app/model/blogpost";
+import { BlogPost } from "@/app/model/blog";
 import { observer } from "mobx-react";
 import { ReactElement, useEffect, useRef, useState } from "react";
 import BlogSection from "./BlogSection";

@@ -8,6 +8,7 @@ import { useState, useEffect } from "react";
 import { NextRouter, useRouter } from "next/router";
 import Head from "next/head";
 import { has } from "mobx";
+import Loading from "./loading";
 
 function Layout({ children }: { children: React.ReactNode }) {
   const { authStore, generalStore } = useStore();
@@ -15,6 +16,7 @@ function Layout({ children }: { children: React.ReactNode }) {
   const router: NextRouter = useRouter();
 
   const [showLogin, setShowLogin] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
   const isMobileView = generalStore.isMobileView;
   const isGuide = router.pathname === "/guide";
 
@@ -51,6 +53,10 @@ function Layout({ children }: { children: React.ReactNode }) {
   }, [open, user, isHome]);
 
   useEffect(() => {
+    if (hasCheckedAuth && !isLoaded) {
+      setIsLoaded(true);
+    }
+
     if (hasCheckedAuth && !user && !isHome) {
       setOpen(true);
     }
@@ -80,7 +86,7 @@ function Layout({ children }: { children: React.ReactNode }) {
           alignItems: "center",
         }}
       >
-        {children}
+        {isLoaded ? children : <Loading />}
         {showLogin && <Login />}
       </div>
       <Backdrop

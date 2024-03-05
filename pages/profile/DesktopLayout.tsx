@@ -94,7 +94,7 @@ const ProfileDesktopLayout: React.FC<ProfileDesktopLayoutProps> = ({
             textShadow: "10px 10px 10px rgba(0,0,0,1)",
           }}
         >
-          This will take a few minutes...
+          This will take a few minutes — feel free to wait or come back later...
         </p>
       )}
       {/* Button Container */}

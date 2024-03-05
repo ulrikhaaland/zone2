@@ -126,14 +126,19 @@ const ProfileMobileLayout: React.FC<ProfileMobileLayoutProps> = ({
             Generating Guide...
           </h1>
           {guideStatus === GuideStatus.LOADING && (
-            <p
-              className="text-whitebg text-center text-m mt-2 mb-2 relative z-10"
+            <div
+              className={
+                "text-center text-gray-300 items-center justify-center px-16 w-full text-sm pt-2 mb-4 relative z-10"
+              }
               style={{
                 textShadow: "10px 10px 10px rgba(0,0,0,1)",
               }}
             >
-              This will take a few minutes...
-            </p>
+              <p>
+                This will take a few minutes — feel free to wait or come back
+                later...
+              </p>
+            </div>
           )}
         </>
       )}

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { GuideStatus, User } from "../../model/user";
-import { BlogItem } from "../../model/guide";
+import { GuideItem } from "../../model/guide";
 import GuideSection from "../blog/BlogSection";
 import "./styles.css";
 import { GuideSkeletonDesktop, GuideSkeletonMobile } from "./skeleton";
@@ -12,7 +12,7 @@ import { handleOnGenerateGuide } from "@/pages/api/generate";
 import { questToFitnessData } from "@/app/model/questionaire";
 
 interface GuideProps {
-  guideItems?: BlogItem[];
+  guideItems?: GuideItem[];
   status: GuideStatus;
   generateGuide: () => void;
   onScrolledToTopOrBottom?: (scrolledTopOrBottom: boolean) => void;
@@ -25,7 +25,7 @@ export default function Guide(props: GuideProps) {
 
   const router = useRouter();
 
-  const [guideItems, setGuideItems] = useState<BlogItem[]>(
+  const [guideItems, setGuideItems] = useState<GuideItem[]>(
     props.guideItems || []
   );
   const [status, setStatus] = useState(props.status);
@@ -76,11 +76,56 @@ export default function Guide(props: GuideProps) {
     };
   }, [expandedItemId]);
 
-  const handleExpand = (item: BlogItem) => {
+  const handleExpand = (item: GuideItem) => {
     setExpandedItemId(item.id);
   };
 
-  const renderGuideItems = (items: BlogItem[]) => (
+  const scrollToTop = () => {
+    if (containerRef.current) {
+      containerRef.current.scrollTo({
+        top: 0,
+        behavior: "smooth", // This makes the scroll smooth
+      });
+    }
+  };
+
+  const scrollToItem = (itemId: number) => {
+    const itemElement = document.getElementById(`guide-item-${itemId}`);
+    if (itemElement && containerRef.current) {
+      const itemOffsetTop =
+        itemElement.offsetTop - containerRef.current.offsetTop; // Adjust if your item's offset is calculated differently
+      containerRef.current.scrollTo({
+        top: itemOffsetTop,
+        behavior: "smooth",
+      });
+    }
+  };
+
+  const handleCollapse = (collapsedItemId: number) => {
+    // Assume collapsedItemId is the ID of the item that was just collapsed.
+    let previousExpandedItemId = null;
+
+    // Find the closest previous item that is expanded.
+    for (let i = collapsedItemId - 1; i >= 0; i--) {
+      const item = guideItems.find(
+        (item) => item.id === i && item.expanded && !item.parentId
+      );
+      if (item) {
+        previousExpandedItemId = item.id;
+        break;
+      }
+    }
+
+    if (previousExpandedItemId !== null) {
+      // If a previous expanded item exists, scroll to it
+      scrollToItem(previousExpandedItemId);
+    } else {
+      // If no previous expanded item exists, scroll to the top
+      scrollToTop();
+    }
+  };
+
+  const renderGuideItems = (items: GuideItem[]) => (
     <ul className="list-none p-0">
       {items.map((item, index) => (
         <GuideSection
@@ -89,6 +134,7 @@ export default function Guide(props: GuideProps) {
           isSubItem={false}
           isLast={index === items.length - 1}
           onExpand={handleExpand}
+          onCollapse={(item) => handleCollapse(item.id)}
         />
       ))}
     </ul>

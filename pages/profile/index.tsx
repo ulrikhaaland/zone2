@@ -69,6 +69,7 @@ const UserProfile: NextPageWithLayout = () => {
         fitnessData: questToFitnessData(user!.questions),
         uid: user!.uid,
       });
+      console.log(body);
       fetch("/api/generate", {
         method: "POST",
         headers: {

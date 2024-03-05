@@ -39,13 +39,11 @@ export default async function handler(req: Request, res: Response) {
       const runInfo = await handleOnGenerateGuide(fitnessData, uid);
 
       // Respond with success and indicate that the guide generation is in progress
-      res
-        .status(202)
-        .json({
-          success: true,
-          runInfo: runInfo,
-          message: "Guide generation initiated",
-        });
+      res.status(202).json({
+        success: true,
+        runInfo: runInfo,
+        message: "Guide generation initiated",
+      });
     } catch (error) {
       console.error("Error initiating guide generation:", error);
       res
@@ -103,63 +101,6 @@ const createThreadWithRetries = async (
         throw error;
       }
     }
-  }
-};
-
-const generateGuide = async (
-  fitnessData: FitnessData
-): Promise<string | undefined> => {
-  try {
-    console.log(
-      "Creating thread....... API Key present:",
-      !!process.env.OPENAI_API_KEY
-    );
-
-    let thread;
-    try {
-      thread = await client.beta.threads.create();
-      console.log("Thread created successfully", thread);
-    } catch (error) {
-      console.error("Failed to create thread:", error);
-      throw error; // Re-throw the error or handle it appropriately
-    }
-
-    console.log("generating guide........");
-    const message: MessageCreateParams = {
-      role: "user",
-      content: fitnessDataToJson(fitnessData),
-    };
-
-    await client.beta.threads.messages.create(thread.id, message);
-
-    const run = await client.beta.threads.runs.create(thread.id, {
-      assistant_id: "asst_P04Kgk0OWercjCtYJtNzUV8G",
-    });
-
-    const getRunStatus = async (
-      threadId: string,
-      runId: string
-    ): Promise<string | undefined> => {
-      let status;
-      do {
-        await new Promise((resolve) => setTimeout(resolve, 1000)); // Wait for 1 second
-        status = await client.beta.threads.runs.retrieve(threadId, runId);
-        console.log("Run status:", status.status);
-      } while (status.status !== "completed");
-
-      const messageList = await client.beta.threads.messages.list(threadId);
-      const dataList = messageList.data;
-
-      const content = dataList[0]
-        .content[0] as OpenAI.Beta.Threads.Messages.MessageContentText;
-      return content.text.value;
-    };
-
-    return await getRunStatus(thread.id, run.id);
-  } catch (error: any) {
-    console.error("Error generating guide:", error);
-    // Handle errors that occur during the guide generation process
-    throw new Error(`Guide generation failed: ${error.message}`);
   }
 };
 

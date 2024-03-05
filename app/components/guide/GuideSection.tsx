@@ -1,13 +1,13 @@
 import React from "react";
-import { BlogItem } from "@/app/model/blog";
 import { useStore } from "@/RootStoreProvider";
+import { GuideItem } from "@/app/model/guide";
 
 interface BlogSectionProps {
-  item: BlogItem;
+  item: GuideItem;
   isSubItem?: boolean;
   isLast?: boolean;
-  onExpand?: (item: BlogItem) => void;
-  onCollapse?: (item: BlogItem) => void;
+  onExpand?: (item: GuideItem) => void;
+  onCollapse?: (item: GuideItem) => void;
 }
 
 const BlogSection: React.FC<BlogSectionProps> = ({

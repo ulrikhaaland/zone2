@@ -1,9 +1,9 @@
 import { useStore } from "@/RootStoreProvider";
 import { BlogPost } from "@/app/model/blog";
 import { observer } from "mobx-react";
-import { ReactElement, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import BlogSection from "./BlogSection";
-import { BlogItem } from "@/app/model/guide";
+import { BlogItem } from "@/app/model/blog";
 
 interface BlogPostScaffoldProps {
   post: BlogPost;

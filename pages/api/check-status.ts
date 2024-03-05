@@ -1,8 +1,7 @@
 // pages/api/check-status.js
-import { BlogItem, parseJsonToGuideItems } from "@/app/model/guide";
+import { GuideItem, parseJsonToGuideItems } from "@/app/model/guide";
 import { GuideStatus } from "@/app/model/user";
 import OpenAI from "openai";
-import { handleOnGenerateGuide } from "./generate";
 import * as admin from "firebase-admin";
 import { Request, Response } from "express";
 
@@ -63,7 +62,7 @@ export default async function handler(req: Request, res: Response) {
       const content = dataList[0]
         .content[0] as OpenAI.Beta.Threads.Messages.MessageContentText;
       const guide = content.text.value;
-      let guideItems: BlogItem[];
+      let guideItems: GuideItem[];
       try {
         guideItems = parseJsonToGuideItems(guide);
         guideItems[0].expanded = true;

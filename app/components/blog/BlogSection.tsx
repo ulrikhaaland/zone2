@@ -1,6 +1,5 @@
 import React from "react";
 import { BlogItem } from "@/app/model/blog";
-import { useStore } from "@/RootStoreProvider";
 
 interface BlogSectionProps {
   item: BlogItem;

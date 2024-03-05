@@ -8,8 +8,6 @@ import { Create as CreateIcon } from "@mui/icons-material";
 import { Replay as ReplayIcon } from "@mui/icons-material";
 import { useRouter } from "next/router";
 import { useStore } from "@/RootStoreProvider";
-import { handleOnGenerateGuide } from "@/pages/api/generate";
-import { questToFitnessData } from "@/app/model/questionaire";
 
 interface GuideProps {
   guideItems?: GuideItem[];

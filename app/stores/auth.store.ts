@@ -18,7 +18,7 @@ import {
   getCountFromServer,
 } from "firebase/firestore";
 import { GuideStatus, User } from "../model/user";
-import { auth, db, provider } from "../../pages/_app";
+import { auth, db } from "../../pages/_app";
 import { makeObservable, observable, action } from "mobx";
 import { questToFitnessData } from "../model/questionaire";
 

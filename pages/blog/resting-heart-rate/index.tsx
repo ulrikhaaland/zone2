@@ -1,6 +1,5 @@
 import BlogPostScaffold from "@/app/components/blog/BlogPostScaffold";
-import { BlogPost } from "@/app/model/blog";
-import { BlogItem } from "@/app/model/guide";
+import { BlogPost, BlogItem } from "@/app/model/blog";
 import { NextPageWithLayout } from "@/pages/_app";
 import { ReactElement } from "react";
 

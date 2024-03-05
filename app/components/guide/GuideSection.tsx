@@ -1,5 +1,4 @@
 import React from "react";
-import { useStore } from "@/RootStoreProvider";
 import { GuideItem } from "@/app/model/guide";
 
 interface BlogSectionProps {

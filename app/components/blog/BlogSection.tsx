@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BlogItem } from "@/app/model/blog";
+import { observer } from "mobx-react";
 
 interface BlogSectionProps {
   item: BlogItem;
@@ -19,6 +20,10 @@ const BlogSection: React.FC<BlogSectionProps> = ({
   const [expanded, setExpanded] = React.useState(item.expanded);
 
   const hasSubItems = item.subItems && item.subItems.length > 0;
+
+  useEffect(() => {
+    setExpanded(item.expanded);
+  }, [item.expanded]);
 
   // Adjusted toggle function to prevent sub-subitems from toggling their expanded state
   const handleToggleExpand = () => {
@@ -104,4 +109,4 @@ const BlogSection: React.FC<BlogSectionProps> = ({
   );
 };
 
-export default BlogSection;
+export default observer(BlogSection);

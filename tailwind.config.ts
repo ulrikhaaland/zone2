@@ -17,6 +17,7 @@ const config: Config = {
         custom: ["Avenir", "Tahoma", "sans-serif"],
       },
       colors: {
+        primary: "#c13c1b",
         title: "#486895",
         title2: "#314f6b",
         subtitle: "#364759",

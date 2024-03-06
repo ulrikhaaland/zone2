@@ -67,39 +67,7 @@ const ProfileDesktopLayout: React.FC<ProfileDesktopLayoutProps> = ({
           }}
         ></div>
       </div>
-      <div className="pt-24"> 
-        {/* If guidestatus === loading show subtitle saying this can take a few minutes */}
-        {guideStatus === GuideStatus.LOADING && (
-          <>
-            <h1
-              className={`text-5xl text-whitebg text-center font-bold md:pt-0 pt-6 mb-4 relative z-10 ${
-                guideStatus === GuideStatus.LOADING && pageIndex === 0
-                  ? "animate-pulse"
-                  : ""
-              }`}
-              style={{
-                textShadow: "10px 10px 10px rgba(0,0,0,1)",
-              }}
-            >
-              {pageIndex === 1
-                ? "Profile"
-                : guideStatus === GuideStatus.LOADING
-                ? "Generating Guide..."
-                : "Your Personalized Fitness Guide"}
-            </h1>
-            <p
-              className={`${
-                pageIndex === 1 ? "text-transparent" : "text-whitebg"
-              } text-center text-m mb-4 relative z-10`}
-              style={{
-                textShadow: "10px 10px 10px rgba(0,0,0,1)",
-              }}
-            >
-              This will take a few minutes — feel free to wait or come back
-              later...
-            </p>
-          </>
-        )}
+      <div className="pt-24">
         {/* Button Container */}
         <div className="relative flex justify-between items-center md:px-6 pt-12 md:pt-2 md-pb-0 pb-4 w-[300px] mx-auto">
           <button
@@ -140,10 +108,37 @@ const ProfileDesktopLayout: React.FC<ProfileDesktopLayoutProps> = ({
             Profile
           </button>
         </div>
-
+        {/* If guidestatus === loading show subtitle saying this can take a few minutes */}
+        {guideStatus === GuideStatus.LOADING && pageIndex === 0 && (
+          <>
+            <h1
+              className={`text-5xl text-whitebg text-center font-bold md:pt-0 pt-6 mb-4 relative z-10 ${
+                guideStatus === GuideStatus.LOADING && pageIndex === 0
+                  ? "animate-pulse"
+                  : ""
+              }`}
+              style={{
+                textShadow: "10px 10px 10px rgba(0,0,0,1)",
+              }}
+            >
+              {guideStatus === GuideStatus.LOADING
+                ? "Generating Guide..."
+                : "Your Personalized Fitness Guide"}
+            </h1>
+            <p
+              className={`text-whitebg text-center text-m mb-4 relative z-10`}
+              style={{
+                textShadow: "10px 10px 10px rgba(0,0,0,1)",
+              }}
+            >
+              This will take a few minutes — feel free to wait or come back
+              later...
+            </p>
+          </>
+        )}
         {/* Page Content */}
         <div className="flex overflow-hidden md:rounded flex-col items-center min-h-max p-4 relative">
-          <div className="w-full md:overflow-hidden md:shadow-md md:min-h-[83.5dvh] md:max-h-[87.5dvh] min-h-[86.5dvh] max-h-[86.5dvh]">
+          <div className="w-full md:overflow-hidden md:shadow-md">
             <AnimatePresence mode="wait">
               <motion.div
                 className="relative z-0 flex justify-center" // Ensure content is below the overlays

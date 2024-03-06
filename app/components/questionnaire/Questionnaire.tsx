@@ -273,13 +273,30 @@ export default function Questionnaire(props: QuestionnaireProps) {
     onQuestCompleted(questions);
   };
 
+  const signOutButton = (
+    <div className={`flex justify-center ${isMobileView ? "mb-8" : "pt-8"}`}>
+      <button
+        className={`flex items-center font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline transition duration-150 ease-in-out 
+              ${"bg-black text-whitebg border border-gray-700 transition duration-150 ease-in-out"} hover:bg-gray-900`}
+        type="button"
+        onClick={() => {
+          authStore.signOut();
+          router.push("/");
+        }}
+      >
+        <LogoutIcon className="mr-2" style={{ color: "white" }} />
+        Sign out
+      </button>
+    </div>
+  );
+
   return (
     <div
       className={`text-whitebg
       ${!isMobileView && "bg-black bg-opacity-60"}
       ${
         isProfile
-          ? "rounded-lg max-w-md md:min-h-[72.5dvh] md:max-h-[72.5dvh] md:border md:border-gray-700 md:rounded-lg"
+          ? `rounded-lg max-w-md md:min-h-[77.5dvh] md:max-h-[72.5dvh] md:border md:border-gray-700 md:rounded-lg`
           : "max-w-md md:min-h-[77.5dvh] md:max-h-[77.5dvh]"
       }`}
     >
@@ -386,23 +403,12 @@ export default function Questionnaire(props: QuestionnaireProps) {
             />
           ))}
         </div>
-        {isProfile && (
-          <div className={`flex justify-center ${isMobileView && "mb-8"}`}>
-            <button
-              className={`flex items-center font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline transition duration-150 ease-in-out 
-              ${"bg-black text-whitebg border border-gray-700 transition duration-150 ease-in-out"} hover:bg-gray-900`}
-              type="button"
-              onClick={() => {
-                authStore.signOut();
-                router.push("/");
-              }}
-            >
-              <LogoutIcon className="mr-2" style={{ color: "white" }} />
-              Sign out
-            </button>
-          </div>
-        )}
+        {isProfile && isMobileView && signOutButton}
       </div>
+
+      {isProfile && !isMobileView && (
+        <div className="flex justify-center items-center text-center h-max">{signOutButton}</div>
+      )}
     </div>
   );
 }

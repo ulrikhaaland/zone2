@@ -8,6 +8,7 @@ import { Create as CreateIcon } from "@mui/icons-material";
 import { Replay as ReplayIcon } from "@mui/icons-material";
 import { useRouter } from "next/router";
 import { useStore } from "@/RootStoreProvider";
+import { GuideSideNavigation } from "./SideNavigation";
 
 interface GuideProps {
   guideItems?: GuideItem[];
@@ -87,8 +88,20 @@ export default function Guide(props: GuideProps) {
     }
   };
 
-  const scrollToItem = (itemId: number) => {
-    const itemElement = document.getElementById(`guide-item-${itemId}`);
+  const scrollToItem = async (item: GuideItem) => {
+    let itemElement = document.getElementById(`guide-item-${item.id}`);
+
+    if (itemElement === null && item.parentId) {
+      const parentItem = guideItems.find((i) => i.id === item.parentId);
+      if (parentItem) {
+        parentItem.expanded = true;
+        // timer
+        setTimeout(() => {
+          scrollToItem(item);
+        }, 50);
+      }
+    }
+
     if (itemElement && containerRef.current) {
       const itemOffsetTop =
         itemElement.offsetTop - containerRef.current.offsetTop; // Adjust if your item's offset is calculated differently
@@ -99,24 +112,24 @@ export default function Guide(props: GuideProps) {
     }
   };
 
-  const handleCollapse = (collapsedItemId: number) => {
+  const handleCollapse = (item: GuideItem) => {
     // Assume collapsedItemId is the ID of the item that was just collapsed.
-    let previousExpandedItemId = null;
+    let previousExpandedItem = null;
 
     // Find the closest previous item that is expanded.
-    for (let i = collapsedItemId - 1; i >= 0; i--) {
+    for (let i = item.id - 1; i >= 0; i--) {
       const item = guideItems.find(
         (item) => item.id === i && item.expanded && !item.parentId
       );
       if (item) {
-        previousExpandedItemId = item.id;
+        previousExpandedItem = item;
         break;
       }
     }
 
-    if (previousExpandedItemId !== null) {
+    if (previousExpandedItem !== null) {
       // If a previous expanded item exists, scroll to it
-      scrollToItem(previousExpandedItemId);
+      scrollToItem(previousExpandedItem);
     } else {
       // If no previous expanded item exists, scroll to the top
       scrollToTop();
@@ -132,7 +145,7 @@ export default function Guide(props: GuideProps) {
           isSubItem={false}
           isLast={index === items.length - 1}
           onExpand={handleExpand}
-          onCollapse={(item) => handleCollapse(item.id)}
+          onCollapse={(item) => handleCollapse(item)}
         />
       ))}
     </ul>
@@ -188,12 +201,16 @@ export default function Guide(props: GuideProps) {
     }
   };
 
-  return (
+  const content = (
     <div
-      className={`md:min-h-[72.5dvh] md:max-h-[72.5dvh] 
-      justify-center items-center min-h-screen relative w-[850px] 
-      inset-0 bg-black bg-opacity-60 rounded-lg md:border md:border-gray-700
-      ${isMobileView && "mx-4"}`}
+      className={`${
+        status === GuideStatus.LOADING
+          ? "md:min-h-[62.5dvh]"
+          : "md:min-h-[72.5dvh]"
+      } md:max-h-[72.5dvh] 
+justify-center items-center min-h-screen relative w-[850px] 
+inset-0 bg-black bg-opacity-60 rounded-lg md:border md:border-gray-700
+${isMobileView && "mx-4"}`}
     >
       <div
         className="p-4 h-full overflow-y-auto max-w-[850px] mx-auto text-whitebg custom-scrollbar"
@@ -206,4 +223,17 @@ export default function Guide(props: GuideProps) {
       </div>
     </div>
   );
+
+  if (!isMobileView && status === GuideStatus.LOADED) {
+    return (
+      <div className="flex min-h-screen">
+        {status === GuideStatus.LOADED && !isMobileView && (
+          <GuideSideNavigation items={guideItems} scrollToItem={scrollToItem} />
+        )}
+        {content}
+      </div>
+    );
+  }
+
+  return content;
 }

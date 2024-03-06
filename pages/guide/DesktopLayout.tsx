@@ -44,7 +44,7 @@ const Zone2GuideDesktopLayout: React.FC<Zone2GuideDesktopLayoutProps> = ({
 }) => {
   return (
     <div
-      className="w-full font-custom justify-center h-full relative"
+      className="w-full font-custom h-screen overflow-hidden relative"
       style={
         {
           // max height 100dvh - 16rem
@@ -90,17 +90,19 @@ const Zone2GuideDesktopLayout: React.FC<Zone2GuideDesktopLayoutProps> = ({
         ></div>
       </div>
 
-      <h1
-        className="text-5xl text-whitebg text-center font-bold pt-6 mb-4 relative z-10"
-        style={{
-          textShadow: "10px 10px 10px rgba(0,0,0,1)",
-        }}
-      >
-        Zone 2 Guide Creation
-      </h1>
+      {/* <div className="ml-auto mr-auto flex bg-grey-300 h-[50px] relative">
+        <h1
+          className="text-5xl text-whitebg text-start font-bold pt-6 mb-4 relative z-10"
+          style={{
+            textShadow: "10px 10px 10px rgba(0,0,0,1)",
+          }}
+        >
+          Zone 2 Guide Creation
+        </h1>
+      </div> */}
 
       {user && (
-        <div className="flex overflow-hidden flex-col items-center min-h-max p-4 relative">
+        <div className="flex overflow-hidden flex-col items-center min-h-max pt-16 md:pt-24 p-4 relative">
           <div className="w-full md:border md:border-gray-700 md:rounded-lg bg-black bg-opacity-60 rounded-lg md:overflow-hidden max-w-md md:shadow-md md:min-h-[83.5dvh] md:max-h-[87.5dvh] min-h-[86.5dvh] max-h-[86.5dvh]">
             <AnimatePresence mode="wait">
               <motion.div

@@ -46,24 +46,26 @@ function Header() {
         aria-label="Global"
       >
         {/* Logo and Title, now part of the flex layout without fixed positioning */}
-        <div
-          style={{ cursor: "pointer" }}
-          className="flex items-center" // Ensure alignment
-          onClick={() => router.push("/")}
-        >
-          <h1
-            className={`text-3xl font-semibold leading-6 ${
-              isHome || isMobileView
-                ? "text-whitebg hover:text-gray-300"
-                : "text-gray-500 hover:text-gray-300"
-            }`}
-            style={{
-              textShadow: "10px 10px 10px rgba(0,0,0,1)",
-            }}
+        {isMobileView && (
+          <div
+            style={{ cursor: "pointer" }}
+            className="flex items-center" // Ensure alignment
+            onClick={() => router.push("/")}
           >
-            {getTitle()}
-          </h1>
-        </div>
+            <h1
+              className={`text-3xl font-semibold leading-6 ${
+                isHome || isMobileView
+                  ? "text-whitebg hover:text-gray-300"
+                  : "text-gray-500 hover:text-gray-300"
+              }`}
+              style={{
+                textShadow: "10px 10px 10px rgba(0,0,0,1)",
+              }}
+            >
+              {getTitle()}
+            </h1>
+          </div>
+        )}
 
         {/* Mobile Burger Menu */}
         <div className="flex lg:hidden">

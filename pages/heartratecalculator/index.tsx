@@ -113,9 +113,9 @@ export const HeartRateZonesPage: NextPageWithLayout = () => {
           }}
         ></div>
       </div>
-      <div className="md:pt-0 pt-8">
+      <div className="md:pt-24 pt-8">
         {/* Page Content */}
-        {!isMobileView && (
+        {/* {!isMobileView && (
           <h1
             className="text-5xl text-whitebg text-center font-bold pt-6 mb-4 relative z-10"
             style={{
@@ -124,10 +124,10 @@ export const HeartRateZonesPage: NextPageWithLayout = () => {
           >
             Heart Rate Zones
           </h1>
-        )}
+        )} */}
         {/* Button Container */}
         {HRZones && (
-          <div className="relative flex justify-between items-center md:px-6 pt-12 md:pt-2 md-pb-0 pb-4 w-[300px] mx-auto">
+          <div className="relative flex justify-between items-center md:px-6 pt-12 md:pt-0 md-pb-0 pb-4 w-[300px] mx-auto">
             <button
               className={`flex w-[160px] items-center justify-center font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline transition duration-150 ease-in-out ${
                 pageIndex === 0

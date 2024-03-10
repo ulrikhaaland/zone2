@@ -2,7 +2,7 @@
 import "../../app/globals.css";
 import React, { ReactElement, useEffect, useState } from "react";
 import { GuideStatus, User } from "../../app/model/user";
-import { Question } from "../../app/model/questionaire";
+import { Question, questToFitnessData } from "../../app/model/questionaire";
 import { loadStripe } from "@stripe/stripe-js";
 import { NextPageWithLayout } from "@/pages/_app";
 import { useStore } from "@/RootStoreProvider";
@@ -46,10 +46,12 @@ const HomePage: NextPageWithLayout = () => {
   const handleOnQuestCompleted = (questions: Question[]) => {
     setCanSubmit(true);
     setQuestions(questions);
+    const fitnessData = questToFitnessData(questions);
     const newUser: User = {
       ...user!,
       questions: questions,
       guideItems: user?.guideItems ?? [],
+      fitnessLevel: fitnessData.fitnessLevel,
     };
 
     authStore.setUser(newUser);

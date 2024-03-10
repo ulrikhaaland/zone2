@@ -4,7 +4,7 @@ export interface BlogPost {
   imagePath: string;
   items: BlogItem[];
   date?: string;
-  category?: string;
+  categories?: string[];
   description?: string;
   readingTime?: number;
 }
@@ -15,7 +15,7 @@ export interface BlogItem {
   explanation: string;
   image?: string;
   link?: string;
-  expanded: boolean;
+  expanded?: boolean;
   subItems?: BlogItem[];
   parentId?: number;
 }

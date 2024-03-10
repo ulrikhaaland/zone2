@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Dialog, Popover } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { observer } from "mobx-react";
@@ -9,12 +9,13 @@ import MobileMenu from "./MobileMenu";
 import Image from "next/image";
 import { profile } from "console";
 
-function Header() {
+const Header = ({}) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const router = useRouter();
   const { authStore, generalStore } = useStore();
+  const [hideHeader, setHideHeader] = useState(false);
 
-  const { isMobileView } = generalStore;
+  const { isMobileView, scrollableContentRef } = generalStore;
 
   const isHome = router.pathname === "/";
   const isGuide = router.pathname === "/guide";
@@ -34,13 +35,42 @@ function Header() {
 
     return "Zone 2 Guide";
   };
-  // border-b border-gray-700
+  const headerHideThreshold = isMobileView ? 52 : 20;
+
+  useEffect(() => {
+    if (!scrollableContentRef?.current) return;
+    
+    const handleScroll = () => {
+      if (!scrollableContentRef.current) return;
+      // Log the current scroll position and the window's height
+      console.log(scrollableContentRef.current.scrollTop, window.innerHeight);
+
+      if (scrollableContentRef.current.scrollTop > headerHideThreshold) {
+        setHideHeader(true);
+      } else {
+        setHideHeader(false);
+      }
+    };
+
+    const contentElement = scrollableContentRef.current;
+    if (contentElement) {
+      contentElement.addEventListener("scroll", handleScroll);
+    }
+
+    return () => {
+      if (contentElement) {
+        contentElement.removeEventListener("scroll", handleScroll);
+      }
+    };
+  }, [scrollableContentRef]);
+
+  // Add or remove a class based on the hideHeader state
+  const headerClasses = `bg-transparent fixed top-0 left-0 w-full z-50 transition-transform duration-300 ${
+    hideHeader ? "-translate-y-full" : ""
+  }`;
+
   return (
-    <header
-      className={`bg-transparent fixed top-0 left-0 w-full z-50 
-      ${!isHome && !isMobileView && ""}
-         `}
-    >
+    <header className={headerClasses}>
       <nav
         className="flex justify-between items-center lg:py-6 py-2 px-4 lg:px-12 z-150"
         aria-label="Global"
@@ -95,6 +125,6 @@ function Header() {
       />
     </header>
   );
-}
+};
 
 export default observer(Header);

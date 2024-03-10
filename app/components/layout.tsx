@@ -4,7 +4,7 @@ import Login from "./Login";
 import { observer } from "mobx-react";
 import { useStore } from "../../RootStoreProvider";
 import { AppProps } from "next/app";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { NextRouter, useRouter } from "next/router";
 import Head from "next/head";
 import { has } from "mobx";

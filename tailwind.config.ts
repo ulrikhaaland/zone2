@@ -22,6 +22,7 @@ const config: Config = {
         title2: "#314f6b",
         subtitle: "#364759",
         whitebg: "#ededed",
+        blackbg: "#050408",
         card: "#37464f",
         "primary-button": "#c13c1b",
         "primary-button-dark": "#476894",

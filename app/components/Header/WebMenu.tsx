@@ -16,6 +16,7 @@ const WebMenu: React.FC<WebMenuProps> = ({ router, authStore }) => {
   const titleRef = useRef<HTMLHeadingElement>(null);
   const guideRef = useRef<HTMLParagraphElement>(null);
   const zonesRef = useRef<HTMLParagraphElement>(null);
+  const blogRef = useRef<HTMLParagraphElement>(null);
   const profileRef = useRef<HTMLParagraphElement>(null);
 
   const [underlineStyle, setUnderlineStyle] = useState({ left: 0, width: 0 });
@@ -40,6 +41,8 @@ const WebMenu: React.FC<WebMenuProps> = ({ router, authStore }) => {
       updateUnderline(guideRef);
     } else if (pathName === "/heartratecalculator") {
       updateUnderline(zonesRef);
+    } else if (pathName.includes("/content")) {
+      updateUnderline(blogRef);
     } else if (pathName === "/profile") {
       updateUnderline(profileRef);
     } else {
@@ -75,10 +78,10 @@ const WebMenu: React.FC<WebMenuProps> = ({ router, authStore }) => {
           <p
             ref={guideRef}
             onClick={() => router.push("/guide")}
-            className={`text-2xl font-semibold leading-6 mx-4 ${
+            className={`leading-6 mx-4 ${
               pathName === "/guide"
-                ? "text-white hover:text-gray-300"
-                : "text-gray-400 hover:text-gray-300"
+                ? "text-white hover:text-gray-300 text-3xl font-bold"
+                : "text-gray-400 hover:text-gray-300 text-2xl font-semibold"
             }`}
             style={{ cursor: "pointer" }}
           >
@@ -87,14 +90,26 @@ const WebMenu: React.FC<WebMenuProps> = ({ router, authStore }) => {
           <p
             ref={zonesRef}
             onClick={() => router.push("/heartratecalculator")}
-            className={`text-2xl font-semibold leading-6 mx-4 ${
+            className={`leading-6 mx-4 ${
               pathName === "/heartratecalculator"
-                ? "text-white hover:text-gray-300"
-                : "text-gray-400 hover:text-gray-300"
+                ? "text-white hover:text-gray-300 text-3xl font-bold"
+                : "text-gray-400 hover:text-gray-300 text-2xl font-semibold"
             }`}
             style={{ cursor: "pointer" }}
           >
             Training Zones
+          </p>
+          <p
+            ref={blogRef}
+            onClick={() => router.push("/content")}
+            className={`leading-6 mx-4 ${
+              pathName.includes("/content")
+                ? "text-white hover:text-gray-300 text-3xl font-bold"
+                : "text-gray-400 hover:text-gray-300 text-2xl font-semibold"
+            }`}
+            style={{ cursor: "pointer" }}
+          >
+            Content
           </p>
         </div>
 

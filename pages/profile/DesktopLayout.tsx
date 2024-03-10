@@ -69,7 +69,7 @@ const ProfileDesktopLayout: React.FC<ProfileDesktopLayoutProps> = ({
       </div>
       <div className="pt-24">
         {/* Button Container */}
-        <div className="relative flex justify-between items-center md:px-6 pt-12 md:pt-2 md-pb-0 pb-4 w-[300px] mx-auto">
+        <div className="relative flex justify-between items-center md:px-6 pt-12 md:pt-0 md-pb-0 pb-4 w-[300px] mx-auto">
           <button
             className={`flex items-center font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline transition duration-150 ease-in-out ${
               pageIndex === 0

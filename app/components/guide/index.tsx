@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { GuideStatus, User } from "../../model/user";
 import { GuideItem } from "../../model/guide";
-import GuideSection from "../blog/BlogSection";
+import GuideSection from "./GuideSection";
 import "./styles.css";
 import { GuideSkeletonDesktop, GuideSkeletonMobile } from "./skeleton";
 import { Create as CreateIcon } from "@mui/icons-material";
@@ -96,13 +96,21 @@ export default function Guide(props: GuideProps) {
       if (parentItem) {
         parentItem.expanded = true;
         // timer
-        setTimeout(() => {
+        return setTimeout(() => {
           scrollToItem(item);
         }, 50);
       }
     }
 
     if (itemElement && containerRef.current) {
+      if (!item.expanded) {
+        item.expanded = true;
+        /// await 50 ms
+        return setTimeout(() => {
+          scrollToItem(item);
+        }, 50);
+      }
+      console.log("scrolling to item", item.title);
       const itemOffsetTop =
         itemElement.offsetTop - containerRef.current.offsetTop; // Adjust if your item's offset is calculated differently
       containerRef.current.scrollTo({
@@ -208,9 +216,9 @@ export default function Guide(props: GuideProps) {
           ? "md:min-h-[62.5dvh]"
           : "md:min-h-[72.5dvh]"
       } md:max-h-[72.5dvh] 
-justify-center items-center min-h-screen relative w-[850px] 
-inset-0 bg-black bg-opacity-60 rounded-lg md:border md:border-gray-700
-${isMobileView && "mx-4"}`}
+        justify-center items-center min-h-screen relative w-[850px] 
+        inset-0 bg-black bg-opacity-60 rounded-lg md:border md:border-gray-700
+        ${isMobileView && "mx-4"}`}
     >
       <div
         className="p-4 h-full overflow-y-auto max-w-[850px] mx-auto text-whitebg custom-scrollbar"

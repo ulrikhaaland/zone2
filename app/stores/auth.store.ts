@@ -98,12 +98,13 @@ export default class AuthStore {
         guideGenerationThreadId: newUser.guideGenerationThreadId ?? null,
         hasReviewed: newUser.hasReviewed ?? false,
         hasDeclinedReview: newUser.hasDeclinedReview ?? false,
+        fitnessLevel: newUser?.fitnessLevel ?? undefined,
       };
 
       this.setUser(newUser);
 
       // Here, userData contains all fields from the User object.
-      return await updateDoc(doc(db, "users", this.user.uid), userData);
+      return await updateDoc(doc(db, "users", this.user.uid), {...userData});
     }
   };
 
@@ -217,10 +218,7 @@ export default class AuthStore {
           credits: data?.credits,
           guideItems: data?.guideItems,
           previousGuideItems: data?.previousGuideItems,
-          fitnessData:
-            data.questions &&
-            data.questions.length > 0 &&
-            questToFitnessData(data?.questions),
+          fitnessLevel: data?.fitnessLevel,
           questions: data?.questions,
           usesKG: data?.usesKG,
           usesCM: data?.usesCM,

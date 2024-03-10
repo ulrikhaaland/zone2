@@ -22,7 +22,7 @@ export interface User {
   firebaseUser?: firebaseAuth.User;
   guideItems: GuideItem[];
   previousGuideItems?: GuideItem[];
-  fitnessData?: FitnessData;
+  fitnessLevel?: FitnessLevel;
   heartRateZones?: HeartRateZone[];
   questions: Question[];
   usesKG: boolean;

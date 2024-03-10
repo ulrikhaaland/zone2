@@ -84,11 +84,11 @@ const items: BlogItem[] = [
 const BlogPostMaximumHeartRate: NextPageWithLayout = () => {
   const post: BlogPost = {
     title: "Finding Your Maximum Heart Rate",
-    href: "/blog/maximum-heart-rate",
+    href: "maximum-heart-rate",
     imagePath: "/assets/images/runner/runner8.png",
     items: items,
     date: "2021-09-01",
-    category: "Health",
+    categories: ["Health"],
     description: "What is Resting Heart Rate and how to measure it?",
     readingTime: 5,
   };

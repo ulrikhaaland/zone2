@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { BlogItem } from "@/app/model/blog";
 import { observer } from "mobx-react";
 
-interface BlogSectionProps {
+interface BlogPostSectionProps {
   item: BlogItem;
   isSubItem?: boolean;
   isLast?: boolean;
@@ -10,7 +10,7 @@ interface BlogSectionProps {
   onCollapse?: (item: BlogItem) => void;
 }
 
-const BlogSection: React.FC<BlogSectionProps> = ({
+const BlogPostSection: React.FC<BlogPostSectionProps> = ({
   item,
   isSubItem,
   isLast,
@@ -94,7 +94,7 @@ const BlogSection: React.FC<BlogSectionProps> = ({
             <div className={childContainerClass}>
               <ul className="list-none">
                 {item.subItems?.map((subItem) => (
-                  <BlogSection
+                  <BlogPostSection
                     key={subItem.id}
                     item={{ ...subItem, expanded: true }}
                     isSubItem={true}
@@ -109,4 +109,4 @@ const BlogSection: React.FC<BlogSectionProps> = ({
   );
 };
 
-export default observer(BlogSection);
+export default observer(BlogPostSection);

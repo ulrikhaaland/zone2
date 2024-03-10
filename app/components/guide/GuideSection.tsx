@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { GuideItem } from "@/app/model/guide";
+import VideoIcon from "@mui/icons-material/Youtube";
+import { observer } from "mobx-react";
 
 interface BlogSectionProps {
   item: GuideItem;
@@ -19,6 +21,10 @@ const BlogSection: React.FC<BlogSectionProps> = ({
   const [expanded, setExpanded] = React.useState(item.expanded);
 
   const hasSubItems = item.subItems && item.subItems.length > 0;
+
+  useEffect(() => {
+    setExpanded(item.expanded);
+  }, [item.expanded]);
 
   // Adjusted toggle function to prevent sub-subitems from toggling their expanded state
   const handleToggleExpand = () => {
@@ -82,21 +88,37 @@ const BlogSection: React.FC<BlogSectionProps> = ({
       </div>
       {expanded && (
         <>
-          <p className={`${isSubItem ? "text-sm" : "text-base"} mb-2`}>
-            {item.explanation.replace(/\【\d+†source】/g, "").trim()}
-          </p>
-          {hasSubItems && (
-            <div className={childContainerClass}>
-              <ul className="list-none">
-                {item.subItems?.map((subItem) => (
-                  <BlogSection
-                    key={subItem.id}
-                    item={{ ...subItem, expanded: true }}
-                    isSubItem={true}
-                  />
-                ))}
-              </ul>
-            </div>
+          {!item.videoLink ? (
+            <>
+              <p className={`${isSubItem ? "text-sm" : "text-base"} mb-2`}>
+                {item.explanation.replace(/\【\d+†source】/g, "").trim()}
+              </p>
+              {hasSubItems && (
+                <div className={childContainerClass}>
+                  <ul className="list-none">
+                    {item.subItems?.map((subItem) => (
+                      <BlogSection
+                        key={subItem.id}
+                        item={{ ...subItem, expanded: true }}
+                        isSubItem={true}
+                      />
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </>
+          ) : (
+            <button
+              className={`flex items-center font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline transition duration-150 ease-in-out ${
+                // "bg-whitebg text-black border border-gray-700 transition duration-150 ease-in-out hover:bg-gray-300"
+                "bg-black text-whitebg border border-gray-700 transition duration-150 ease-in-out hover:bg-gray-900"
+              }`}
+              type="button"
+              onClick={() => window.open(item.videoLink, "_blank")}
+            >
+              <VideoIcon className="mr-2" style={{ color: "white" }} />
+              Click To Watch Video
+            </button>
           )}
         </>
       )}
@@ -104,4 +126,4 @@ const BlogSection: React.FC<BlogSectionProps> = ({
   );
 };
 
-export default BlogSection;
+export default observer(BlogSection);

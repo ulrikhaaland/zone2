@@ -45,7 +45,7 @@ export default async function handler(req: Request, res: Response) {
     });
 
     // Example of checking the run's status - adjust based on actual API or logic
-    const statusResponse = await client.beta.threads.runs.retrieve(
+    const statusResponse: OpenAI.Beta.Threads.Runs.Run = await client.beta.threads.runs.retrieve(
       threadId,
       runId
     );

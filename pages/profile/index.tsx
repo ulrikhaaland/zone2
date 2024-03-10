@@ -125,6 +125,7 @@ const UserProfile: NextPageWithLayout = () => {
           threadId: undefined,
           runId: undefined,
         });
+        console.log("Guide generation status: ", status);
         setGuideStatus(GuideStatus.ERROR);
       }
     } catch (error) {

@@ -56,11 +56,11 @@ const items: BlogItem[] = [
 const BlogPostRestingHeartRate: NextPageWithLayout = () => {
   const post: BlogPost = {
     title: "Finding Your Resting Heart Rate",
-    href: "/blog/resting-heart-rate",
+    href: "resting-heart-rate",
     imagePath: "/assets/images/runner/runner8.png",
     items: items,
     date: "2021-09-01",
-    category: "Health",
+    categories: ["Health"],
     description: "What is Resting Heart Rate and how to measure it?",
     readingTime: 5,
   };

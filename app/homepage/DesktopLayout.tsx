@@ -74,13 +74,13 @@ export const HomeDesktopLayout: React.FC<HomeDesktopLayoutProps> = ({
       </div>
 
       <div
-        className="relative z-10 px-4 pt-16 mx-auto w-[1150px] max-w-full"
+        className="relative z-10 px-4 pt-24 mx-auto w-[1150px] max-w-full"
         style={{
           textShadow: "10px 10px 10px rgba(0,0,0,1)",
         }}
       >
         {/* Expert Testimonials */}
-        <div className="text-whitebg mb-6 py-4 rounded-lg">
+        <div className="text-whitebg mb-6 pb-4 rounded-lg">
           <h2 className="text-3xl font-bold">Tailored To Your Fitness Level</h2>
           <p className="mt-2">
             To offer you a comprehensive guide to Zone 2 training, we have

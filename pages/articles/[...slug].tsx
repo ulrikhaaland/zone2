@@ -1,5 +1,4 @@
 import { GetServerSideProps } from "next";
-import { useRouter } from "next/router";
 import { BlogPost } from "@/app/model/blog"; // Import your types
 import BlogPostScaffold from "@/app/components/blog/BlogPostScaffold";
 import { fitnessLevelOneBlogPosts } from "@/app/data/fitness-level/one";

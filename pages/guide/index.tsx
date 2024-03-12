@@ -10,7 +10,6 @@ import { observer } from "mobx-react";
 import Zone2GuideDesktopLayout from "./DesktopLayout";
 import Zone2GuideMobileLayout from "./MobileLayout";
 import { useRouter } from "next/router";
-import { a } from "react-spring";
 
 const stripePromise = loadStripe(
   "pk_test_51Oc6ntFwAwE234wG9Lu3IfmZQXEv7nHPJx7alrzq00EzVaO74jpv7RifR5iRrkjvTS8BSv67QvoQJz2W2ccTt2bC00gLDhFGLf"

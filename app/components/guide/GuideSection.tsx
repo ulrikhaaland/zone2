@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { GuideItem } from "@/app/model/guide";
-import VideoIcon from "@mui/icons-material/Youtube";
+import VideoIcon from "@mui/icons-material/YouTube";
 import { observer } from "mobx-react";
 
 interface BlogSectionProps {

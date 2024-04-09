@@ -1,4 +1,4 @@
-import { User } from "@/app/model/user";
+import { FitnessLevel, User } from "@/app/model/user";
 import image from "../../../assets/posts/future.png";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -12,7 +12,23 @@ export default function SectionBlog({ user }: Props) {
   const router = useRouter();
 
   const goToBlogpost = (path: string) => {
-    const fitnessLevel = user?.fitnessLevel || 1;
+    let fitnessLevel = 1;
+    if (user?.fitnessLevel) {
+      switch (user.fitnessLevel) {
+        case FitnessLevel.SEDENTARY:
+          fitnessLevel = 1;
+          break;
+        case FitnessLevel.BEGINNER:
+          fitnessLevel = 2;
+          break;
+        case FitnessLevel.ACTIVE:
+          fitnessLevel = 3;
+          break;
+        default:
+          fitnessLevel = 1;
+          break;
+      }
+    }
     router.push(`articles/${path}${fitnessLevel && `/${fitnessLevel}`}`);
   };
 

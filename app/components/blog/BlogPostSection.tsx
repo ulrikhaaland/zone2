@@ -56,40 +56,50 @@ const BlogPostSection: React.FC<BlogPostSectionProps> = ({
         isSubItem || isLast ? "" : "border-b border-gray-700"
       }`}
     >
-      <div
-        className={`flex justify-between items-start cursor-pointer ${
-          isSubItem ? "py-2" : "py-4"
-        }`}
-        onClick={handleToggleExpand}
-      >
-        <h2
-          className={`${
-            isSubItem ? "text-lg" : "text-xl"
-          } font-semibold text-white`}
+      {item.title ? (
+        <div
+          className={`flex justify-between items-start cursor-pointer ${
+            isSubItem ? "py-2" : "py-4"
+          }`}
+          onClick={handleToggleExpand}
         >
-          {item.title}
-        </h2>
-        {!isSubItem && (
-          <svg
-            className={`w-6 h-6 transform ${expanded ? "rotate-180" : ""}`}
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
+          <h2
+            className={`${
+              isSubItem ? "text-lg" : "text-xl"
+            } font-semibold text-white`}
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M19 9l-7 7-7-7"
-            ></path>
-          </svg>
-        )}
-      </div>
+            {item.title}
+          </h2>
+          {!isSubItem && (
+            <svg
+              className={`w-6 h-6 transform ${expanded ? "rotate-180" : ""}`}
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M19 9l-7 7-7-7"
+              ></path>
+            </svg>
+          )}
+        </div>
+      ) : (
+        <div className="pt-4"></div>
+      )}
       {expanded && (
         <>
-          <p className={`${isSubItem ? "text-sm" : "text-base"} mb-2`}>
-            {item.explanation.replace(/\【\d+†source】/g, "").trim()}
-          </p>
+          {item.content.map((content, index) => (
+            <p
+              key={index}
+              className={`${index > 0 ? "mt-4" : ""} text-base mb-2`}
+            >
+              {content.replace(/\【\d+†source】/g, "").trim()}
+            </p>
+          ))}
+
           {hasSubItems && (
             <div className={childContainerClass}>
               <ul className="list-none">

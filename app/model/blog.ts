@@ -11,8 +11,9 @@ export interface BlogPost {
 
 export interface BlogItem {
   id: number;
-  title: string;
-  explanation: string;
+  title?: string;
+  // each item is a paragraph
+  content: string[];
   image?: string;
   link?: string;
   expanded?: boolean;

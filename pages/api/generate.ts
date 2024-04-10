@@ -14,10 +14,20 @@ export const maxDuration = 600; // This function can run for a maximum of 5 seco
 if (!admin.apps.length) {
   const admin = require("firebase-admin");
 
-  let serviceAccount = require("../../zone2program-a24ce-3eff7214d07d.json");
-
   admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
+    credential: admin.credential.cert({
+      type: "service_account",
+      project_id: "zone2program-a24ce",
+      private_key_id: "3eff7214d07d4cde7091b9740b83d2e0d5e88bcb",
+      private_key: process.env.FIREBASE_PRIVATE_KEY!.replace(/\\n/g, "\n"),
+      client_email: "zone2program@zone2program-a24ce.iam.gserviceaccount.com",
+      client_id: "114782319148971071520",
+      auth_uri: "https://accounts.google.com/o/oauth2/auth",
+      token_uri: "https://oauth2.googleapis.com/token",
+      auth_provider_x509_cert_url: "https://www.googleapis.com/oauth2/v1/certs",
+      client_x509_cert_url:
+        "https://www.googleapis.com/robot/v1/metadata/x509/zone2program%40zone2program-a24ce.iam.gserviceaccount.com",
+    }),
   });
 }
 

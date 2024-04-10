@@ -7,30 +7,34 @@ const items: BlogItem[] = [
   {
     id: 1,
     title: "The Significance of Resting Heart Rate",
-    explanation:
+    content: [
       "Resting Heart Rate (RHR) is a crucial indicator of cardiovascular health and fitness. A normal RHR ranges between 60 to 100 bpm for adults, with lower rates often observed in physically active individuals. Understanding your RHR can help you monitor your heart's health and efficiency.",
+    ],
     expanded: true,
   },
   {
     id: 2,
     title: "Accurate Measurement of RHR with Equipment",
-    explanation:
+    content: [
       "Measuring your RHR accurately requires the use of specific equipment, such as smartwatches and heart rate belts. Each method has its own set of guidelines to ensure precision in tracking your heart rate.",
+    ],
     expanded: true,
     subItems: [
       {
         id: 3,
         title: "Utilizing Smartwatches",
-        explanation:
+        content: [
           "Smartwatches use optical sensors to measure RHR through the skin. For accurate readings, ensure a snug fit, measure after waking up, keep conditions consistent, adjust device settings for continuous monitoring, and interpret data trends over time.",
+        ],
         parentId: 2,
         expanded: true,
       },
       {
         id: 4,
         title: "Leveraging Heart Rate Belts",
-        explanation:
+        content: [
           "Heart rate belts measure RHR through electrical signals. For optimal accuracy, position the belt correctly, conduct a brief warm-up, maintain a consistent body position, use reliable equipment, and cross-check readings manually.",
+        ],
         parentId: 2,
         expanded: true,
       },
@@ -40,15 +44,17 @@ const items: BlogItem[] = [
   {
     id: 5,
     title: "Measuring RHR Without Equipment",
-    explanation:
+    content: [
       "You can measure your RHR manually by locating your pulse on your neck or wrist, counting the beats per minute, and repeating the process for accuracy. This method requires no equipment but a consistent approach for precise results.",
+    ],
     expanded: true,
   },
   {
     id: 6,
     title: "Key Considerations for All Methods",
-    explanation:
+    content: [
       "Regardless of the method used to measure RHR, avoid stimulants, ensure hydration, and engage in regular monitoring. These practices contribute to the accuracy of RHR readings and the overall understanding of your cardiovascular health.",
+    ],
     expanded: true,
   },
 ];

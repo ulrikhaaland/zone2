@@ -70,7 +70,7 @@ const BlogPostSection: React.FC<BlogPostSectionProps> = ({
           >
             {item.title}
           </h2>
-          {!isSubItem && (
+          {/* {!isSubItem && (
             <svg
               className={`w-6 h-6 transform ${expanded ? "rotate-180" : ""}`}
               fill="none"
@@ -84,7 +84,7 @@ const BlogPostSection: React.FC<BlogPostSectionProps> = ({
                 d="M19 9l-7 7-7-7"
               ></path>
             </svg>
-          )}
+          )} */}
         </div>
       ) : (
         <div className="pt-4"></div>

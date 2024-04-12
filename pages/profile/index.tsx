@@ -43,6 +43,7 @@ const UserProfile: NextPageWithLayout = () => {
       guideGenerationThreadId: runInfo.threadId,
       guideGenerationRunId: runInfo.runId,
     };
+    console.log(updatedUser);
     authStore.updateUserData(updatedUser);
   };
 

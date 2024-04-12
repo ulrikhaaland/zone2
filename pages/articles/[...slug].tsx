@@ -31,19 +31,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   let post: BlogPost | undefined;
 
-  if (fitnessLevel) {
-    console.log(fitnessLevel);
-    switch (fitnessLevel) {
-      case 1:
-        post = fitnessLevelOneBlogPosts.find((post) => post.href === postSlug);
-        break;
-      default:
-        post = fitnessLevelOneBlogPosts.find((post) => post.href === postSlug);
-        break;
-    }
-  } else {
-    post = fitnessLevelOneBlogPosts.find((post) => post.href === postSlug);
-  }
+  post = fitnessLevelOneBlogPosts.find((post) => post.href === postSlug);
 
   if (!post) {
     console.error(`Post with slug ${postSlug} not found`);

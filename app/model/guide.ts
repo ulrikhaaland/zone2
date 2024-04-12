@@ -10,6 +10,7 @@ export interface GuideItem {
 }
 
 export function parseJsonToGuideItems(jsonResponse: string): GuideItem[] {
+  console.log(jsonResponse);
   let trimmedResponse;
 
   // Attempt to trim the response and catch any potential errors

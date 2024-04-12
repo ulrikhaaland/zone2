@@ -20,7 +20,6 @@ import {
 import { GuideStatus, User } from "../model/user";
 import { auth, db } from "../../pages/_app";
 import { makeObservable, observable, action } from "mobx";
-import { questToFitnessData } from "../model/questionaire";
 
 export default class AuthStore {
   open: boolean = false;
@@ -98,7 +97,7 @@ export default class AuthStore {
         guideGenerationThreadId: newUser.guideGenerationThreadId ?? null,
         hasReviewed: newUser.hasReviewed ?? false,
         hasDeclinedReview: newUser.hasDeclinedReview ?? false,
-        fitnessLevel: newUser?.fitnessLevel ?? undefined,
+        fitnessLevel: newUser?.fitnessLevel ?? null,
       };
 
       this.setUser(newUser);

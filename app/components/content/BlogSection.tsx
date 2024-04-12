@@ -1,5 +1,4 @@
 import { FitnessLevel, User } from "@/app/model/user";
-import image from "../../../assets/posts/future.png";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { fitnessLevelOneBlogPosts } from "@/app/data/fitness-level/one";
@@ -12,24 +11,7 @@ export default function SectionBlog({ user }: Props) {
   const router = useRouter();
 
   const goToBlogpost = (path: string) => {
-    let fitnessLevel = 1;
-    if (user?.fitnessLevel) {
-      switch (user.fitnessLevel) {
-        case FitnessLevel.SEDENTARY:
-          fitnessLevel = 1;
-          break;
-        case FitnessLevel.BEGINNER:
-          fitnessLevel = 2;
-          break;
-        case FitnessLevel.ACTIVE:
-          fitnessLevel = 3;
-          break;
-        default:
-          fitnessLevel = 1;
-          break;
-      }
-    }
-    router.push(`articles/${path}${fitnessLevel && `/${fitnessLevel}`}`);
+    router.push(`articles/${path}`);
   };
 
   return (
@@ -38,7 +20,7 @@ export default function SectionBlog({ user }: Props) {
         {fitnessLevelOneBlogPosts.map((post) => (
           <article
             key={post.title}
-            className="flex max-w-xl flex-col items-start justify-between"
+            className="max-w-xl flex-col items-start justify-between"
           >
             <div className="relative w-full h-64 rounded-lg overflow-hidden">
               <span
@@ -101,9 +83,7 @@ export default function SectionBlog({ user }: Props) {
                 </span>
               </h3>
               <p
-                style={{
-                  whiteSpace: "pre-wrap",
-                }}
+                style={{}}
                 className="mt-2 line-clamp-3 text-sm leading-6 text-gray-600"
               >
                 {post.description}

@@ -1,6 +1,6 @@
 import { BlogPost } from "@/app/model/blog";
 
-// corrected
+// 1 corrected
 const Intro: BlogPost = {
   title: "Introduction To Zone 2 Training",
   href: "introduction-to-zone-2-training",
@@ -41,11 +41,11 @@ const Intro: BlogPost = {
   readingTime: 2,
 };
 
-// corrected
+// 2 corrected
 const bioEnergetics: BlogPost = {
   title: "The Basics of Exercise Bioenergetics and Muscle Fiber Types",
   href: "bioenergetics-and-musclefibers",
-  imagePath: "/assets/images/swimmer/swimmer.png",
+  imagePath: "/assets/images/articles/2.png",
   items: [
     {
       id: 1,
@@ -100,11 +100,11 @@ const bioEnergetics: BlogPost = {
   readingTime: 3,
 };
 
-// corrected
+// 3 corrected
 const ATP: BlogPost = {
   title: "Exercise Science: Unpacking ATP and Muscle Mechanics",
   href: "atp-and-muscle-contraction",
-  imagePath: "/assets/images/swimmer/swimmer.png",
+  imagePath: "/assets/images/articles/3.png",
   items: [
     {
       id: 1,
@@ -159,11 +159,11 @@ const ATP: BlogPost = {
   readingTime: 3,
 };
 
-// corrected
+// 4 corrected
 const mitochondria: BlogPost = {
   title: "Unveiling Your Energy Powerhouse",
   href: "unveiling-your-energy-powerhouse",
-  imagePath: "/assets/images/swimmer/swimmer.png",
+  imagePath: "/assets/images/articles/4.png",
   items: [
     {
       id: 1,
@@ -203,11 +203,11 @@ const mitochondria: BlogPost = {
   readingTime: 3,
 };
 
-// corrected
+// 5 corrected
 const lactate: BlogPost = {
   title: "Lactate: The Misunderstood Ally",
   href: "the-role-of-lactate-in-exercise",
-  imagePath: "/assets/images/swimmer/swimmer.png",
+  imagePath: "/assets/images/articles/5.png",
   items: [
     {
       id: 1,
@@ -281,11 +281,11 @@ const lactate: BlogPost = {
   readingTime: 2,
 };
 
-// corrected
+// 6 corrected
 const understandingFatsAndCarbohydrates: BlogPost = {
-  title: "Fats and Carbohydrates: The Essential Energy Sources in Training",
+  title: "Fats and Carbohydrates: The Essential Energy Sources",
   href: "fats-and-carbohydrates-in-training",
-  imagePath: "/assets/images/swimmer/swimmer.png",
+  imagePath: "/assets/images/articles/6.png",
   items: [
     {
       id: 1,
@@ -342,11 +342,11 @@ const understandingFatsAndCarbohydrates: BlogPost = {
   readingTime: 2,
 };
 
-// corrected
+// 7 corrected
 const muscleFibers: BlogPost = {
   title: "Muscle Fibers And Their Recruitment During Exercise",
   href: "muscle-fibers-and-exercise",
-  imagePath: "/assets/images/swimmer/swimmer.png",
+  imagePath: "/assets/images/articles/7.png",
   items: [
     {
       id: 1,
@@ -414,11 +414,11 @@ const muscleFibers: BlogPost = {
   readingTime: 2,
 };
 
-// corrected
+// 8 corrected
 const heartRateZones: BlogPost = {
   title: "Heart Rate Zones: Unlocking Efficient Training",
   href: "heart-rate-zones",
-  imagePath: "/assets/images/swimmer/swimmer.png",
+  imagePath: "/assets/images/articles/9.png",
   items: [
     {
       id: 1,
@@ -500,11 +500,11 @@ const heartRateZones: BlogPost = {
   readingTime: 2,
 };
 
-// corrected
+// 9 corrected
 const findingYourZone: BlogPost = {
-  title: "Finding Zone 2",
+  title: "Finding Your Zone",
   href: "finding-your-zone",
-  imagePath: "/assets/images/swimmer/swimmer.png",
+  imagePath: "/assets/images/articles/8.png",
   items: [
     {
       id: 1,
@@ -599,11 +599,11 @@ const findingYourZone: BlogPost = {
   readingTime: 2,
 };
 
-// Corrected
+// 10 Corrected
 const preparingForZone2: BlogPost = {
   title: "Preparing for Zone 2 Training",
   href: "preparing-for-zone-2-training",
-  imagePath: "/assets/images/swimmer/swimmer.png",
+  imagePath: "/assets/images/articles/10.png",
   items: [
     {
       id: 1,
@@ -658,11 +658,11 @@ const preparingForZone2: BlogPost = {
   readingTime: 2,
 };
 
-// corrected
+// 11 corrected
 const benefitsOfZone2: BlogPost = {
   title: "The Benefits of Zone 2 Training",
   href: "benefits-of-zone-2-training",
-  imagePath: "/assets/images/swimmer/swimmer.png",
+  imagePath: "/assets/images/articles/11.png",
   items: [
     {
       id: 1,
@@ -772,11 +772,11 @@ const benefitsOfZone2: BlogPost = {
   readingTime: 2,
 };
 
-// corrected
+// 12 corrected
 const choosingTheRightExercise: BlogPost = {
   title: "Choosing the Right Exercise for Zone 2 Training",
   href: "choosing-the-right-exercise",
-  imagePath: "/assets/images/swimmer/swimmer.png",
+  imagePath: "/assets/images/articles/12.png",
   date: "2024-01-01",
   categories: [
     "Endurance Training",
@@ -892,7 +892,7 @@ const choosingTheRightExercise: BlogPost = {
   ],
 };
 
-// corrected
+// 13 corrected
 const volumeDurationFrequency: BlogPost = {
   title: "Core Components of a Zone 2 Training Plan",
   href: "balancing-volume-duration-frequency",
@@ -1077,7 +1077,7 @@ const volumeDurationFrequency: BlogPost = {
   ],
 };
 
-// corrected
+// 14 corrected
 const goalsAndExpectations: BlogPost = {
   title: "Setting Realistic Goals and Expectations for Zone 2 Training",
   href: "setting-realistic-goals-and-expectations",
@@ -1136,6 +1136,7 @@ const goalsAndExpectations: BlogPost = {
   ],
 };
 
+// 15 corrected
 const runnersApproach: BlogPost = {
   title: "Insights into Zone 2 Training: A Runner's Approach",
   href: "runners-approach",
@@ -1182,6 +1183,7 @@ const runnersApproach: BlogPost = {
   ],
 };
 
+// 16 corrected
 const recoveryAndPreventingOvertraining: BlogPost = {
   title: "Recovery and Preventing Overtraining",
   href: "recovery-and-preventing-overtraining",

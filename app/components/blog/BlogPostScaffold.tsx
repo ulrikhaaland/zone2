@@ -47,7 +47,7 @@ const BlogPostScaffold: React.FC<BlogPostScaffoldProps> = ({ post }) => {
   };
 
   return (
-    <div className="w-full font-custom min-h-screen relative">
+    <div className="w-full font-custom min-h-screen flex relative">
       <div
         style={{
           position: "absolute",
@@ -83,42 +83,42 @@ const BlogPostScaffold: React.FC<BlogPostScaffoldProps> = ({ post }) => {
       </div>
       <div
         ref={containerRef}
-        className="overflow-y-auto"
+        className="overflow-y-auto relative w-full flex justify-center"
         style={{
           height: `calc(100dvh)`,
         }}
       >
-        <h1
-          className="md:text-5xl text-4xl md:px-0 px-4 text-whitebg text-center font-bold pt-24 mb-4 relative z-10"
-          style={{
-            textShadow: "10px 10px 10px rgba(0,0,0,1)",
-          }}
-        >
-          {post.title}
-        </h1>
-        <div className="flex md:rounded flex-col items-center md:p-4 relative">
-          {/* Adjusted paddingTop here */}
-          <div className="flex justify-center w-full md:shadow-md">
-            <div
-              className={`justify-center items-center relative w-[850px] 
-      inset-0 bg-black bg-opacity-60 rounded-lg md:border md:border-gray-700
-      ${isMobileView && "mx-4"}`}
-            >
+        <div className="w-[800px] pt-24 relative flex flex-col">
+          <h1
+            className="md:text-5xl text-4xl md:px-0 px-4 text-whitebg text-center font-bold mb-4 relative z-10"
+            style={{
+              textShadow: "10px 10px 10px rgba(0,0,0,1)",
+            }}
+          >
+            {post.title}
+          </h1>
+          <div className="flex md:rounded flex-col items-center md:p-4 relative">
+            <div className="flex justify-center w-full md:shadow-md">
               <div
-                className="px-4 pb-4 max-w-[850px] text-whitebg"
-                ref={containerRef}
+                className={`justify-center items-center relative
+                        inset-0 bg-black bg-opacity-60 rounded-lg md:border md:border-gray-700
+                        ${isMobileView && "mx-4"}`}
               >
-                <ul className="list-none">
-                  {post.items.map((item, index) => (
-                    <BlogSection
-                      key={item.id}
-                      item={item}
-                      isSubItem={false}
-                      isLast={index === post.items.length - 1}
-                      onExpand={handleExpand}
-                    />
-                  ))}
-                </ul>
+                <div
+                  className="px-4 pb-4 text-whitebg"
+                  ref={containerRef}
+                >
+                  <ul className="list-none">
+                    {post.items.map((item, index) => (
+                      <BlogSection
+                        key={item.id}
+                        item={item}
+                        isSubItem={false}
+                        isLast={index === post.items.length - 1}
+                      />
+                    ))}
+                  </ul>
+                </div>
               </div>
             </div>
           </div>

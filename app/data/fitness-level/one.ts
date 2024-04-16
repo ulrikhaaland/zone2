@@ -585,7 +585,7 @@ const findingYourZone: BlogPost = {
     {
       id: 5,
       content: [
-        "In Zone 2, your body clears as much lactate as it produces, equating to a pace you could theoretically maintain all day. If the activity feels sustainable over extended periods, you will likely not exceed Zone 2.",
+        "In Zone 2, your body clears as much lactate as it produces, equating to a pace you could theoretically maintain all day. If the activity feels sustainable over extended periods, you are likely within the Zone 2 range.",
         "Your Zone 2 range will change over time. Day-to-day, through factors like diet, sleep, and stress. And over more extended periods, as your fitness level increases, allowing for better performance at the same level of effort.",
         "By continuously observing subjective variables like exertion and objective variables like heart rate and lactate, you'll learn to listen to your body. You can then tailor each session to your daily form and progression.",
         "Finding your Zone 2 requires patience and trust, whether you're a beginner or a seasoned athlete. Remember that the most important thing is to exercise—whether or not you're in Zone 2, exercising will always be more beneficial than not exercising. Don't let a session that didn't go as planned demotivate you. You'll always have the opportunity to try again.",

@@ -6,43 +6,14 @@ interface BlogPostSectionProps {
   item: BlogItem;
   isSubItem?: boolean;
   isLast?: boolean;
-  onExpand?: (item: BlogItem) => void;
-  onCollapse?: (item: BlogItem) => void;
 }
 
 const BlogPostSection: React.FC<BlogPostSectionProps> = ({
   item,
   isSubItem,
   isLast,
-  onExpand,
-  onCollapse,
 }) => {
-  const [expanded, setExpanded] = React.useState(item.expanded);
-
   const hasSubItems = item.subItems && item.subItems.length > 0;
-
-  useEffect(() => {
-    setExpanded(item.expanded);
-  }, [item.expanded]);
-
-  // Adjusted toggle function to prevent sub-subitems from toggling their expanded state
-  const handleToggleExpand = () => {
-    if (!expanded) {
-      onExpand?.(item); // Trigger the callback only when expanding
-    } else {
-      onCollapse?.(item);
-    }
-
-    if (!isSubItem) {
-      // Allow only top-level items to toggle
-      const newExpandedState = !expanded;
-      setExpanded(newExpandedState);
-      item.expanded = newExpandedState;
-      item.subItems?.forEach(
-        (subItem) => (subItem.expanded = newExpandedState)
-      );
-    }
-  };
 
   // Conditional class to apply the left border directly to the child container
   const childContainerClass = isSubItem
@@ -58,10 +29,9 @@ const BlogPostSection: React.FC<BlogPostSectionProps> = ({
     >
       {item.title ? (
         <div
-          className={`flex justify-between items-start cursor-pointer ${
+          className={`flex justify-between items-start ${
             isSubItem ? "py-2" : "py-4"
           }`}
-          onClick={handleToggleExpand}
         >
           <h2
             className={`${
@@ -89,7 +59,6 @@ const BlogPostSection: React.FC<BlogPostSectionProps> = ({
       ) : (
         <div className="pt-4"></div>
       )}
-      {expanded && (
         <>
           {item.content.map((content, index) => (
             <p
@@ -114,7 +83,6 @@ const BlogPostSection: React.FC<BlogPostSectionProps> = ({
             </div>
           )}
         </>
-      )}
     </li>
   );
 };

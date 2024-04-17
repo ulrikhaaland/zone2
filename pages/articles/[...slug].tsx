@@ -1,7 +1,7 @@
 import { GetServerSideProps } from "next";
 import { BlogPost } from "@/app/model/blog"; // Import your types
 import BlogPostScaffold from "@/app/components/blog/BlogPostScaffold";
-import { fitnessLevelOneBlogPosts } from "@/app/data/fitness-level/one";
+import { fitnessLevelOneBlogPosts } from "@/app/data/articles";
 // Assume fetchBlogPostBySlug is properly typed to return a BlogPost or null
 
 interface BlogPostPageProps {

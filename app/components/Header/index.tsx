@@ -14,6 +14,7 @@ const Header = ({}) => {
   const router = useRouter();
   const { authStore, generalStore } = useStore();
   const [hideHeader, setHideHeader] = useState(false);
+  const [currentPath, setCurrentPath] = useState(router.pathname);
 
   const { isMobileView, scrollableContentRef } = generalStore;
 
@@ -21,6 +22,11 @@ const Header = ({}) => {
   const isGuide = router.pathname === "/guide";
   const isProfile = router.pathname === "/profile";
   const isZones = router.pathname === "/heartratecalculator";
+  const isArticles = router.pathname === "/articles";
+
+  useEffect(() => {
+    setHideHeader(false);
+  }, [router.pathname]);
 
   const getTitle = () => {
     if (isMobileView) {
@@ -30,6 +36,8 @@ const Header = ({}) => {
         return "Profile";
       } else if (isZones) {
         return "Training Zones";
+      } else if (isArticles) {
+        return "Articles";
       }
     }
 
@@ -39,11 +47,10 @@ const Header = ({}) => {
 
   useEffect(() => {
     if (!scrollableContentRef?.current) return;
-    
+
     const handleScroll = () => {
       if (!scrollableContentRef.current) return;
       // Log the current scroll position and the window's height
-      console.log(scrollableContentRef.current.scrollTop, window.innerHeight);
 
       if (scrollableContentRef.current.scrollTop > headerHideThreshold) {
         setHideHeader(true);

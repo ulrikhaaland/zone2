@@ -23,9 +23,9 @@ const BlogPostSection: React.FC<BlogPostSectionProps> = ({
   return (
     <li
       id={`guide-item-${item.id}`}
-      className={`mb-0 last:mb-2 ${
-        isSubItem || isLast ? "" : "border-b border-gray-700"
-      }`}
+      className={`mb-0 last:mb-2 
+      ${isSubItem || isLast ? "" : "border-b border-gray-700"}
+      `}
     >
       {item.title ? (
         <div
@@ -59,30 +59,30 @@ const BlogPostSection: React.FC<BlogPostSectionProps> = ({
       ) : (
         <div className="pt-4"></div>
       )}
-        <>
-          {item.content.map((content, index) => (
-            <p
-              key={index}
-              className={`${index > 0 ? "mt-4" : ""} text-base mb-2`}
-            >
-              {content.replace(/\【\d+†source】/g, "").trim()}
-            </p>
-          ))}
+      <>
+        {item.content.map((content, index) => (
+          <p
+            key={index}
+            className={`${index > 0 ? "mt-4" : ""} text-base mb-2`}
+          >
+            {content.replace(/\【\d+†source】/g, "").trim()}
+          </p>
+        ))}
 
-          {hasSubItems && (
-            <div className={childContainerClass}>
-              <ul className="list-none">
-                {item.subItems?.map((subItem) => (
-                  <BlogPostSection
-                    key={subItem.id}
-                    item={{ ...subItem, expanded: true }}
-                    isSubItem={true}
-                  />
-                ))}
-              </ul>
-            </div>
-          )}
-        </>
+        {hasSubItems && (
+          <div className={childContainerClass}>
+            <ul className="list-none">
+              {item.subItems?.map((subItem) => (
+                <BlogPostSection
+                  key={subItem.id}
+                  item={{ ...subItem, expanded: true }}
+                  isSubItem={true}
+                />
+              ))}
+            </ul>
+          </div>
+        )}
+      </>
     </li>
   );
 };

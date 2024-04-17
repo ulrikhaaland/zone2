@@ -1,7 +1,7 @@
 import { FitnessLevel, User } from "@/app/model/user";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { fitnessLevelOneBlogPosts } from "@/app/data/fitness-level/one";
+import { fitnessLevelOneBlogPosts } from "@/app/data/articles";
 
 interface Props {
   user?: User | null;
@@ -55,7 +55,7 @@ export default function SectionBlog({ user }: Props) {
                     hover:text-gray-900
                 "
               >
-                {post.categories?.map((category) => (
+                {/* {post.categories?.map((category) => (
                   <span
                     key={category}
                     style={{
@@ -66,25 +66,23 @@ export default function SectionBlog({ user }: Props) {
                   >
                     {category}
                   </span>
-                ))}
+                ))} */}
               </div>
             </div>
 
-            <div className="group relative">
-              <h3 className="mt-2 text-lg font-semibold leading-6 text-whitebg group-hover:text-gray-600">
-                <span
-                  style={{
-                    cursor: "pointer",
-                  }}
-                  onClick={() => goToBlogpost(post.href)}
-                >
-                  <span className="absolute inset-0" />
-                  {post.title}
-                </span>
+            <div className="relative">
+              <h3
+                className="mt-2 text-lg font-semibold leading-6 text-whitebg hover:text-gray-600"
+                style={{
+                  cursor: "pointer",
+                }}
+                onClick={() => goToBlogpost(post.href)}
+              >
+                {post.title}
               </h3>
               <p
                 style={{}}
-                className="mt-2 line-clamp-3 text-sm leading-6 text-gray-600"
+                className="mt-2 line-clamp-3 text-sm leading-6 text-gray-500"
               >
                 {post.description}
               </p>

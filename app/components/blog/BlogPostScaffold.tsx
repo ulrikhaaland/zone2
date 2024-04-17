@@ -90,7 +90,7 @@ const BlogPostScaffold: React.FC<BlogPostScaffoldProps> = ({ post }) => {
       >
         <div className="w-[800px] pt-24 relative flex flex-col">
           <h1
-            className="md:text-5xl text-4xl md:px-0 px-4 text-whitebg text-center font-bold mb-4 relative z-10"
+            className="md:text-4xl leading-3 text-4xl md:px-0 px-4 text-whitebg text-center font-bold mb-4 relative z-10"
             style={{
               textShadow: "10px 10px 10px rgba(0,0,0,1)",
             }}

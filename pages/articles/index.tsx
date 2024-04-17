@@ -17,7 +17,7 @@ export const ContentPage: NextPageWithLayout = () => {
     <div className="w-full font-custom h-screen relative bg-blackbg">
       <div className="md:pt-24 pt-8">
         {/* Button Container */}
-        <div className="relative flex justify-between items-center md:px-6 pt-12 md:pt-0 md-pb-0 pb-4 w-[300px] mx-auto">
+        {/* <div className="relative flex justify-between items-center md:px-6 pt-12 md:pt-0 md-pb-0 pb-4 w-[300px] mx-auto">
           <button
             className={`flex w-[160px] items-center justify-center font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline transition duration-150 ease-in-out ${
               pageIndex === 0
@@ -55,12 +55,12 @@ export const ContentPage: NextPageWithLayout = () => {
             />
             Videos
           </button>
-        </div>
+        </div> */}
         {/* Page Content */}
         <div
           className="overflow-y-auto flex w-7xl md:rounded flex-col items-center min-h-max p-4 relative"
           style={{
-            height: `calc(80dvh)`,
+            height: `calc(90dvh)`,
           }}
         >
           <div className="w-full relative md:shadow-md">

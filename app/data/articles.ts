@@ -4,7 +4,7 @@ import { BlogPost } from "@/app/model/blog";
 const Intro: BlogPost = {
   title: "Introduction To Zone 2 Training",
   href: "introduction-to-zone-2-training",
-  imagePath: "/assets/images/swimmer/swimmer.png",
+  imagePath: "/assets/images/articles/1.png",
   items: [
     {
       id: 1,
@@ -35,9 +35,9 @@ const Intro: BlogPost = {
     },
   ],
   date: "2024-01-01",
-  categories: ["Zone 2", "Metabolism"],
+  categories: ["Exercise Physiology", "Cardiovascular Health", "Endurance"],
   description:
-    "Explore the fundamentals of Zone 2 training, its scientific basis, benefits, and how it can be a cornerstone of your fitness regimen.",
+    "The article outlines the principles of Zone 2 training, emphasizing its effectiveness in enhancing aerobic metabolism, cardiovascular health, and endurance.",
   readingTime: 2,
 };
 
@@ -94,7 +94,7 @@ const bioEnergetics: BlogPost = {
     },
   ],
   date: "2024-01-01",
-  categories: ["Bioenergetics", "Muscle Fibers"],
+  categories: ["Bioenergetics", "Muscle Fibers", "Metabolism"],
   description:
     "Dive into the core principles of exercise bioenergetics, understand the crucial role of ATP, mitochondria, lactate, and how different muscle fiber types affect your training.",
   readingTime: 3,
@@ -155,7 +155,7 @@ const ATP: BlogPost = {
   date: "2024-01-01",
   categories: ["ATP", "Muscle Contraction"],
   description:
-    "Delve into the fundamental role of ATP in exercise, exploring how it powers muscle contraction and influences training efficiency and dietary planning.",
+    "The article examines ATP's critical role in exercise, detailing its function in muscle contraction and its production via aerobic and anaerobic pathways.",
   readingTime: 3,
 };
 
@@ -338,7 +338,7 @@ const understandingFatsAndCarbohydrates: BlogPost = {
   date: "2024-01-01",
   categories: ["Fats", "Carbohydrates", "Energy Production"],
   description:
-    "Dive into the crucial roles of fat and carbohydrates in fueling different types of workouts, and how understanding these can help optimize your training regime.",
+    "The article explains the roles of fats and carbohydrates in fueling exercises, highlighting how Zone 2 training optimizes fat utilization for endurance.",
   readingTime: 2,
 };
 
@@ -408,7 +408,7 @@ const muscleFibers: BlogPost = {
     },
   ],
   date: "2024-01-01",
-  categories: ["Muscle Fibers", "Training"],
+  categories: ["Muscle Fibers", "Sarcopenia", "Aging"],
   description:
     "Explore the vital roles of fats and carbohydrates in fueling different types of workouts and how to optimize your diet for energy efficiency.",
   readingTime: 2,
@@ -494,7 +494,7 @@ const heartRateZones: BlogPost = {
     },
   ],
   date: "2024-01-01",
-  categories: ["Heart Rate Zones"],
+  categories: ["Heart Rate", "Training Zones"],
   description:
     "This article explores the different heart rate zones and their significance in training, helping you understand how to optimize your workouts for specific fitness goals.",
   readingTime: 2,
@@ -502,8 +502,8 @@ const heartRateZones: BlogPost = {
 
 // 9 corrected
 const findingYourZone: BlogPost = {
-  title: "Finding Your Zone",
-  href: "finding-your-zone",
+  title: "Finding Your Zone 2",
+  href: "finding-your-zone2",
   imagePath: "/assets/images/articles/8.png",
   items: [
     {
@@ -593,7 +593,7 @@ const findingYourZone: BlogPost = {
     },
   ],
   date: "2024-01-01",
-  categories: ["Training Guide", "Heart Rate Training", "Endurance Training"],
+  categories: ["Metabolism", "Heart Rate Training", "Endurance"],
   description:
     "Discover how to accurately find your Zone 2 heart rate to optimize training for endurance, health, and performance.",
   readingTime: 2,

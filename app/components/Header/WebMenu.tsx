@@ -41,7 +41,7 @@ const WebMenu: React.FC<WebMenuProps> = ({ router, authStore }) => {
       updateUnderline(guideRef);
     } else if (pathName === "/heartratecalculator") {
       updateUnderline(zonesRef);
-    } else if (pathName.includes("/content")) {
+    } else if (pathName.includes("/articles")) {
       updateUnderline(blogRef);
     } else if (pathName === "/profile") {
       updateUnderline(profileRef);
@@ -101,15 +101,15 @@ const WebMenu: React.FC<WebMenuProps> = ({ router, authStore }) => {
           </p>
           <p
             ref={blogRef}
-            onClick={() => router.push("/content")}
+            onClick={() => router.push("/articles")}
             className={`leading-6 mx-4 ${
-              pathName.includes("/content")
+              pathName.includes("/articles")
                 ? "text-white hover:text-gray-300 text-3xl font-bold"
                 : "text-gray-400 hover:text-gray-300 text-2xl font-semibold"
             }`}
             style={{ cursor: "pointer" }}
           >
-            Content
+            Articles
           </p>
         </div>
 

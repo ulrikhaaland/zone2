@@ -15,12 +15,10 @@ function MobileMenu({ isOpen, onClose, router, authStore }: MobileMenuProps) {
   const pathName = router.pathname;
 
   const isHome = pathName === "/";
-
   const isGuide = pathName === "/guide";
-
   const isProfile = pathName === "/profile";
-
   const isZones = pathName === "/heartratecalculator";
+  const isArticles = pathName === "/articles";
 
   useEffect(() => {}, [authStore.user, router.pathname, pathName]);
 
@@ -140,6 +138,24 @@ function MobileMenu({ isOpen, onClose, router, authStore }: MobileMenuProps) {
                     `}
                 >
                   Training Zones
+                </p>
+              </div>
+              <div className="border-b border-gray-500">
+                <p
+                  onClick={() => {
+                    onClose();
+                    router.push("/articles");
+                  }}
+                  style={{ cursor: "pointer" }}
+                  className={`-mx-3 block text-lg rounded-lg px-3 py-2 text-base leading-7 font-semibold
+                    ${
+                      isArticles
+                        ? "text-whitebg hover:text-gray-300"
+                        : "text-gray-500 hover:text-gray-300"
+                    }
+                    `}
+                >
+                  Articles
                 </p>
               </div>
               {!user ||

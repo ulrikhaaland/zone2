@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { BlogItem } from "@/app/model/blog";
 import { observer } from "mobx-react";
 
@@ -15,19 +15,35 @@ const BlogPostSection: React.FC<BlogPostSectionProps> = ({
 }) => {
   const hasSubItems = item.subItems && item.subItems.length > 0;
 
-  // Conditional class to apply the left border directly to the child container
   const childContainerClass = isSubItem
     ? "border-l-2 border-gray-700 pl-4 mt-2"
     : "";
 
+  const formatText = (text: string) => {
+    // Regex to match any sequence of characters ending with a colon
+    const regex = /[^:]+:/g;
+    const parts = text.split(regex);
+    const matches = text.match(regex) || [];
+
+    return parts.reduce<(string | JSX.Element)[]>((acc, part, index) => {
+      const prevMatch = matches[index - 1];
+
+      // This check ensures that we do not render undefined as a strong tag
+      if (prevMatch && index > 0) {
+        return [...acc, <strong key={index - 1}>{prevMatch}</strong>, part];
+      }
+      return [...acc, part];
+    }, []);
+  };
+
   return (
     <li
       id={`guide-item-${item.id}`}
-      className={`mb-0 last:mb-2 
-      ${isSubItem || isLast ? "" : "border-b border-gray-700"}
-      `}
+      className={`mb-0 last:mb-2 ${
+        isSubItem || isLast ? "" : "border-b border-gray-700"
+      }`}
     >
-      {item.title ? (
+      {item.title && (
         <div
           className={`flex justify-between items-start ${
             isSubItem ? "py-2" : "py-4"
@@ -40,32 +56,17 @@ const BlogPostSection: React.FC<BlogPostSectionProps> = ({
           >
             {item.title}
           </h2>
-          {/* {!isSubItem && (
-            <svg
-              className={`w-6 h-6 transform ${expanded ? "rotate-180" : ""}`}
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M19 9l-7 7-7-7"
-              ></path>
-            </svg>
-          )} */}
         </div>
-      ) : (
-        <div className="pt-4"></div>
       )}
       <>
         {item.content.map((content, index) => (
           <p
             key={index}
-            className={`${index > 0 ? "mt-4" : ""} text-base mb-2`}
+            className={`${
+              index > 0 || !item.title ? "mt-4" : ""
+            } text-base mb-2`}
           >
-            {content.replace(/\【\d+†source】/g, "").trim()}
+            {formatText(content.replace(/\【\d+†source】/g, "").trim())}
           </p>
         ))}
 

@@ -59,6 +59,7 @@ function MobileMenu({ isOpen, onClose, router, authStore }: MobileMenuProps) {
             left: 0,
             right: 0,
             bottom: 0,
+            zIndex: 100, // Ensure this is below the modal content
           }}
         ></div>
       </div>

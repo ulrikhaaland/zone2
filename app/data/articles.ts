@@ -58,7 +58,7 @@ const bioEnergetics: BlogPost = {
       id: 2,
       title: "Powering Up with Mitochondria",
       content: [
-        "Mitochondria, often hailed as the 'power plants' of cells, play an indispensable role for anyone engaged in physical activity. They transform oxygen and nutrients into ATP within muscle cells, fueling muscle contractions, overall vitality, and stamina.",
+        "Mitochondria, often hailed as the 'power plants' of cells, play an indispensable role for anyone engaged in physical activity. Within muscle cells, they transform oxygen and nutrients into ATP , fueling muscle contractions, overall vitality, and stamina.",
         "Incorporating low-intensity training, like Zone 2 workouts, boosts both the density and efficiency of mitochondria by ensuring a consistent oxygen supply. These cellular powerhouses are adept at producing vast quantities of ATP through aerobic respiration in oxygen-rich environments.",
         "Conversely, during high-intensity activities, when oxygen is scarce, the body employs a different strategy, bringing lactate into the equation. This shift underscores the mitochondria's essential role in adapting to various training intensities by optimizing ATP production across different scenarios.",
       ],

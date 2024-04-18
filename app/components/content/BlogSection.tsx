@@ -22,7 +22,7 @@ export default function SectionBlog({ user }: Props) {
             key={post.title}
             className="max-w-xl flex-col items-start justify-between"
           >
-            <div className="relative w-full h-64 rounded-lg overflow-hidden">
+            <div className="relative w-full h-64  rounded-lg overflow-hidden">
               <span
                 style={{
                   cursor: "pointer",
@@ -81,8 +81,7 @@ export default function SectionBlog({ user }: Props) {
                 {post.title}
               </h3>
               <p
-                style={{}}
-                className="mt-2 line-clamp-3 text-sm leading-6 text-gray-500"
+                className="mt-2 text-sm leading-6 text-gray-500"
               >
                 {post.description}
               </p>

@@ -47,7 +47,7 @@ const BlogPostScaffold: React.FC<BlogPostScaffoldProps> = ({ post }) => {
   };
 
   return (
-    <div className="w-full font-custom min-h-screen flex relative">
+    <div className="w-full font-custom min-h-screen flex relative bg-black">
       <div
         style={{
           position: "absolute",
@@ -72,7 +72,9 @@ const BlogPostScaffold: React.FC<BlogPostScaffoldProps> = ({ post }) => {
         ></div>
         <div
           style={{
-            backgroundColor: "rgba(0, 0, 0, 0.8)",
+            backgroundColor: `${
+              isMobileView ? "rgba(0, 0, 0, 1)" : "rgba(0, 0, 0, 0.8)"
+            }`,
             position: "absolute",
             top: 0,
             left: 0,
@@ -104,10 +106,7 @@ const BlogPostScaffold: React.FC<BlogPostScaffoldProps> = ({ post }) => {
                         inset-0 bg-black bg-opacity-60 rounded-lg md:border md:border-gray-700
                         ${isMobileView && "mx-4"}`}
               >
-                <div
-                  className="px-4 pb-4 text-whitebg"
-                  ref={containerRef}
-                >
+                <div className="px-4 pb-4 text-whitebg" ref={containerRef}>
                   <ul className="list-none">
                     {post.items.map((item, index) => (
                       <BlogSection

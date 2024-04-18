@@ -66,7 +66,7 @@ const Zone2GuideDesktopLayout: React.FC<Zone2GuideDesktopLayoutProps> = ({
         {/* Background Image */}
         <div
           style={{
-            backgroundImage: "url('/assets/images/runner/runner8.png')",
+            backgroundImage: "url('/assets/images/swimmer/swimmer.png')",
             backgroundSize: "cover",
             backgroundPosition: "center",
             position: "absolute",

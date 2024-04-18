@@ -90,7 +90,9 @@ export const HeartRateZonesPage: NextPageWithLayout = () => {
         {/* Background Image */}
         <div
           style={{
-            backgroundImage: "url('/assets/images/runner/runner8.png')",
+            backgroundImage: isMobileView
+              ? "url('/assets/images/runner/runner12.png')"
+              : "url('/assets/images/runner/runner8.png')",
             backgroundSize: "cover",
             backgroundPosition: "center",
             position: "absolute",

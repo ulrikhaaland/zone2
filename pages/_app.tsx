@@ -14,7 +14,7 @@ import Layout from "../app/components/layout";
 const inter = Inter({ subsets: ["latin"] });
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCyS424Ct0bD6WXHuUcv2eI-lZjApJb5pU",
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
   authDomain: "zone2program-a24ce.firebaseapp.com",
   projectId: "zone2program-a24ce",
   storageBucket: "zone2program-a24ce.appspot.com",
@@ -77,6 +77,7 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
             <RootStoreProvider>
               <Layout>{getLayout(<Component {...pageProps} />)}</Layout>
             </RootStoreProvider>
+
           </React.Suspense>
         </Provider>
       </React.StrictMode>

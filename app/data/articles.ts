@@ -37,7 +37,7 @@ const Intro: BlogPost = {
   date: "2024-01-01",
   categories: ["Exercise Physiology", "Cardiovascular Health", "Endurance"],
   description:
-    "Learn how Zone 2 training enhances aerobic metabolism, cardiovascular health, and endurance.",
+    "Understand the definition of Zone 2, and how it enhances aerobic metabolism, cardiovascular health, and endurance.",
   readingTime: 2,
 };
 
@@ -579,7 +579,7 @@ const findingYourZone: BlogPost = {
       content: [
         "It's wise not to rely on just one test to determine your Zone 2 range, especially if your preferred method is lower on the list. Combining different tests can better indicate whether you're within or outside Zone 2.",
         "For example, when running on flat terrain, you can use a combination of heart rate and RPE. Starting with the effort level, aim for an RPE of 4-5, while keeping an eye on your heart rate monitor to ensure accuracy. If they don't align, prioritize the higher-ranked method, in this case, RPE.",
-        "When running on a treadmill, start at the pace you used in your last Zone 2 workout while monitoring RPE and heart rate. If the pace doesn't align with these indicators, adjust it: up if it feels too easy; down if it feels too hard.",
+        "When running on a treadmill, start at the pace you used in your last Zone 2 workout while monitoring RPE and heart rate. If the pace doesn't align with these indicators, adjust it—up if it feels too easy; down if it feels too hard.",
       ],
     },
     {
@@ -918,7 +918,7 @@ const volumeDurationFrequency: BlogPost = {
         "Stress comes in various forms. It burdens the body, eliciting a response that prepares us to handle future stress better. However, not all stress yields positive adaptations; striking the correct balance is key. It’s preferable to experience minor, frequent stress rather than a single, overwhelming event.",
         "It is more advantageous to distribute training stress consistently over time, rather than concentrating it in a short period. Three hours of Zone 2 training dispersed over several days proves more effective than a single, lengthy session. Regular, distributed training allows for essential rest and recovery, minimizing the risk of injuries and overtraining.",
         "For instance, the performance capacity in a one-hour session mirrors that of the first hour in a three-hour session. However, performance declines in the latter part of the longer session, indicating the advantages of dividing your weekly training volume into multiple sessions for optimal adaptation and performance.",
-        "A distributed workload not only maintains capacity from session to session; it increases it due to the adaptations that occur in between. Here's a simplified but helpful example of the difference between distribution and concentration. It's based on a weekly training budget of 3 hours:",
+        "A distributed workload not only maintains capacity from session to session; it increases it due to the adaptations that occur in between. Here's a simplified but helpful example of the difference between distribution and concentration. It's based on a weekly training budget of 3 hours.",
       ],
       subItems: [
         {
@@ -1081,7 +1081,7 @@ const volumeDurationFrequency: BlogPost = {
 const goalsAndExpectations: BlogPost = {
   title: "Setting Realistic Goals and Expectations for Zone 2 Training",
   href: "setting-realistic-goals-and-expectations",
-  imagePath: "/assets/images/swimmer/swimmer.png",
+  imagePath: "/assets/images/articles/14.png",
   date: "2024-01-01",
   categories: ["Fitness Goals", "Endurance Training", "Health and Wellness"],
   description:
@@ -1130,7 +1130,7 @@ const goalsAndExpectations: BlogPost = {
       content: [
         "Progress in cardiovascular fitness isn't linear. Advancing from level 1 to 2 demands more effort than progressing from 0 to 1. Initiating any new activity from a lower base allows for quicker, more noticeable improvements. However, moving from a high level to an even higher one becomes more complex, a situation often mistaken for stagnation when, in fact, further progress requires increased effort.",
         "Imagine starting with 20-30 minutes of Zone 2 activity thrice a week and witnessing significant progress over several months. Eventually, a plateau is reached, and the same regimen no longer produces consistent results. By maintaining the number of sessions but increasing each to 45 minutes, progress kickstarts for a while, but eventually, it plateaus again. Increasing the duration to an hour still doesn't move the needle. Adding an extra session a week solves the equation.",
-        "Navigating the path to enhanced cardiovascular fitness involves various hurdles, such as poor sleep, stress, and the risk of overtraining, all of which can hamper progress. Even with optimal sleep, progress will stall without an apparent reason. This is why it's essential to employ every strategy: increase volume, lengthen sessions, ensure restful sleep, manage stress, and remain patient. Embrace a lifelong commitment to cardio—it's essential for lasting health.",
+        "Navigating the path to enhanced cardiovascular fitness involves various hurdles, such as poor sleep, stress, and the risk of overtraining, all of which can hamper progress. Even with optimal sleep, progress will stall without an apparent reason. This is why it's essential to employ every strategy. Increase volume, lengthen sessions, ensure restful sleep, manage stress, and remain patient. Embrace a lifelong commitment to cardio—it's essential for lasting health.",
       ],
     },
   ],
@@ -1140,7 +1140,7 @@ const goalsAndExpectations: BlogPost = {
 const runnersApproach: BlogPost = {
   title: "Insights into Zone 2 Training: A Runner's Approach",
   href: "runners-approach",
-  imagePath: "/assets/images/swimmer/swimmer.png",
+  imagePath: "/assets/images/runner/runner8.png",
   date: "2024-01-01",
   categories: ["Running", "Cardiovascular Training", "Endurance"],
   description:
@@ -1223,7 +1223,7 @@ const recoveryAndPreventingOvertraining: BlogPost = {
       title: "Mental Health and Keeping Motivation High",
       content: [
         "Overtraining poses as much of a physical threat as a mental one. Too much high-intensity training can cause one to equate exercise with pain, which can lead to dread and avoidance. This mental strain introduces unnecessary stress, depleting the recovery resources needed to progress in training.",
-        "Consistency is key to progress. Therefore, it is crucial to engage in a repeatable training type that is challenging enough for progress but manageable enough for frequent sessions. Zone 2 training is a perfect example of this: it induces a positive physiological response while being gentler on both the body and mind. It is mentally easier to sustain and reduces the risks of overtraining and injuries, making it more manageable to maintain a positive relationship with exercise. By doing so, exercise can remain a source of enjoyment and vitality.",
+        "Consistency is key to progress. Therefore, it is crucial to engage in a repeatable training type that is challenging enough for progress but manageable enough for frequent sessions. Zone 2 training is a perfect example of this. It induces a positive physiological response while being gentler on both the body and mind. It is mentally easier to sustain and reduces the risks of overtraining and injuries, making it more manageable to maintain a positive relationship with exercise. By doing so, exercise can remain a source of enjoyment and vitality.",
       ],
     },
     {

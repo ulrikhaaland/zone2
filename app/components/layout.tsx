@@ -65,6 +65,7 @@ function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <Head>
+        isMobileView ? () : (
         <link
           rel="preload"
           href="/assets/images/cyclist/cyclist.png"
@@ -75,6 +76,7 @@ function Layout({ children }: { children: React.ReactNode }) {
           href="/assets/images/runner/runner8.png"
           as="image"
         />
+        )
       </Head>
       {getShowHeader() && <Header></Header>}
       <div

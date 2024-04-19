@@ -1,4 +1,4 @@
-import { ReactElement, useEffect, useState } from "react";
+import { ReactElement, useEffect, useRef, useState } from "react";
 import { NextPageWithLayout } from "../_app";
 import { useStore } from "@/RootStoreProvider";
 import VideoIcon from "@mui/icons-material/YouTube";
@@ -6,12 +6,36 @@ import ArticleIcon from "@mui/icons-material/Article";
 import { AnimatePresence, motion } from "framer-motion";
 import VideoSection from "@/app/components/content/VideoSection";
 import BlogSection from "@/app/components/content/BlogSection";
+import { useRouter } from "next/router";
 
 export const ContentPage: NextPageWithLayout = () => {
   const { generalStore, authStore } = useStore();
   const { isMobileView } = generalStore;
   const { user } = authStore;
   const [pageIndex, setPageIndex] = useState(0);
+  const [scrollPosition, setScrollPosition] = useState(0);
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  const router = useRouter();
+
+  const goToArticle = (path: string) => {
+    if (contentRef.current) {
+      console.log(contentRef.current.scrollTop.toString());
+      sessionStorage.setItem(
+        "scrollPosition",
+        contentRef.current.scrollTop.toString()
+      );
+    }
+    router.push(`articles/${path}`);
+  };
+
+  useEffect(() => {
+    const savedScrollPosition = sessionStorage.getItem("scrollPosition") || "0";
+    if (contentRef.current) {
+      contentRef.current.scrollTop = parseInt(savedScrollPosition);
+      sessionStorage.removeItem("scrollPosition"); // Optionally clear the storage after scroll restoration
+    }
+  }, [pageIndex]);
 
   return (
     <div className="w-full font-custom h-screen relative bg-blackbg">
@@ -58,6 +82,7 @@ export const ContentPage: NextPageWithLayout = () => {
         </div> */}
         {/* Page Content */}
         <div
+          ref={contentRef}
           className="overflow-y-auto flex w-7xl md:rounded flex-col items-center min-h-max p-4 relative"
           style={{
             height: `calc(90dvh)`,
@@ -76,7 +101,9 @@ export const ContentPage: NextPageWithLayout = () => {
                 }}
                 transition={{ duration: 0.25 }}
               >
-                {pageIndex === 0 && <BlogSection user={user} />}
+                {pageIndex === 0 && (
+                  <BlogSection user={user} onClickArticle={goToArticle} />
+                )}
                 {pageIndex === 1 && <VideoSection />}
               </motion.div>
             </AnimatePresence>

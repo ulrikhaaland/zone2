@@ -103,7 +103,7 @@ const Zone2GuideDesktopLayout: React.FC<Zone2GuideDesktopLayoutProps> = ({
 
       {user && (
         <div className="flex overflow-hidden flex-col items-center min-h-max pt-16 md:pt-24 p-4 relative">
-          <div className="w-full md:border md:border-gray-700 md:rounded-lg bg-black bg-opacity-60 rounded-lg md:overflow-hidden max-w-md md:shadow-md md:min-h-[83.5dvh] md:max-h-[87.5dvh] min-h-[86.5dvh] max-h-[86.5dvh]">
+          <div className="w-full md:border md:border-gray-700 md:rounded-lg bg-black/60 rounded-lg md:overflow-hidden max-w-md md:shadow-md md:min-h-[83.5dvh] md:max-h-[87.5dvh] min-h-[86.5dvh] max-h-[86.5dvh]">
             <AnimatePresence mode="wait">
               <motion.div
                 className="relative z-0" // Ensure content is below the overlays
@@ -150,7 +150,7 @@ const Zone2GuideDesktopLayout: React.FC<Zone2GuideDesktopLayoutProps> = ({
               </motion.div>
             </AnimatePresence>
             {/* Button Container */}
-            <div className="flex bg-black justify-between items-center md:px-6 relative pt-12 md:pt-2 md-pb-0 pb-4">
+            <div className="flex justify-between items-center md:px-6 relative pt-12 md:pt-2 md-pb-0 pb-4">
               {pageIndex !== 0 ? (
                 <button
                   className="flex items-center font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline

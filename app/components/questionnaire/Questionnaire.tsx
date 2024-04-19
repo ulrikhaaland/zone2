@@ -293,7 +293,6 @@ export default function Questionnaire(props: QuestionnaireProps) {
   return (
     <div
       className={`text-whitebg
-      ${!isMobileView && "bg-black bg-opacity-60"}
       ${
         isProfile
           ? `rounded-lg max-w-md md:min-h-[77.5dvh] md:max-h-[72.5dvh] md:border md:border-gray-700 md:rounded-lg`

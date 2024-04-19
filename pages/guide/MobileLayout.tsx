@@ -84,7 +84,7 @@ const Zone2GuideMobileLayout: React.FC<Zone2GuideMobileLayoutProps> = ({
       </div>
 
       {user && (
-        <div className="pt-16 flex overflow-y-auto flex-col items-center relative">
+        <div className="pt-16  flex overflow-y-auto flex-col items-center relative">
           <div
             className="w-full"
             style={{
@@ -141,7 +141,7 @@ const Zone2GuideMobileLayout: React.FC<Zone2GuideMobileLayoutProps> = ({
       )}
       {/* Button Container */}
       {user && (
-        <div className="fixed bg-black h-[80px] flex justify-between items-center px-4 py-6 inset-x-0 bottom-0  left-0 right-0 z-20">
+        <div className="fixed bg-black h-[80px] flex justify-between items-center px-4 py-6 inset-x-0 bottom-0 left-0 right-0 z-20">
           {pageIndex !== 0 ? (
             <button
               className="flex items-center font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline

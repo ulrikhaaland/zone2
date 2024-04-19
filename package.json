@@ -26,6 +26,7 @@
     "mobx": "^6.12.0",
     "mobx-react": "^9.1.0",
     "next": "14.0.4",
+    "next-scroll-restorer": "^0.9.7",
     "openai": "^4.24.7",
     "react": "^18",
     "react-dom": "^18",

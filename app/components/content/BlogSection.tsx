@@ -5,15 +5,10 @@ import { fitnessLevelOneBlogPosts } from "@/app/data/articles";
 
 interface Props {
   user?: User | null;
+  onClickArticle: (path: string) => void;
 }
 
-export default function SectionBlog({ user }: Props) {
-  const router = useRouter();
-
-  const goToBlogpost = (path: string) => {
-    router.push(`articles/${path}`);
-  };
-
+export default function SectionBlog({ user, onClickArticle }: Props) {
   return (
     <div className="mx-auto max-w-7xl px-6 lg:px-8">
       <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 lg:mx-0 lg:max-w-none lg:grid-cols-3">
@@ -22,19 +17,19 @@ export default function SectionBlog({ user }: Props) {
             key={post.title}
             className="max-w-xl flex-col items-start justify-between"
           >
-            <div className="relative w-full h-64  rounded-lg overflow-hidden">
+            <div className="relative w-full h-52  rounded-lg overflow-hidden">
               <span
                 style={{
                   cursor: "pointer",
                 }}
-                onClick={() => goToBlogpost(post.href)}
+                onClick={() => onClickArticle(post.href)}
               >
                 <Image
                   src={post.imagePath}
                   alt={post.title}
                   width={384}
                   height={256}
-                  className="w-full h-full object-cover object-center transition duration-500 ease-in-out transform hover:scale-110"
+                  className="w-auto h-auto object-cover object-center transition duration-500 ease-in-out transform hover:scale-110"
                 />
               </span>
             </div>
@@ -61,7 +56,7 @@ export default function SectionBlog({ user }: Props) {
                     style={{
                       cursor: "pointer",
                     }}
-                    onClick={() => goToBlogpost(post.href)}
+                    onClick={() => onClickArticle(post.href)}
                     className="relative z-10 rounded-full border border-gray-700 px-3 py-1 font-medium text-gray-600 hover:bg-gray-100"
                   >
                     {category}
@@ -76,13 +71,11 @@ export default function SectionBlog({ user }: Props) {
                 style={{
                   cursor: "pointer",
                 }}
-                onClick={() => goToBlogpost(post.href)}
+                onClick={() => onClickArticle(post.href)}
               >
                 {post.title}
               </h3>
-              <p
-                className="mt-2 text-sm leading-6 text-gray-500"
-              >
+              <p className="mt-2 text-sm leading-6 text-gray-500">
                 {post.description}
               </p>
             </div>

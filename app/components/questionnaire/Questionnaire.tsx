@@ -295,7 +295,7 @@ export default function Questionnaire(props: QuestionnaireProps) {
       className={`text-whitebg
       ${
         isProfile
-          ? `rounded-lg max-w-md md:min-h-[77.5dvh] md:max-h-[72.5dvh] md:border md:border-gray-700 md:rounded-lg`
+          ? `bg-black/50 rounded-lg max-w-md md:min-h-[77.5dvh] md:max-h-[72.5dvh] md:border md:border-gray-700 md:rounded-lg`
           : "max-w-md md:min-h-[77.5dvh] md:max-h-[77.5dvh]"
       }`}
     >

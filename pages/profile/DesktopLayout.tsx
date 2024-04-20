@@ -138,7 +138,7 @@ const ProfileDesktopLayout: React.FC<ProfileDesktopLayoutProps> = ({
         )}
         {/* Page Content */}
         <div className="flex overflow-hidden md:rounded flex-col items-center min-h-max p-4 relative">
-          <div className="w-full md:overflow-hidden md:shadow-md">
+          <div className="md:overflow-hidden md:shadow-md">
             <AnimatePresence mode="wait">
               <motion.div
                 className="relative z-0 flex justify-center" // Ensure content is below the overlays

@@ -87,7 +87,7 @@ export const ContentPage: NextPageWithLayout = () => {
             height: `calc(90dvh)`,
           }}
         >
-          <div className="w-full relative md:shadow-md">
+          <div className="w-full relative md:shadow-md pb-12">
             <AnimatePresence mode="wait">
               <motion.div
                 className="relative z-0 flex justify-center" // Ensure content is below the overlays

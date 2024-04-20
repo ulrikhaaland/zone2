@@ -18,9 +18,12 @@ function Layout({ children }: { children: React.ReactNode }) {
   const [showLogin, setShowLogin] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const isMobileView = generalStore.isMobileView;
-  const isGuide = router.pathname === "/guide";
+  const currentRoute = router.pathname;
+  const isGuide = currentRoute === "/guide";
 
   const isHome = router.pathname === "/";
+
+  const isArticles = router.pathname.includes("/articles");
 
   const getShowHeader = (): boolean => {
     if (isMobileView) {
@@ -42,7 +45,7 @@ function Layout({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (!user) {
-      if (open && !isHome) {
+      if (open && !isHome && !isArticles) {
         setShowLogin(true);
       } else {
         setShowLogin(false);
@@ -50,7 +53,7 @@ function Layout({ children }: { children: React.ReactNode }) {
     } else {
       setShowLogin(false);
     }
-  }, [open, user, isHome]);
+  }, [open, user, isHome, currentRoute]);
 
   useEffect(() => {
     if (hasCheckedAuth && !isLoaded) {
@@ -66,7 +69,18 @@ function Layout({ children }: { children: React.ReactNode }) {
     <>
       <Head>
         {isMobileView ? (
-          <div></div>
+          <>
+            <link
+              rel="preload"
+              href="/assets/images/cyclist/cyclist.png"
+              as="image"
+            />
+            <link
+              rel="preload"
+              href="/assets/images/runner/runner12.png"
+              as="image"
+            />
+          </>
         ) : (
           <>
             <link
@@ -77,6 +91,11 @@ function Layout({ children }: { children: React.ReactNode }) {
             <link
               rel="preload"
               href="/assets/images/runner/runner8.png"
+              as="image"
+            />
+            <link
+              rel="preload"
+              href="/assets/images/swimmer/swimmer.png"
               as="image"
             />
           </>

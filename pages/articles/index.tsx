@@ -20,7 +20,6 @@ export const ContentPage: NextPageWithLayout = () => {
 
   const goToArticle = (path: string) => {
     if (contentRef.current) {
-      console.log(contentRef.current.scrollTop.toString());
       sessionStorage.setItem(
         "scrollPosition",
         contentRef.current.scrollTop.toString()

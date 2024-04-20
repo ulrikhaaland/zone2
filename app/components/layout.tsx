@@ -7,7 +7,7 @@ import { AppProps } from "next/app";
 import { useState, useEffect, useRef } from "react";
 import { NextRouter, useRouter } from "next/router";
 import Head from "next/head";
-import { has } from "mobx";
+import { has, set } from "mobx";
 import Loading from "./loading";
 
 function Layout({ children }: { children: React.ReactNode }) {
@@ -45,7 +45,7 @@ function Layout({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (!user) {
-      if (open && !isHome && !isArticles) {
+      if ((open && !isHome) || (!isArticles && !isHome)) {
         setShowLogin(true);
       } else {
         setShowLogin(false);
@@ -60,10 +60,10 @@ function Layout({ children }: { children: React.ReactNode }) {
       setIsLoaded(true);
     }
 
-    if (hasCheckedAuth && !user && !isHome) {
+    if (hasCheckedAuth && !user && !isHome && !isArticles) {
       setOpen(true);
     }
-  }, [hasCheckedAuth, user, isHome]);
+  }, [hasCheckedAuth, user, isHome, currentRoute]);
 
   return (
     <>
@@ -112,13 +112,13 @@ function Layout({ children }: { children: React.ReactNode }) {
         }}
       >
         {isLoaded ? children : <Loading />}
-        {showLogin && <Login />}
+        {showLogin && isLoaded && <Login />}
       </div>
       <Backdrop
         sx={{ zIndex: 100 }}
         open={open && showLogin}
         onClick={() => {
-          if (!user) return;
+          if (!user && !isArticles) return;
           setOpen(false);
           authStore.setFromPath(undefined);
         }}

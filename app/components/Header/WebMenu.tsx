@@ -115,12 +115,17 @@ const WebMenu: React.FC<WebMenuProps> = ({ router, authStore }) => {
 
         {/* Right side - Profile/Login with Spacer */}
         <div className="flex-1 flex justify-end">
-          {user?.hasPaid ? (
+          {user?.hasPaid || !user ? (
             <p
               ref={profileRef}
               onClick={() => {
                 if (!user) {
-                  authStore.setOpen(true);
+                  if (authStore.open === true) {
+                    authStore.setOpen(false);
+                    setTimeout(() => authStore.setOpen(true), 300);
+                  }
+                  // timeout to allow the modal to close before redirecting
+                  else authStore.setOpen(true);
                 } else {
                   router.push("/profile");
                 }

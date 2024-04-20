@@ -10,7 +10,6 @@ import { NextPage } from "next";
 import { RootStoreProvider, useStore } from "@/RootStoreProvider";
 import { Inter } from "next/font/google";
 import Layout from "../app/components/layout";
-import ClientSideScrollRestorer from "@/ClientSideScrollRestorer";
 
 const inter = Inter({ subsets: ["latin"] });
 

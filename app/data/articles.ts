@@ -961,7 +961,7 @@ const volumeDurationFrequency: BlogPost = {
             {
               id: 24,
               content: [
-                "The example in question describes a linear progression, which can be seen as oversimplified. While it may be suitable for beginners, more experienced individuals are likely to face non-linear progressions, with higher chances of experiencing plateaus or regressions.",
+                "The example in question describes a linear progression, which is oversimplified. While it may be suitable for beginners, more experienced individuals are likely to face non-linear progressions, with higher chances of experiencing plateaus or regressions.",
                 "Dividing the training volume evenly also helps to reduce the psychological burden of long and hard training sessions, making it easier to maintain a regular exercise routine.",
               ],
             },

@@ -1,20 +1,23 @@
+import { useStore } from "@/RootStoreProvider";
 import { GuideItem } from "@/app/model/guide";
+import { observer } from "mobx-react";
 import React from "react";
 
 interface SideNavigationProps {
-  items: GuideItem[];
   scrollToItem: (item: GuideItem) => void;
 }
 
 // Add this method inside your Guide component
-export const GuideSideNavigation: React.FC<SideNavigationProps> = ({
-  items,
+const GuideSideNavigation: React.FC<SideNavigationProps> = ({
   scrollToItem,
 }) => {
+  const { guideStore } = useStore();
+  const { guideItems } = guideStore;
+
   return (
     <nav className="hidden md:block w-64 flex-shrink-0 overflow-y-auto h-[72.5dvh]">
       <ul className="list-none p-0">
-        {items.map((item) => (
+        {guideItems.map((item) => (
           <li key={item.id} className="text-gray-300 cursor-pointer p-2">
             <span
               className="hover:text-white"
@@ -42,3 +45,5 @@ export const GuideSideNavigation: React.FC<SideNavigationProps> = ({
     </nav>
   );
 };
+
+export default observer(GuideSideNavigation);

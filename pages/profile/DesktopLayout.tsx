@@ -7,6 +7,7 @@ import { Question } from "@/app/model/questionaire";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import FeedbackFAB from "@/app/components/feedback";
+import { GuideItem } from "@/app/model/guide";
 
 interface ProfileDesktopLayoutProps {
   pageIndex: number;
@@ -69,9 +70,9 @@ const ProfileDesktopLayout: React.FC<ProfileDesktopLayoutProps> = ({
       </div>
       <div className="pt-24">
         {/* Button Container */}
-        <div className="relative flex justify-between items-center md:px-6 pt-12 md:pt-0 md-pb-0 pb-4 w-[300px] mx-auto">
+        <div className="relative flex justify-center items-center md:px-6 pt-12 md:pt-0 md-pb-0 pb-4  mx-auto">
           <button
-            className={`flex items-center font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline transition duration-150 ease-in-out ${
+            className={`flex w-[141px] items-center justify-center font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline transition duration-150 ease-in-out ${
               pageIndex === 0
                 ? "bg-whitebg text-black border border-gray-700 transition duration-150 ease-in-out hover:bg-gray-300"
                 : "bg-black text-whitebg border border-gray-700 transition duration-150 ease-in-out hover:bg-gray-900"
@@ -87,13 +88,13 @@ const ProfileDesktopLayout: React.FC<ProfileDesktopLayoutProps> = ({
           </button>
           <div
             style={{
-              width: "50px",
+              width: "16px",
               height: "10px",
               backgroundColor: "transparent",
             }}
           ></div>
           <button
-            className={`flex items-center font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline transition duration-150 ease-in-out ${
+            className={`flex w-[141px] items-center justify-center font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline transition duration-150 ease-in-out ${
               pageIndex === 1
                 ? "bg-whitebg text-black border border-transparent hover:bg-gray-300"
                 : "bg-black text-whitebg border border-gray-700 hover:bg-gray-900"
@@ -151,10 +152,9 @@ const ProfileDesktopLayout: React.FC<ProfileDesktopLayoutProps> = ({
                 }}
                 transition={{ duration: 0.25 }}
               >
-                {pageIndex === 0 && user && user.guideStatus && (
+                {pageIndex === 0 && user && guideStatus && (
                   <Guide
                     key={guideStatus}
-                    guideItems={user.guideItems}
                     status={guideStatus!}
                     generateGuide={() => genGuide()}
                   />

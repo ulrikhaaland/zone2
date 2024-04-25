@@ -8,26 +8,24 @@ import { Create as CreateIcon } from "@mui/icons-material";
 import { Replay as ReplayIcon } from "@mui/icons-material";
 import { useRouter } from "next/router";
 import { useStore } from "@/RootStoreProvider";
-import { GuideSideNavigation } from "./SideNavigation";
+import { observer } from "mobx-react";
+import GuideSideNavigation from "./SideNavigation";
+
 
 interface GuideProps {
-  guideItems?: GuideItem[];
   status: GuideStatus;
   generateGuide: () => void;
   onScrolledToTopOrBottom?: (scrolledTopOrBottom: boolean) => void;
 }
 
-export default function Guide(props: GuideProps) {
-  const { generalStore, authStore } = useStore();
+const Guide = (props: GuideProps) => {
+  const { status, generateGuide, onScrolledToTopOrBottom } = props;
+  const { generalStore, authStore, guideStore } = useStore();
   const { isMobileView } = generalStore;
   const { user } = authStore;
+  const { guideItems } = guideStore;
 
   const router = useRouter();
-
-  const [guideItems, setGuideItems] = useState<GuideItem[]>(
-    props.guideItems || []
-  );
-  const [status, setStatus] = useState(props.status);
 
   const containerRef = useRef<HTMLDivElement>(null); // Add this line
 
@@ -57,11 +55,11 @@ export default function Guide(props: GuideProps) {
 
       if (scrolledToTop || scrolledToBottom) {
         // Call the prop function with true when scrolled to top or bottom
-        props.onScrolledToTopOrBottom?.(true);
+        onScrolledToTopOrBottom?.(true);
       } else {
         // Optionally, call the prop function with false when not at edges
         // This is useful if you want to toggle some state based on scroll position
-        props.onScrolledToTopOrBottom?.(false);
+        onScrolledToTopOrBottom?.(false);
       }
     };
 
@@ -144,14 +142,14 @@ export default function Guide(props: GuideProps) {
     }
   };
 
-  const renderGuideItems = (items: GuideItem[]) => (
+  const renderGuideItems = () => (
     <ul className="list-none p-0">
-      {items.map((item, index) => (
+      {guideItems.map((item, index) => (
         <GuideSection
           key={item.id}
           item={item}
           isSubItem={false}
-          isLast={index === items.length - 1}
+          isLast={index === guideItems.length - 1}
           onExpand={handleExpand}
           onCollapse={(item) => handleCollapse(item)}
         />
@@ -160,6 +158,8 @@ export default function Guide(props: GuideProps) {
   );
 
   const getContent = (): React.JSX.Element => {
+    if (GuideStatus.LOADED || guideItems.length > 0) return renderGuideItems();
+
     switch (status) {
       case GuideStatus.NONE:
         return (
@@ -176,7 +176,7 @@ export default function Guide(props: GuideProps) {
           </div>
         );
       case GuideStatus.LOADED:
-        return renderGuideItems(guideItems);
+        return renderGuideItems();
       case GuideStatus.LOADING:
         // Return skeleton loader
         return isMobileView ? (
@@ -192,7 +192,7 @@ export default function Guide(props: GuideProps) {
             </p>
             <button
               className="flex justify-center items-center font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline transition duration-150 ease-in-out bg-whitebg text-black border border-gray-700"
-              onClick={() => props.generateGuide()}
+              onClick={() => generateGuide()}
               disabled={user !== undefined && user!.retries! >= 5}
             >
               <ReplayIcon className="mr-2" style={{ color: "black" }} />
@@ -221,7 +221,7 @@ export default function Guide(props: GuideProps) {
         ${isMobileView && "mx-4"}`}
     >
       <div
-        className="p-4 h-full overflow-y-auto max-w-[850px] mx-auto text-whitebg custom-scrollbar"
+        className="px-4 pt-2 h-full overflow-y-auto max-w-[850px] mx-auto text-whitebg custom-scrollbar"
         ref={containerRef}
         style={{
           height: isMobileView ? "calc(100dvh - 150px)" : "",
@@ -232,16 +232,17 @@ export default function Guide(props: GuideProps) {
     </div>
   );
 
-  if (!isMobileView && status === GuideStatus.LOADED) {
+  if (!isMobileView && (status === GuideStatus.LOADED || guideItems.length > 0)) {
     return (
       <div className="flex min-h-screen">
-        {status === GuideStatus.LOADED && !isMobileView && (
-          <GuideSideNavigation items={guideItems} scrollToItem={scrollToItem} />
-        )}
+        {(status === GuideStatus.LOADED || guideItems.length > 0) &&
+          !isMobileView && <GuideSideNavigation scrollToItem={scrollToItem} />}
         {content}
       </div>
     );
   }
 
   return content;
-}
+};
+
+export default observer(Guide);

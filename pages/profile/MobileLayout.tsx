@@ -7,6 +7,7 @@ import { Question } from "@/app/model/questionaire";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import FeedbackFAB from "@/app/components/feedback";
+import { GuideItem } from "@/app/model/guide";
 
 interface ProfileMobileLayoutProps {
   pageIndex: number;
@@ -160,7 +161,6 @@ const ProfileMobileLayout: React.FC<ProfileMobileLayoutProps> = ({
               {pageIndex === 0 && user && user.guideStatus && (
                 <Guide
                   key={guideStatus}
-                  guideItems={user.guideItems}
                   status={guideStatus!}
                   generateGuide={() => genGuide()}
                   onScrolledToTopOrBottom={(scrolled) => {

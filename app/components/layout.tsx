@@ -11,7 +11,7 @@ import { has, set } from "mobx";
 import Loading from "./loading";
 
 function Layout({ children }: { children: React.ReactNode }) {
-  const { authStore, generalStore } = useStore();
+  const { authStore, generalStore, guideStore } = useStore();
   const { open, setOpen, user, hasCheckedAuth } = authStore;
   const router: NextRouter = useRouter();
 
@@ -32,16 +32,17 @@ function Layout({ children }: { children: React.ReactNode }) {
       }
 
       return true;
-      if (isGuide) {
-        return true;
-      }
-      if (user) {
-        return true;
-      }
     }
 
     return true;
   };
+
+  useEffect(() => {
+    if (hasCheckedAuth && user) {
+      console.log("Setting guide items");
+      guideStore.setGuideItems(user.guideItems);
+    }
+  }, [hasCheckedAuth, user]);
 
   useEffect(() => {
     if (!user) {

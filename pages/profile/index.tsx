@@ -2,16 +2,13 @@ import { ReactElement, useEffect, useRef, useState } from "react";
 import { NextPageWithLayout, auth, db } from "../_app";
 import { useStore } from "@/RootStoreProvider";
 import { GuideStatus, User } from "@/app/model/user";
-import Guide from "@/app/components/guide";
-import { AnimatePresence, motion } from "framer-motion";
-import Questionnaire from "@/app/components/questionnaire/Questionnaire";
 import { Question, questToFitnessData } from "@/app/model/questionaire";
 import { observer } from "mobx-react";
 import ProfileDesktopLayout from "./DesktopLayout";
 import ProfileMobileLayout from "./MobileLayout";
-import { handleOnGenerateGuide } from "../api/generate";
 import { doc, updateDoc } from "firebase/firestore";
-import { run } from "node:test";
+import { it } from "node:test";
+import guide from "../guide";
 
 export type RunInfo = {
   threadId: string | undefined;
@@ -19,17 +16,15 @@ export type RunInfo = {
 };
 
 const UserProfile: NextPageWithLayout = () => {
-  const { authStore, generalStore } = useStore();
+  const { authStore, generalStore, guideStore } = useStore();
 
   const { isMobileView } = generalStore;
+
+  const { setGuideItems, addGuideItem } = guideStore;
 
   const [user, setUser] = useState<User | undefined>(
     authStore.user ?? undefined
   );
-  const [runInfo, setRunInfo] = useState<RunInfo>({
-    threadId: undefined,
-    runId: undefined,
-  });
 
   const [pageIndex, setPageIndex] = useState(0);
 
@@ -40,8 +35,6 @@ const UserProfile: NextPageWithLayout = () => {
     const updatedUser = {
       ...user!,
       questions: questions,
-      guideGenerationThreadId: runInfo.threadId,
-      guideGenerationRunId: runInfo.runId,
     };
     console.log(updatedUser);
     authStore.updateUserData(updatedUser);
@@ -62,7 +55,6 @@ const UserProfile: NextPageWithLayout = () => {
     authStore.setUser(newUser);
     setUser(newUser);
     setGuideStatus(GuideStatus.LOADING);
-
     updateDoc(doc(db, "users", user.uid), {
       guideStatus: GuideStatus.LOADING,
     }).then(() => {
@@ -71,7 +63,7 @@ const UserProfile: NextPageWithLayout = () => {
         uid: user!.uid,
       });
       console.log(body);
-      fetch("/api/generate", {
+      fetch("/api/generate-stream", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -79,10 +71,6 @@ const UserProfile: NextPageWithLayout = () => {
         body: body,
       })
         .then(async (value) => {
-          const response = await value.json();
-          const runInfo = response.runInfo;
-          setRunInfo(runInfo);
-          console.log("Guide generation request sent.");
           isFetching.current = false;
         })
         .catch((error) => {
@@ -90,73 +78,6 @@ const UserProfile: NextPageWithLayout = () => {
           isFetching.current = false;
         });
     });
-  };
-
-  useEffect(() => {
-    let intervalId: string | number | NodeJS.Timeout | undefined;
-
-    if (runInfo.threadId && runInfo.runId) {
-      intervalId = setInterval(() => {
-        checkRunStatus(runInfo.threadId!, runInfo.runId!);
-      }, 5000); // Poll every 5 seconds, adjust as needed
-    }
-
-    return () => {
-      if (intervalId) {
-        clearInterval(intervalId);
-      }
-    };
-  }, [runInfo]);
-
-  const checkRunStatus = async (threadId: string, runId: string) => {
-    try {
-      const response = await fetch(
-        `/api/check-status?threadId=${threadId}&runId=${runId}&uid=${authStore.user?.uid}`
-      );
-      const { status } = await response.json();
-      if (status === "completed") {
-        setRunInfo({
-          threadId: undefined,
-          runId: undefined,
-        });
-      } else if (status === "in_progress") {
-        console.log("Guide generation status: ", status);
-      } else {
-        setRunInfo({
-          threadId: undefined,
-          runId: undefined,
-        });
-        console.log("Guide generation status: ", status);
-        setGuideStatus(GuideStatus.ERROR);
-      }
-    } catch (error) {
-      console.error("Error checking run status:", error);
-    }
-  };
-
-  const handleShowFeedback = (user: User) => {
-    const showFeedback =
-      user.guideItems !== undefined &&
-      user.guideItems?.length > 0 &&
-      user.hasReviewed === false &&
-      user.guideStatus === GuideStatus.LOADED;
-    setShowFeedback(showFeedback);
-  };
-
-  const handleSetRunInfo = (user: User) => {
-    if (
-      user &&
-      user.guideGenerationRunId &&
-      user.guideGenerationThreadId &&
-      !isFetching.current &&
-      !runInfo.threadId &&
-      !runInfo.runId
-    ) {
-      setRunInfo({
-        threadId: user.guideGenerationThreadId,
-        runId: user.guideGenerationRunId,
-      });
-    }
   };
 
   useEffect(() => {
@@ -168,7 +89,6 @@ const UserProfile: NextPageWithLayout = () => {
       (user?.guideStatus === GuideStatus.HASPAID && user?.hasPaid === true)
     ) {
       const user = authStore.user;
-      console.log(user.guideGenerationRunId, user.guideGenerationThreadId);
 
       if (
         (user.guideStatus === GuideStatus.HASPAID &&
@@ -186,48 +106,82 @@ const UserProfile: NextPageWithLayout = () => {
         } else setUser(user);
       }
     }
+  }, []);
 
-    const userScope = authStore.user;
-    setUser(userScope);
-    /// Handle show feedback
-    handleShowFeedback(userScope);
-
-    /// Handle runInfo
-    handleSetRunInfo(userScope);
-  }, [authStore.user]);
-
-  const getRunInfo = async () => {
-    if (runInfo.threadId === undefined && runInfo.runId === undefined) {
-      const user = await authStore.getUserOrCreateIfNotExists(
-        authStore.user!.firebaseUser!
-      );
-      setRunInfo({
-        threadId: user.guideGenerationThreadId,
-        runId: user.guideGenerationRunId,
-      });
-    }
+  const handleShowFeedback = (user: User) => {
+    const showFeedback =
+      user.guideItems !== undefined &&
+      user.guideItems?.length > 0 &&
+      user.hasReviewed === false &&
+      user.guideStatus === GuideStatus.LOADED;
+    setShowFeedback(showFeedback);
   };
 
   useEffect(() => {
     if (guideStatus === GuideStatus.LOADING && !isSubscribed.current) {
-      getRunInfo();
-
       isSubscribed.current = true;
 
       // Setup listener for guideStatus updates
-      const unsubscribe = authStore.listenToUserGuideStatus(
-        (newGuideStatus) => {
-          if (newGuideStatus === GuideStatus.LOADED) {
-            setShowFeedback(true);
-            console.log("Guide is loaded, unsubscribing from updates.");
-            onGuideLoaded();
-            unsubscribe?.();
-            isSubscribed.current = false;
-          } else {
-            onGuideLoaded();
+      const unsubscribe = authStore.listenToUserGuideStatus((status, items) => {
+        const guideItems = guideStore.getGuideItems();
+        if (items.length > 0) {
+          let itemToAdd = items[items.length - 1];
+
+          if (
+            itemToAdd.subItems &&
+            itemToAdd.subItems?.length > 0 &&
+            guideItems.find((item) => item.id === itemToAdd.id) !== undefined
+          ) {
+            itemToAdd = itemToAdd.subItems![itemToAdd.subItems!.length - 1];
+            if (itemToAdd.subItems && itemToAdd.subItems?.length > 0) {
+              itemToAdd = itemToAdd.subItems![itemToAdd.subItems!.length - 1];
+            }
           }
+
+          let isAlreadyAdded = false;
+          for (const item of guideItems) {
+            if (item.id === itemToAdd.id) {
+              console.log("Item is already added to guide.");
+              isAlreadyAdded = true;
+              break;
+            }
+            if (item.subItems) {
+              for (const subItem of item.subItems) {
+                if (subItem.id === itemToAdd.id) {
+                  console.log("Item is already added to guide.");
+                  isAlreadyAdded = true;
+                  break;
+                }
+                if (subItem.subItems) {
+                  for (const subSubItem of subItem.subItems) {
+                    if (subSubItem.id === itemToAdd.id) {
+                      console.log("Item is already added to guide.");
+                      isAlreadyAdded = true;
+                      break;
+                    }
+                  }
+                }
+              }
+            }
+          }
+
+          if (itemToAdd.id <= 3) {
+            itemToAdd.expanded = true;
+          }
+
+          if (!isAlreadyAdded) addGuideItem(itemToAdd);
+        } else {
+          setGuideItems([]);
         }
-      );
+
+        if (status === GuideStatus.LOADED) {
+          setShowFeedback(true);
+          console.log("Guide is loaded, unsubscribing from updates.");
+          onGuideLoaded();
+          unsubscribe?.();
+          isSubscribed.current = false;
+        }
+      });
 
       // Cleanup function to unsubscribe
       return () => {
@@ -244,6 +198,7 @@ const UserProfile: NextPageWithLayout = () => {
         setGuideStatus(GuideStatus.LOADED);
         authStore.setUser(updatedUser);
         setUser(updatedUser);
+        handleShowFeedback(updatedUser);
       });
   };
 

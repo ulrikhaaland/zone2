@@ -1,5 +1,4 @@
 import OpenAI from "openai";
-import { MessageCreateParams } from "openai/resources/beta/threads/messages/messages.mjs";
 import {
   FitnessData,
   GuideStatus,
@@ -8,8 +7,9 @@ import {
 import * as admin from "firebase-admin";
 import { Request, Response } from "express";
 import { RunInfo } from "../profile";
+import { MessageCreateParams } from "openai/resources/beta/threads/messages.mjs";
 
-export const maxDuration = 600; // This function can run for a maximum of 5 seconds
+export const maxDuration = 600;
 
 if (!admin.apps.length) {
   const admin = require("firebase-admin");
@@ -135,7 +135,6 @@ const initiateGuideGeneration = async (
   const run = await client.beta.threads.runs.create(thread.id, {
     assistant_id: "asst_P04Kgk0OWercjCtYJtNzUV8G",
   });
-
   console.log(
     "Guide generation initiated. Thread ID:",
     thread.id,

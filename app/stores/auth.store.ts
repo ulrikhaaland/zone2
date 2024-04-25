@@ -20,6 +20,7 @@ import {
 import { GuideStatus, User } from "../model/user";
 import { auth, db } from "../../pages/_app";
 import { makeObservable, observable, action } from "mobx";
+import { GuideItem } from "../model/guide";
 
 export default class AuthStore {
   open: boolean = false;
@@ -103,7 +104,7 @@ export default class AuthStore {
       this.setUser(newUser);
 
       // Here, userData contains all fields from the User object.
-      return await updateDoc(doc(db, "users", this.user.uid), {...userData});
+      return await updateDoc(doc(db, "users", this.user.uid), { ...userData });
     }
   };
 
@@ -262,7 +263,7 @@ export default class AuthStore {
   }
 
   listenToUserGuideStatus = (
-    onGuideStatusUpdate: (newGuideStatus: GuideStatus) => void
+    onUpdate: (status: GuideStatus, items: GuideItem[]) => void
   ): Unsubscribe | void => {
     if (!this.user || !this.user.uid) {
       console.log("No user logged in");
@@ -278,21 +279,8 @@ export default class AuthStore {
       (doc) => {
         if (doc.exists()) {
           const data = doc.data();
-          // Assuming GuideStatus.LOADING is a valid enum or constant value
-          if (
-            data.guideStatus !== undefined &&
-            data.guideStatus !== GuideStatus.LOADING
-          ) {
-            console.log("Guide Status updated:", data.guideStatus);
-            // Call the callback function with the new guide status
-            onGuideStatusUpdate(data.guideStatus);
-          } else if (
-            data.guideStatus === GuideStatus.LOADING ||
-            data.guideStatus === GuideStatus.HASPAID
-          ) {
-            console.log("Guide status is loading, no action taken.");
-          } else {
-            console.log("No guideStatus found in user document");
+          if (data) {
+            onUpdate(data.guideStatus, data.guideItems ?? []);
           }
         } else {
           console.log("User document does not exist");

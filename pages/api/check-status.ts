@@ -68,10 +68,12 @@ export default async function handler(req: Request, res: Response) {
       const dataList = messageList.data;
 
       const content = dataList[0]
-        .content[0] as OpenAI.Beta.Threads.Messages.MessageContentText;
+        .content[0] as OpenAI.Beta.Threads.Messages.TextContentBlock;
       const guide = content.text.value;
       let guideItems: GuideItem[];
       try {
+        console.log(guide);
+
         guideItems = parseJsonToGuideItems(guide);
         guideItems[0].expanded = true;
         guideItems[1].expanded = true;

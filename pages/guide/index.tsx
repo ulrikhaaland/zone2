@@ -16,7 +16,7 @@ const stripePromise = loadStripe(
 );
 
 const HomePage: NextPageWithLayout = () => {
-  const { authStore, generalStore } = useStore();
+  const { authStore, generalStore, guideStore } = useStore();
   const router = useRouter();
 
   const { user } = authStore;
@@ -85,10 +85,12 @@ const HomePage: NextPageWithLayout = () => {
       const newUser: User = {
         ...user!,
         questions: questions!,
-        guideItems: user?.guideItems ?? [],
+        guideItems: [],
         hasDeclinedReview: false,
         hasReviewed: false,
+        previousGuideItems: user?.guideItems ?? [],
       };
+      guideStore.setGuideItems([]);
       if (user?.guideStatus === GuideStatus.FREEBIE) {
         const newNewUser: User = {
           ...newUser,

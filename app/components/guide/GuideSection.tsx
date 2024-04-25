@@ -3,7 +3,7 @@ import { GuideItem } from "@/app/model/guide";
 import VideoIcon from "@mui/icons-material/YouTube";
 import { observer } from "mobx-react";
 
-interface BlogSectionProps {
+interface GuideSectionProps {
   item: GuideItem;
   isSubItem?: boolean;
   isLast?: boolean;
@@ -11,7 +11,7 @@ interface BlogSectionProps {
   onCollapse?: (item: GuideItem) => void;
 }
 
-const BlogSection: React.FC<BlogSectionProps> = ({
+const GuideSection: React.FC<GuideSectionProps> = ({
   item,
   isSubItem,
   isLast,
@@ -97,7 +97,7 @@ const BlogSection: React.FC<BlogSectionProps> = ({
                 <div className={childContainerClass}>
                   <ul className="list-none">
                     {item.subItems?.map((subItem) => (
-                      <BlogSection
+                      <GuideSection
                         key={subItem.id}
                         item={{ ...subItem, expanded: true }}
                         isSubItem={true}
@@ -126,4 +126,4 @@ const BlogSection: React.FC<BlogSectionProps> = ({
   );
 };
 
-export default observer(BlogSection);
+export default observer(GuideSection);

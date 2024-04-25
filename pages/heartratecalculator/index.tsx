@@ -1,7 +1,7 @@
 import { ReactElement, useEffect, useState } from "react";
 import { NextPageWithLayout } from "../_app";
 import CategoryIcon from "@mui/icons-material/Category";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import CalcIcon from "@mui/icons-material/Calculate";
 import { useStore } from "@/RootStoreProvider";
 import { AnimatePresence, motion } from "framer-motion";
 import { Question, questionnaireList } from "@/app/model/questionaire";
@@ -129,9 +129,9 @@ export const HeartRateZonesPage: NextPageWithLayout = () => {
         )} */}
         {/* Button Container */}
         {HRZones && (
-          <div className="relative flex justify-between items-center md:px-6 pt-12 md:pt-0 md-pb-0 pb-4 w-[300px] mx-auto">
+          <div className="relative w-full justify-center flex items-center md:px-6 pt-12 md:pt-0 md:pb-0 pb-4 mx-auto">
             <button
-              className={`flex w-[160px] items-center justify-center font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline transition duration-150 ease-in-out ${
+              className={`flex w-[141px] items-center justify-center font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline transition duration-150 ease-in-out ${
                 pageIndex === 0
                   ? "bg-whitebg text-black border border-gray-700 transition duration-150 ease-in-out hover:bg-gray-300"
                   : "bg-black text-whitebg border border-gray-700 transition duration-150 ease-in-out hover:bg-gray-900"
@@ -147,13 +147,15 @@ export const HeartRateZonesPage: NextPageWithLayout = () => {
             </button>
             <div
               style={{
-                width: "50px",
+                width: "16px",
                 height: "10px",
                 backgroundColor: "transparent",
               }}
-            ></div>
+            >
+              {/* Spacer */}
+            </div>
             <button
-              className={`flex w-[160px] justify-center items-center font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline transition duration-150 ease-in-out ${
+              className={`flex  justify-center items-center font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline transition duration-150 ease-in-out ${
                 pageIndex === 1
                   ? "bg-whitebg text-black border border-transparent hover:bg-gray-300"
                   : "bg-black text-whitebg border border-gray-700 hover:bg-gray-900"
@@ -161,11 +163,11 @@ export const HeartRateZonesPage: NextPageWithLayout = () => {
               type="submit"
               onClick={(e) => setPageIndex(1)}
             >
-              <AccountCircleIcon
+              <CalcIcon
                 className="mr-2"
                 style={{ color: pageIndex === 1 ? "black" : "white" }}
               />
-              Info
+              Calculator
             </button>
           </div>
         )}

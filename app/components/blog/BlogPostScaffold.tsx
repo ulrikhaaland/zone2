@@ -58,18 +58,20 @@ const BlogPostScaffold: React.FC<BlogPostScaffoldProps> = ({ post }) => {
           zIndex: 0,
         }}
       >
-        <div
-          style={{
-            backgroundImage: `url(${post.imagePath})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            position: "absolute",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-          }}
-        ></div>
+        {!isMobileView && (
+          <div
+            style={{
+              backgroundImage: `url(${post.imagePath})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              position: "absolute",
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+            }}
+          ></div>
+        )}
         <div
           style={{
             backgroundColor: `${

@@ -159,6 +159,7 @@ export function appendGuideItem(guideItems: GuideItem[], guideItem: GuideItem) {
       if (parent) {
         guideItem.parentId = parent.id;
         parent.subItems?.push(guideItem);
+        return;
       }
     }
     guideItems.push(guideItem);

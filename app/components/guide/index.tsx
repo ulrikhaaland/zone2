@@ -2,15 +2,17 @@ import React, { useEffect, useRef, useState } from "react";
 import { GuideStatus, User } from "../../model/user";
 import { GuideItem } from "../../model/guide";
 import GuideSection from "./GuideSection";
-import "./styles.css";
-import { GuideSkeletonDesktop, GuideSkeletonMobile } from "./skeleton";
+import {
+  GuideSkeletonDesktop,
+  GuideSkeletonMobile,
+  shimmerItems,
+} from "./skeleton";
 import { Create as CreateIcon } from "@mui/icons-material";
 import { Replay as ReplayIcon } from "@mui/icons-material";
 import { useRouter } from "next/router";
 import { useStore } from "@/RootStoreProvider";
 import { observer } from "mobx-react";
 import GuideSideNavigation from "./SideNavigation";
-
 
 interface GuideProps {
   status: GuideStatus;
@@ -30,6 +32,8 @@ const Guide = (props: GuideProps) => {
   const containerRef = useRef<HTMLDivElement>(null); // Add this line
 
   const [expandedItemId, setExpandedItemId] = useState<number | null>(null);
+
+  useEffect(() => {}, [guideItems]);
 
   useEffect(() => {
     if (expandedItemId !== null && containerRef.current) {
@@ -143,18 +147,30 @@ const Guide = (props: GuideProps) => {
   };
 
   const renderGuideItems = () => (
-    <ul className="list-none p-0">
-      {guideItems.map((item, index) => (
-        <GuideSection
-          key={item.id}
-          item={item}
-          isSubItem={false}
-          isLast={index === guideItems.length - 1}
-          onExpand={handleExpand}
-          onCollapse={(item) => handleCollapse(item)}
-        />
-      ))}
-    </ul>
+    <div>
+      <ul className="list-none p-0">
+        {guideItems.map((item, index) => (
+          <GuideSection
+            key={item.id}
+            item={item}
+            isSubItem={false}
+            isLast={index === guideItems.length - 1}
+            onExpand={handleExpand}
+            onCollapse={(item) => handleCollapse(item)}
+          />
+        ))}
+      </ul>
+      {status === GuideStatus.LOADING && (
+        <div role="status" className="max-w mb-12 pl-2">
+          {shimmerItems
+            .slice(guideItems.length * 5 <= 20 ? guideItems.length * 5 : 20, 30)
+            .map((item, index) => (
+              <div key={index}>{item}</div>
+            ))}
+          <span className="sr-only">Loading...</span>
+        </div>
+      )}
+    </div>
   );
 
   const getContent = (): React.JSX.Element => {
@@ -211,20 +227,20 @@ const Guide = (props: GuideProps) => {
 
   const content = (
     <div
-      className={`${
-        status === GuideStatus.LOADING
-          ? "md:min-h-[62.5dvh]"
-          : "md:min-h-[72.5dvh]"
-      } md:max-h-[72.5dvh] 
-        justify-center items-center min-h-screen relative w-[850px] 
+      className={`
+        justify-center h-full items-center relative w-[850px] 
         inset-0 bg-black bg-opacity-60 rounded-lg md:border md:border-gray-700
         ${isMobileView && "mx-4"}`}
     >
       <div
-        className="px-4 pt-2 h-full overflow-y-auto max-w-[850px] mx-auto text-whitebg custom-scrollbar"
+        className="px-4 mt-2 h-full overflow-y-auto max-w-[850px] mx-auto text-whitebg custom-scrollbar"
         ref={containerRef}
         style={{
-          height: isMobileView ? "calc(100dvh - 150px)" : "",
+          height: isMobileView
+            ? status === GuideStatus.LOADING
+              ? "calc(100dvh - 250px)"
+              : "calc(100dvh - 150px)"
+            : "",
         }}
       >
         {getContent()}
@@ -232,11 +248,14 @@ const Guide = (props: GuideProps) => {
     </div>
   );
 
-  if (!isMobileView && (status === GuideStatus.LOADED || guideItems.length > 0)) {
+  if (!isMobileView && (status === GuideStatus.LOADED || GuideStatus.LOADING)) {
     return (
-      <div className="flex min-h-screen">
-        {(status === GuideStatus.LOADED || guideItems.length > 0) &&
-          !isMobileView && <GuideSideNavigation scrollToItem={scrollToItem} />}
+      <div
+        className={`flex ${
+          status === GuideStatus.LOADING ? "h-[62.5dvh]" : "h-[74.5dvh]"
+        }`}
+      >
+        <GuideSideNavigation scrollToItem={scrollToItem} status={status} />
         {content}
       </div>
     );

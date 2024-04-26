@@ -1,21 +1,25 @@
 import { useStore } from "@/RootStoreProvider";
 import { GuideItem } from "@/app/model/guide";
+import { GuideStatus } from "@/app/model/user";
 import { observer } from "mobx-react";
 import React from "react";
+import { shimmerItems } from "./skeleton";
 
 interface SideNavigationProps {
   scrollToItem: (item: GuideItem) => void;
+  status: GuideStatus;
 }
 
 // Add this method inside your Guide component
 const GuideSideNavigation: React.FC<SideNavigationProps> = ({
   scrollToItem,
+  status,
 }) => {
   const { guideStore } = useStore();
-  const { guideItems } = guideStore;
+  const { guideItems, guideItemsCount } = guideStore;
 
   return (
-    <nav className="hidden md:block w-64 flex-shrink-0 overflow-y-auto h-[72.5dvh]">
+    <nav className="hidden md:block w-64 flex-shrink-0 overflow-y-auto h-full">
       <ul className="list-none p-0">
         {guideItems.map((item) => (
           <li key={item.id} className="text-gray-300 cursor-pointer p-2">
@@ -42,6 +46,14 @@ const GuideSideNavigation: React.FC<SideNavigationProps> = ({
           </li>
         ))}
       </ul>
+      {status === GuideStatus.LOADING && (
+        <div role="status" className="max-w mb-12 pl-2">
+          {shimmerItems.slice(guideItemsCount, 30).map((item, index) => (
+            <div key={index}>{item}</div>
+          ))}
+          <span className="sr-only">Loading...</span>
+        </div>
+      )}
     </nav>
   );
 };

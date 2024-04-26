@@ -53,9 +53,10 @@ const GuideSection: React.FC<GuideSectionProps> = ({
   return (
     <li
       id={`guide-item-${item.id}`}
-      className={`mb-0 last:mb-2 ${
+      className={`mb-0 last:pb-4 ${
         isSubItem || isLast ? "" : "border-b border-gray-700"
-      }`}
+      }
+      ${isSubItem && isLast ? "mb-2" : ""}`}
     >
       <div
         className={`flex justify-between items-start cursor-pointer ${
@@ -96,11 +97,12 @@ const GuideSection: React.FC<GuideSectionProps> = ({
               {hasSubItems && (
                 <div className={childContainerClass}>
                   <ul className="list-none">
-                    {item.subItems?.map((subItem) => (
+                    {item.subItems?.map((subItem, index) => (
                       <GuideSection
                         key={subItem.id}
                         item={{ ...subItem, expanded: true }}
                         isSubItem={true}
+                        isLast={isLast && index === item.subItems!.length - 1}
                       />
                     ))}
                   </ul>

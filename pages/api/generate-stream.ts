@@ -91,6 +91,9 @@ export default async function handler(req: Request, res: Response) {
           currentBuffer = currentBuffer.trim();
 
           // Remove unwanted trailing characters
+          // Strip out markdown code fences if present (assuming they might be included)
+          currentBuffer = currentBuffer.replace(/```/g, "").trim();
+
           // First, strip any trailing ']' or '}' that might have been incorrectly added.
           if (currentBuffer.endsWith("]}")) {
             currentBuffer = currentBuffer.substring(
@@ -112,6 +115,14 @@ export default async function handler(req: Request, res: Response) {
           // Additional check for stray characters after structured JSON cleanup
           if (currentBuffer.includes("]")) {
             currentBuffer = currentBuffer.replace("]", "");
+          }
+
+          // Ensure to remove any additional '}' found after cleanup
+          while (currentBuffer.endsWith("}")) {
+            currentBuffer = currentBuffer.substring(
+              0,
+              currentBuffer.length - 1
+            );
           }
 
           // Log the final state of the buffer before attempting to parse
@@ -224,5 +235,3 @@ function updateFirebase(
     guideStatus: guideStatus,
   });
 }
-
-

@@ -19,7 +19,8 @@ export function jsonToGuideItem(
   try {
     trimmedResponse = jsonResponse
       .replace(/\\(?![/u"bfnrt])/g, "") // Remove invalid backslashes
-      .replace(/\【[\d:]+†[^】]*\】/g, ""); // Remove citations like &#8203;``【oaicite:0】``&#8203;
+      .replace(/\【[\d:]+†[^】]*\】/g, "")
+      .replace(" .", "."); // Remove citations like &#8203;``【oaicite:0】``&#8203;
   } catch (e) {
     // If an error occurs, throw it to be handled by the caller
     // throw new Error(
@@ -48,6 +49,16 @@ export function jsonToGuideItem(
         ? null
         : item.parentId,
   };
+
+  // check if guide item id has decimal
+  if (guideItem.id % 1 !== 0) {
+    // extract all numbers before decimal
+    const parentId = Math.floor(guideItem.id);
+    guideItem.parentId = parentId;
+    // extract all numbers after decimal
+    const subId = guideItem.id % 1;
+    guideItem.id = subId + parentId;
+  }
 
   // add video link of what zone 2 looks like
   if (guideItem.title.toLowerCase() === "what to think about during zone 2") {
@@ -151,28 +162,59 @@ export function parseJsonToGuideItems(jsonResponse: string): GuideItem[] {
 }
 
 export function appendGuideItem(guideItems: GuideItem[], guideItem: GuideItem) {
+  let parentItem: GuideItem | undefined;
+
   if (guideItem.parentId === null) {
-    if (guideItem.title.toLowerCase() === "fitness level exceeded") {
-      const parent = guideItems.find(
-        (item) => item.title.toLowerCase() === "realistic goals & expectations"
-      );
-      if (parent) {
-        guideItem.parentId = parent.id;
-        parent.subItems?.push(guideItem);
-        return;
-      }
-    }
-    guideItems.push(guideItem);
-    return;
+    parentItem = findParentItemByTitle(
+      guideItems,
+      guideItem.title.toLowerCase().trim()
+    );
+    if (parentItem) guideItem.parentId = parentItem.id;
   }
 
-  const found = findParentItem(guideItems, guideItem.parentId!);
-  if (found) {
-    found.subItems!.push(guideItem);
+  if (!parentItem) parentItem = findParentItem(guideItems, guideItem.parentId!);
+
+  if (parentItem) {
+    parentItem.subItems!.push(guideItem);
   } else {
     // Handle the case where no parent is found; depending on your logic, this might be an error or a default behavior.
-    console.warn("Parent item not found for", guideItem);
+    // console.warn("Parent item not found for", guideItem);
     guideItems.push(guideItem); // Default to pushing to the root level if no parent is found, or handle differently
+  }
+}
+
+export function findParentItemByTitle(
+  guideItems: GuideItem[],
+  title: string
+): GuideItem | undefined {
+  if (
+    title === "minimum" ||
+    title === "moderate" ||
+    title === "moderate (recommended)" ||
+    title === "moderate  (recommended)" ||
+    title === "maximum" ||
+    title === "high vs low-impact"
+  ) {
+    return guideItems.find(
+      (item) => item.title.toLowerCase() === "effective exercise doses"
+    );
+  } else if (
+    title === "professional methods" ||
+    title === "accessible methods" ||
+    title === "combining methods"
+  ) {
+    return guideItems.find(
+      (item) => item.title.toLowerCase() === "methods for determining zone 2"
+    );
+  } else if (
+    title === "fitness level exceeded" ||
+    title === "assessing progress"
+  ) {
+    return guideItems.find(
+      (item) => item.title.toLowerCase() === "realistic goals & expectations"
+    );
+  } else {
+    return undefined;
   }
 }
 

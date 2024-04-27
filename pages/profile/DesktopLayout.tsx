@@ -113,7 +113,7 @@ const ProfileDesktopLayout: React.FC<ProfileDesktopLayoutProps> = ({
         {guideStatus === GuideStatus.LOADING && pageIndex === 0 && (
           <>
             <h1
-              className={`shimmer text-5xl text-whitebg text-center font-bold md:pt-0 pt-6 mb-4 relative z-10 ${
+              className={`text-5xl text-whitebg text-center font-bold md:pt-0 pt-6 mb-4 relative z-10 ${
                 guideStatus === GuideStatus.LOADING && pageIndex === 0
                   ? "animate-pulse"
                   : ""

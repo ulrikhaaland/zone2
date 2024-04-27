@@ -161,9 +161,9 @@ const Guide = (props: GuideProps) => {
         ))}
       </ul>
       {status === GuideStatus.LOADING && (
-        <div role="status" className="max-w mb-12 pl-2">
+        <div role="status" className="max-w mb-12">
           {shimmerItems
-            .slice(guideItems.length * 5 <= 20 ? guideItems.length * 5 : 20, 30)
+            .slice(guideItems.length * 6 <= 20 ? guideItems.length * 6 : 20, 30)
             .map((item, index) => (
               <div key={index}>{item}</div>
             ))}

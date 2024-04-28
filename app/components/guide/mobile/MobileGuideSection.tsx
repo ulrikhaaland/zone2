@@ -66,7 +66,7 @@ const GuideSection: React.FC<GuideSectionProps> = ({
       >
         <h2
           className={`${
-            isSubItem ? "text-lg" : "text-2xl"
+            isSubItem ? "text-xl" : "text-2xl"
           } font-semibold text-white`}
         >
           {item.title}

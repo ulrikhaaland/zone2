@@ -45,7 +45,7 @@ const MobileGuideNavigation: React.FC<MobileGuideNavigationProps> = ({
                     key={subItem.id}
                     className="text-gray-300 hover:text-white cursor-pointer p-2"
                   >
-                    <span onClick={() => setCurrentItem(item)}>
+                    <span onClick={() => setCurrentItem(subItem)}>
                       {subItem.title}
                     </span>
                   </li>

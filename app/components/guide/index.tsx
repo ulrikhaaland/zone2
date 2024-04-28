@@ -29,7 +29,7 @@ const Guide = (props: GuideProps) => {
 
   const router = useRouter();
 
-  const containerRef = useRef<HTMLDivElement>(null); // Add this line
+  const containerRef = useRef<HTMLDivElement>(null); 
 
   const [expandedItemId, setExpandedItemId] = useState<number | null>(null);
 

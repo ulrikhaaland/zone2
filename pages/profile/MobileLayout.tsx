@@ -8,11 +8,12 @@ import MenuBookIcon from "@mui/icons-material/MenuBook";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import FeedbackFAB from "@/app/components/feedback";
 import { GuideItem } from "@/app/model/guide";
+import MobileGuideViewer from "@/app/components/guide/mobile/index";
 
 interface ProfileMobileLayoutProps {
   pageIndex: number;
   user: User | undefined;
-  guideStatus: GuideStatus | undefined;
+  guideStatus: GuideStatus;
   updateUser: (questions: Question[]) => void;
   setPageIndex: (index: number) => void;
   genGuide: () => void;
@@ -159,14 +160,7 @@ const ProfileMobileLayout: React.FC<ProfileMobileLayoutProps> = ({
               transition={{ duration: 0.25 }}
             >
               {pageIndex === 0 && user && user.guideStatus && (
-                <Guide
-                  key={guideStatus}
-                  status={guideStatus!}
-                  generateGuide={() => genGuide()}
-                  onScrolledToTopOrBottom={(scrolled) => {
-                    setScrolledToTopOrBottom(scrolled);
-                  }}
-                />
+               <MobileGuideViewer status={user.guideStatus} />
               )}
               {pageIndex === 1 && user && (
                 <Questionnaire

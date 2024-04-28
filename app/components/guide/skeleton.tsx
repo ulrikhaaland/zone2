@@ -23,11 +23,11 @@ export const shimmerItems: JSX.Element[] = [
   ></div>,
   <div
     key={6}
-    className="shimmer h-2 bg-gray-200 rounded-full dark:bg-gray-500 w-[70%]"
+    className="shimmer h-2 bg-gray-200 rounded-full dark:bg-gray-500 w-[70%] mb-8"
   ></div>,
   <div
     key={7}
-    className="shimmer h-2.5 bg-gray-200 rounded-full dark:bg-gray-500 w-[30%] mb-4 mt-8"
+    className="shimmer h-2.5 bg-gray-200 rounded-full dark:bg-gray-500 w-[30%] mb-4"
   ></div>,
   <div
     key={8}
@@ -47,11 +47,11 @@ export const shimmerItems: JSX.Element[] = [
   ></div>,
   <div
     key={12}
-    className="shimmer h-2 bg-gray-200 rounded-full dark:bg-gray-500 w-[55%]"
+    className="shimmer h-2 bg-gray-200 rounded-full dark:bg-gray-500 w-[55%] mb-8"
   ></div>,
   <div
     key={13}
-    className="shimmer h-2.5 bg-gray-200 rounded-full dark:bg-gray-500 w-[25%] mb-4 mt-8"
+    className="shimmer h-2.5 bg-gray-200 rounded-full dark:bg-gray-500 w-[25%] mb-4"
   ></div>,
   <div
     key={14}
@@ -71,11 +71,11 @@ export const shimmerItems: JSX.Element[] = [
   ></div>,
   <div
     key={18}
-    className="shimmer h-2 bg-gray-200 rounded-full dark:bg-gray-500 w-[69%]"
+    className="shimmer h-2 bg-gray-200 rounded-full dark:bg-gray-500 w-[69%] mb-8"
   ></div>,
   <div
     key={19}
-    className="shimmer h-2.5 bg-gray-200 rounded-full dark:bg-gray-500 w-[45%] mb-4 mt-8"
+    className="shimmer h-2.5 bg-gray-200 rounded-full dark:bg-gray-500 w-[45%] mb-4"
   ></div>,
   <div
     key={20}

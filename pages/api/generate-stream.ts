@@ -1,15 +1,7 @@
 import OpenAI from "openai";
-import {
-  FitnessData,
-  GuideStatus,
-  fitnessDataToJson,
-} from "../../app/model/user";
+import { GuideStatus, fitnessDataToJson } from "../../app/model/user";
 import * as admin from "firebase-admin";
 import { Request, Response } from "express";
-import { RunInfo } from "../profile";
-import { MessageCreateParams } from "openai/resources/beta/threads/messages.mjs";
-import { run } from "node:test";
-import { AssistantStream } from "openai/lib/AssistantStream.mjs";
 import { GuideItem, appendGuideItem, jsonToGuideItem } from "@/app/model/guide";
 
 export const maxDuration = 600; // This function can run for a maximum of 5 seconds
@@ -48,6 +40,7 @@ export default async function handler(req: Request, res: Response) {
 
   const { fitnessData, uid } = req.body;
   if (!fitnessData || !uid) {
+    await logErrorToFirestore(uid, "Missing fitnessData or uid");
     return res.status(400).json({ error: "Missing fitnessData or uid" });
   }
 
@@ -62,19 +55,6 @@ export default async function handler(req: Request, res: Response) {
       assistant_id: "asst_P04Kgk0OWercjCtYJtNzUV8G",
     });
 
-    const parentTitles = [
-      "Introduction",
-      "Zone 2 Benefits",
-      "Effective Exercise Doses",
-      "Methods for Determining Zone 2",
-      "What To Think About During Zone 2",
-      "Consistency",
-      "Flexibility",
-      "Realistic Goals & Expectations",
-      "Recovery & Preventing Overtraining",
-      "Weightlifting Considerations",
-    ];
-
     let currentBuffer = "";
 
     const readableStream = runStream.toReadableStream();
@@ -87,68 +67,22 @@ export default async function handler(req: Request, res: Response) {
       if (done) {
         // Handle any remaining data
         if (currentBuffer.trim()) {
-          // Trim trailing whitespace
-          currentBuffer = currentBuffer.trim();
+          currentBuffer = trimBufferOnDone(currentBuffer);
 
-          // Remove unwanted trailing characters
-          // Strip out markdown code fences if present (assuming they might be included)
-          currentBuffer = currentBuffer.replace(/```/g, "").trim();
-
-          // First, strip any trailing ']' or '}' that might have been incorrectly added.
-          if (currentBuffer.endsWith("]}")) {
-            currentBuffer = currentBuffer.substring(
-              0,
-              currentBuffer.length - 2
-            );
-          } else if (currentBuffer.endsWith("]")) {
-            currentBuffer = currentBuffer.substring(
-              0,
-              currentBuffer.length - 1
-            );
-          } else if (currentBuffer.endsWith("}")) {
-            currentBuffer = currentBuffer.substring(
-              0,
-              currentBuffer.length - 1
-            );
-          }
-
-          // Additional check for stray characters after structured JSON cleanup
-          if (currentBuffer.includes("]")) {
-            currentBuffer = currentBuffer.replace("]", "");
-          }
-
-          // Ensure to remove any additional '}' found after cleanup
-          while (currentBuffer.endsWith("}")) {
-            currentBuffer = currentBuffer.substring(
-              0,
-              currentBuffer.length - 1
-            );
-          }
-
-          // Log the final state of the buffer before attempting to parse
-          console.log("Final state of buffer:", currentBuffer);
           try {
             const guideItem = jsonToGuideItem(currentBuffer);
             appendGuideItem(guideItems, guideItem);
           } catch (error) {
-            console.error("Failed to parse final JSON chunk:", error);
-            console.error(
-              "Remaining buffer content that caused error:",
-              currentBuffer
-            );
+            logErrorToFirestore(uid, error);
           }
         }
-        console.log("Stream processing completed.");
+
         console.log("Final state of buffer:", currentBuffer);
 
         const userRef = db.collection("users").doc(uid);
         await userRef.update({
           guideItems: guideItems,
           guideStatus: GuideStatus.LOADED,
-        });
-        res.status(202).json({
-          success: true,
-          message: "Guide generation completed",
         });
         return;
       }
@@ -173,30 +107,7 @@ export default async function handler(req: Request, res: Response) {
         }
 
       if (currentBuffer.includes("},") || currentBuffer.trim().endsWith("}]")) {
-        if (currentBuffer.trim().endsWith("}]")) {
-          let lastIndex = currentBuffer.lastIndexOf("}");
-          if (lastIndex !== -1) {
-            // Cut the string to end at the last found closing brace of the JSON object
-            currentBuffer = currentBuffer.substring(0, lastIndex + 1);
-            console.log("Processed JSON content:", currentBuffer);
-          }
-        }
-        // slice string for first item
-        if (currentBuffer.includes("guideItems")) {
-          const indexOfSecondBrace = currentBuffer.indexOf(
-            "{",
-            currentBuffer.indexOf("{") + 1
-          );
-
-          // Slice the string from the second '{'
-          currentBuffer = currentBuffer.slice(indexOfSecondBrace);
-        }
-        // Remove trailing comma
-        const trimmedBuffer = currentBuffer.trim();
-        if (trimmedBuffer[trimmedBuffer.length - 1] === ",") {
-          currentBuffer = trimmedBuffer.slice(0, -1);
-          console.log(currentBuffer);
-        }
+        currentBuffer = trimBuffer(currentBuffer);
 
         const guideItem = jsonToGuideItem(currentBuffer, guideItems);
         appendGuideItem(guideItems, guideItem);
@@ -206,10 +117,17 @@ export default async function handler(req: Request, res: Response) {
       await processStream();
     };
 
+    // Send a response to the client to indicate that the guide generation has been initiated
+    res.status(202).json({
+      success: true,
+      message: "Guide generation initiated",
+    });
+
     processStream();
 
-    runStream.on("error", (error) => {
+    runStream.on("error", async (error) => {
       console.error("Streaming error:", error);
+      await logErrorToFirestore(uid, error);
       res.status(500).json({
         success: false,
         error: "Failed during guide generation due to streaming error",
@@ -217,6 +135,7 @@ export default async function handler(req: Request, res: Response) {
     });
   } catch (error) {
     console.error("Error initiating guide generation:", error);
+    await logErrorToFirestore(uid, error);
     res.status(500).json({
       success: false,
       error: "Failed to initiate guide generation",
@@ -234,4 +153,92 @@ function updateFirebase(
     guideItems: guideItems,
     guideStatus: guideStatus,
   });
+}
+
+function trimBuffer(buffer: string): string {
+  let currentBuffer = buffer;
+  if (currentBuffer.trim().endsWith("}]")) {
+    let lastIndex = currentBuffer.lastIndexOf("}");
+    if (lastIndex !== -1) {
+      // Cut the string to end at the last found closing brace of the JSON object
+      currentBuffer = currentBuffer.substring(0, lastIndex + 1);
+      console.log("Processed JSON content:", currentBuffer);
+    }
+  }
+  // slice string for first item
+  if (currentBuffer.includes("guideItems")) {
+    const indexOfSecondBrace = currentBuffer.indexOf(
+      "{",
+      currentBuffer.indexOf("{") + 1
+    );
+
+    // Slice the string from the second '{'
+    currentBuffer = currentBuffer.slice(indexOfSecondBrace);
+  }
+  // Remove trailing comma
+  const trimmedBuffer = currentBuffer.trim();
+  if (trimmedBuffer[trimmedBuffer.length - 1] === ",") {
+    currentBuffer = trimmedBuffer.slice(0, -1);
+    console.log(currentBuffer);
+  }
+  return currentBuffer;
+}
+
+function trimBufferOnDone(buffer: string): string {
+  // Trim trailing whitespace
+  let currentBuffer = buffer.trim();
+
+  // Remove unwanted trailing characters
+  // Strip out markdown code fences if present (assuming they might be included)
+  currentBuffer = currentBuffer.replace(/```/g, "").trim();
+
+  // First, strip any trailing ']' or '}' that might have been incorrectly added.
+  if (currentBuffer.endsWith("]}")) {
+    currentBuffer = currentBuffer.substring(0, currentBuffer.length - 2);
+  } else if (currentBuffer.endsWith("]")) {
+    currentBuffer = currentBuffer.substring(0, currentBuffer.length - 1);
+  } else if (currentBuffer.endsWith("}")) {
+    currentBuffer = currentBuffer.substring(0, currentBuffer.length - 1);
+  }
+
+  // Additional check for stray characters after structured JSON cleanup
+  if (currentBuffer.includes("]")) {
+    currentBuffer = currentBuffer.replace("]", "");
+  }
+
+  // Ensure to remove any additional '}' found after cleanup
+  while (currentBuffer.endsWith("}")) {
+    currentBuffer = currentBuffer.substring(0, currentBuffer.length - 1);
+  }
+
+  // remove everything after the last closing brace
+  const indexOfLastChar = currentBuffer.indexOf("}");
+  if (indexOfLastChar !== -1) {
+    currentBuffer = currentBuffer.substring(0, indexOfLastChar + 1);
+  }
+  return currentBuffer;
+}
+
+async function logErrorToFirestore(uid: string, error: unknown) {
+  const errorMessage = error instanceof Error ? error.message : error;
+  console.log("Logging error to Firestore:", errorMessage);
+  const errorRef = db.collection("errors").doc(uid);
+  // update user doc
+
+  try {
+    const userRef = db.collection("users").doc(uid);
+    await userRef.update({
+      guideStatus: GuideStatus.ERROR,
+      errorMessage: errorMessage,
+    });
+    await errorRef.set(
+      {
+        timestamp: new Date(),
+        error: errorMessage,
+      },
+      { merge: true }
+    ); // Use set with merge to update or create the document
+  } catch (error) {
+    console.error("Failed to log error to Firestore:", error);
+  }
 }

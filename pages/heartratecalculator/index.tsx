@@ -32,7 +32,6 @@ export const HeartRateZonesPage: NextPageWithLayout = () => {
 
   useEffect(() => {
     if (!user && authStore.user) {
-      console.log("User is not set");
       // Update user state when authStore.user changes and the current user state is not set
       const user = authStore.user;
       setUser(user);

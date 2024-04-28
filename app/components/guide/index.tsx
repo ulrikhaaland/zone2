@@ -161,9 +161,12 @@ const Guide = (props: GuideProps) => {
         ))}
       </ul>
       {status === GuideStatus.LOADING && (
-        <div role="status" className="max-w mb-12">
+        <div
+          role="status"
+          className={`max-w ${guideItems.length * 6 > 18 && "mb-8"}`}
+        >
           {shimmerItems
-            .slice(guideItems.length * 6 <= 20 ? guideItems.length * 6 : 20, 30)
+            .slice(guideItems.length * 6 <= 18 ? guideItems.length * 6 : 18, 30)
             .map((item, index) => (
               <div key={index}>{item}</div>
             ))}
@@ -229,7 +232,7 @@ const Guide = (props: GuideProps) => {
     <div
       className={`
         justify-center h-full items-center relative w-[850px] 
-        inset-0 bg-black bg-opacity-60 rounded-lg md:border md:border-gray-700
+        inset-0 bg-black/60 rounded-lg md:border md:border-gray-700
         ${isMobileView && "mx-4"}`}
     >
       <div

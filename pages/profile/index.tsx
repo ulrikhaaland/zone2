@@ -94,10 +94,7 @@ const UserProfile: NextPageWithLayout = () => {
         (user.guideStatus === GuideStatus.HASPAID &&
           user.hasPaid &&
           !isFetching.current) ||
-        (user.guideStatus === GuideStatus.LOADING &&
-          !isFetching.current &&
-          user.guideGenerationThreadId === null &&
-          user.guideGenerationRunId === null)
+        (user.guideStatus === GuideStatus.LOADING && !isFetching.current)
       ) {
         generateGuide(user);
       } else {
@@ -207,7 +204,7 @@ const UserProfile: NextPageWithLayout = () => {
       <ProfileMobileLayout
         pageIndex={pageIndex}
         user={user}
-        guideStatus={guideStatus}
+        guideStatus={guideStatus ?? GuideStatus.NONE}
         updateUser={updateUser}
         setPageIndex={setPageIndex}
         genGuide={() => generateGuide(user!)}
@@ -219,7 +216,7 @@ const UserProfile: NextPageWithLayout = () => {
       <ProfileDesktopLayout
         pageIndex={pageIndex}
         user={user}
-        guideStatus={guideStatus}
+        guideStatus={guideStatus }
         updateUser={updateUser}
         setPageIndex={setPageIndex}
         genGuide={() => generateGuide(user!)}

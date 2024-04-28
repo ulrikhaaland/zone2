@@ -94,8 +94,6 @@ export default class AuthStore {
         guideStatus: newUser.guideStatus ?? GuideStatus.NONE,
         hasPaid: newUser.hasPaid ?? false,
         retries: newUser.retries ?? 0,
-        guideGenerationRunId: newUser.guideGenerationRunId ?? null,
-        guideGenerationThreadId: newUser.guideGenerationThreadId ?? null,
         hasReviewed: newUser.hasReviewed ?? false,
         hasDeclinedReview: newUser.hasDeclinedReview ?? false,
         fitnessLevel: newUser?.fitnessLevel ?? null,
@@ -225,8 +223,6 @@ export default class AuthStore {
           hasPaid: data?.hasPaid,
           guideStatus: data?.guideStatus,
           retries: data?.retries,
-          guideGenerationRunId: data?.guideGenerationRunId,
-          guideGenerationThreadId: data?.guideGenerationThreadId,
           hasReviewed: data?.hasReviewed,
           hasDeclinedReview: data?.hasDeclinedReview,
         };

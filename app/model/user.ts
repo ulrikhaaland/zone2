@@ -32,8 +32,6 @@ export interface User {
   hasPaid?: boolean;
   guideStatus?: GuideStatus;
   retries?: number;
-  guideGenerationThreadId?: string;
-  guideGenerationRunId?: string;
   hasReviewed?: boolean;
   hasDeclinedReview?: boolean;
 }

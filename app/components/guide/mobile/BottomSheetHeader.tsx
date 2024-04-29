@@ -22,7 +22,7 @@ const BottomSheetHeader: React.FC<BottomSheetHeaderProps> = ({
   previousItem,
   nextItem,
 }) => {
-  if (status === GuideStatus.LOADING && !nextItem)
+  if (status === GuideStatus.LOADING && !nextItem && !previousItem)
     return (
       <div className="h-[82px] w-full">
         <h1
@@ -50,7 +50,7 @@ const BottomSheetHeader: React.FC<BottomSheetHeaderProps> = ({
       </div>
     );
   return (
-    <div className="h-[72px] w-full pt-2">
+    <div className="h-[72px] w-full">
       <div className="w-full h-full justify-between">
         <div>
           <div className="flex w-full h-full items-center justify-between">

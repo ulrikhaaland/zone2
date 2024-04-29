@@ -13,6 +13,7 @@ import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 import BottomSheetHeader from "./BottomSheetHeader";
 import { RefHandles } from "react-spring-bottom-sheet/dist/types";
+import guide from "@/pages/guide";
 
 interface MobileGuideViewerProps {
   status: GuideStatus;
@@ -35,6 +36,8 @@ const MobileGuideViewer: React.FC<MobileGuideViewerProps> = ({ status }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const sheetRef = useRef<RefHandles | null>(null);
 
+  const isLoading = status === GuideStatus.LOADING;
+
   useEffect(() => {
     if (guideItems.length > 0) {
       const indexOfCurrentItem = guideItems.findIndex(
@@ -51,7 +54,7 @@ const MobileGuideViewer: React.FC<MobileGuideViewerProps> = ({ status }) => {
         setNextItem(undefined);
       }
     }
-  }, [currentItem]);
+  }, [currentItem, guideItems.length]);
 
   const scrollToItem = async (item: GuideItem) => {
     let itemElement = document.getElementById(`guide-item-${item.id}`);
@@ -74,14 +77,26 @@ const MobileGuideViewer: React.FC<MobileGuideViewerProps> = ({ status }) => {
         scrollToItem(item);
       }, 50);
     } else setCurrentItem(item);
+    collapseSheet();
   };
 
   useEffect(() => {
+    const timer = setTimeout(() => {
+      if (sheetRef.current && isLoading) {
+        console.log("Executing snapTo after timeout");
+        sheetRef.current.snapTo(maxHeight); // Snap to the index corresponding to maxHeight
+      }
+    }, 1000); // Delaying the execution slightly to ensure the component is ready
+
+    return () => clearTimeout(timer); // Cleanup the timer
+  }, [sheetRef.current]);
+
+  const collapseSheet = () => {
     if (sheetRef.current) {
-      // Assuming maxHeight is always the second snap point
-      sheetRef.current.snapTo(1);  // Index 1 corresponds to maxHeight
+      console.log("Executing snapTo after timeout");
+      sheetRef.current.snapTo(1); // Snap to the index corresponding to maxHeight
     }
-  }, [sheetRef]);
+  };
 
   return (
     <>
@@ -91,16 +106,13 @@ const MobileGuideViewer: React.FC<MobileGuideViewerProps> = ({ status }) => {
         open={true}
         scrollLocking={false}
         blocking={false}
-        expandOnContentDrag={false}
+        expandOnContentDrag={true}
         maxHeight={maxHeight}
-        snapPoints={({}) => [
-          status === GuideStatus.LOADING && !nextItem ? 110 : 100,
-          maxHeight,
-        ]}
+        snapPoints={({}) => [isLoading && !nextItem ? 130 : 100, maxHeight]}
         footer={
           <BottomSheetHeader
             status={status}
-            setCurrentItem={setCurrentItem}
+            setCurrentItem={handleOnSetCurrentItem}
             currentItem={currentItem}
             previousItem={previousItem}
             nextItem={nextItem}

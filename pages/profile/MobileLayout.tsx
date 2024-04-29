@@ -147,7 +147,7 @@ const ProfileMobileLayout: React.FC<ProfileMobileLayoutProps> = ({
           </AnimatePresence>
         </div>
       </div>
-      {feedbackExpanded && showFeedback && (
+      {/* {feedbackExpanded && showFeedback && (
         <div
           className="fixed inset-0 bg-black bg-opacity-50 z-20" // Backdrop with semi-transparent background
           onClick={() => setFeedbackExpanded(false)} // Close feedback form when backdrop is clicked
@@ -158,7 +158,7 @@ const ProfileMobileLayout: React.FC<ProfileMobileLayoutProps> = ({
           onExpand={setFeedbackExpanded}
           expanded={feedbackExpanded}
         />
-      )}
+      )} */}
     </div>
   );
 };

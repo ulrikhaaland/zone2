@@ -9,6 +9,7 @@ import ProfileMobileLayout from "./MobileLayout";
 import { doc, updateDoc } from "firebase/firestore";
 import { it } from "node:test";
 import guide from "../guide";
+import { set } from "mobx";
 
 export type RunInfo = {
   threadId: string | undefined;
@@ -99,6 +100,7 @@ const UserProfile: NextPageWithLayout = () => {
         generateGuide(user);
       } else {
         if (isFetching.current) {
+          console.log("Setting user to loading");
           setUser({ ...user, guideStatus: GuideStatus.LOADING });
         } else setUser(user);
       }
@@ -173,6 +175,7 @@ const UserProfile: NextPageWithLayout = () => {
 
         if (status === GuideStatus.LOADED) {
           setShowFeedback(true);
+          setGuideStatus(GuideStatus.LOADED);
           console.log("Guide is loaded, unsubscribing from updates.");
           onGuideLoaded();
           unsubscribe?.();

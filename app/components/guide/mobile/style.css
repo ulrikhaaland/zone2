@@ -7,7 +7,7 @@
   --rsbs-handle-bg: white;
 
   --rsbs-overlay-h: 0px;
-  --rsbs-overlay-rounded: 16px;
+  /* --rsbs-overlay-rounded: 16px; */
   --rsbs-overlay-translate-y: 0px;
 
   /* small screen */
@@ -19,9 +19,9 @@
   --rsbs-mr: auto;
 }
 [data-rsbs-header="true"] {
-  box-shadow: 0 4px 0 rgba(46, 59, 66, 0.1) !important;
+  box-shadow: 0 0px 0 rgba(46, 59, 66, 0.1) !important;
 }
 
 [data-rsbs-footer="true"] {
-  box-shadow: 0 -4px 0 rgba(46, 59, 66, 0.1) !important;
+  box-shadow: 0 -4px 0 transparent !important;
 }

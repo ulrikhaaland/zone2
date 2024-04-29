@@ -53,7 +53,7 @@ const GuideSection: React.FC<GuideSectionProps> = ({
   return (
     <li
       id={`guide-item-${item.id}`}
-      className={`mb-0 last:pb-4 ${
+      className={`mb-0 last:pb-4 text-whitebg ${
         isSubItem || isLast ? "" : "border-b border-gray-700"
       }
       ${isSubItem && isLast ? "mb-2" : ""}`}
@@ -67,7 +67,7 @@ const GuideSection: React.FC<GuideSectionProps> = ({
         <h2
           className={`${
             isSubItem ? "text-xl" : "text-2xl"
-          } font-semibold text-white`}
+          } font-semibold text-whitebg`}
         >
           {item.title}
         </h2>

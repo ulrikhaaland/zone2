@@ -10,7 +10,9 @@ import { BottomSheet } from "react-spring-bottom-sheet";
 import "react-spring-bottom-sheet/dist/style.css";
 import "./style.css";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
-import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
+import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
+import BottomSheetHeader from "./BottomSheetHeader";
+import { RefHandles } from "react-spring-bottom-sheet/dist/types";
 
 interface MobileGuideViewerProps {
   status: GuideStatus;
@@ -31,6 +33,7 @@ const MobileGuideViewer: React.FC<MobileGuideViewerProps> = ({ status }) => {
   );
   const [maxHeight] = useState(window.innerHeight - 200);
   const containerRef = useRef<HTMLDivElement>(null);
+  const sheetRef = useRef<RefHandles | null>(null);
 
   useEffect(() => {
     if (guideItems.length > 0) {
@@ -39,9 +42,13 @@ const MobileGuideViewer: React.FC<MobileGuideViewerProps> = ({ status }) => {
       );
       if (indexOfCurrentItem > 0) {
         setPreviousItem(guideItems[indexOfCurrentItem - 1]);
+      } else {
+        setPreviousItem(undefined);
       }
       if (indexOfCurrentItem < guideItems.length - 1) {
         setNextItem(guideItems[indexOfCurrentItem + 1]);
+      } else {
+        setNextItem(undefined);
       }
     }
   }, [currentItem]);
@@ -69,39 +76,35 @@ const MobileGuideViewer: React.FC<MobileGuideViewerProps> = ({ status }) => {
     } else setCurrentItem(item);
   };
 
+  useEffect(() => {
+    if (sheetRef.current) {
+      // Assuming maxHeight is always the second snap point
+      sheetRef.current.snapTo(1);  // Index 1 corresponds to maxHeight
+    }
+  }, [sheetRef]);
+
   return (
     <>
       <BottomSheet
+        ref={sheetRef}
         className="text-whitebg"
         open={true}
         scrollLocking={false}
         blocking={false}
-        expandOnContentDrag={true}
+        expandOnContentDrag={false}
         maxHeight={maxHeight}
-        snapPoints={({}) => [100, maxHeight]}
-        header={
-          <div className="h-[72px] w-full pt-2">
-            <div className="w-full h-full justify-between">
-              <div>
-                <div className="flex w-full h-full items-center justify-between">
-                  <button
-                    className="w-[40%] h-[50px] flex items-center justify-start text-sm"
-                    onClick={() => setCurrentItem(previousItem!)}
-                  >
-                  
-                    <NavigateBeforeIcon />
-                    <p> {previousItem?.title}</p>
-                  </button>
-                  <button
-                    className="w-[40%] h-[50px] flex items-center justify-end text-sm"
-                    onClick={() => setCurrentItem(nextItem!)}
-                  >
-                    <p> {nextItem?.title}</p> <NavigateNextIcon />
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
+        snapPoints={({}) => [
+          status === GuideStatus.LOADING && !nextItem ? 110 : 100,
+          maxHeight,
+        ]}
+        footer={
+          <BottomSheetHeader
+            status={status}
+            setCurrentItem={setCurrentItem}
+            currentItem={currentItem}
+            previousItem={previousItem}
+            nextItem={nextItem}
+          />
         }
         // footer={
         //   <button

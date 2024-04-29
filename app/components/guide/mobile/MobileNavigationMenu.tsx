@@ -56,7 +56,7 @@ const MobileGuideNavigation: React.FC<MobileGuideNavigationProps> = ({
         ))}
       </ul>
       {status === GuideStatus.LOADING && (
-        <div role="status" className="max-w mb-12 pl-2">
+        <div role="status" className="max-w mb-12 pl-6">
           {shimmerItems.slice(guideItemsCount, 30).map((item, index) => (
             <div key={index}>{item}</div>
           ))}

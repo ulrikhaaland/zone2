@@ -113,37 +113,7 @@ const ProfileMobileLayout: React.FC<ProfileMobileLayoutProps> = ({
           Profile
         </button>
       </div>
-      {pageIndex === 0 && guideStatus === GuideStatus.LOADING && (
-        <>
-          <h1
-            className={`text-3xl text-whitebg text-center font-bold relative z-10 ${
-              guideStatus === GuideStatus.LOADING && pageIndex === 0
-                ? "animate-pulse"
-                : ""
-            }`}
-            style={{
-              textShadow: "10px 10px 10px rgba(0,0,0,1)",
-            }}
-          >
-            Generating Guide...
-          </h1>
-          {guideStatus === GuideStatus.LOADING && (
-            <div
-              className={
-                "text-center text-gray-300 items-center justify-center px-16 w-full text-sm pt-2 mb-4 relative z-10"
-              }
-              style={{
-                textShadow: "10px 10px 10px rgba(0,0,0,1)",
-              }}
-            >
-              <p>
-                This will take a few minutes — feel free to wait or come back
-                later...
-              </p>
-            </div>
-          )}
-        </>
-      )}
+
       {/* Page Content */}
       <div className="flex flex-col items-center relative">
         <div className="w-full">
@@ -160,7 +130,7 @@ const ProfileMobileLayout: React.FC<ProfileMobileLayoutProps> = ({
               transition={{ duration: 0.25 }}
             >
               {pageIndex === 0 && user && user.guideStatus && (
-               <MobileGuideViewer status={user.guideStatus} />
+                <MobileGuideViewer status={user.guideStatus} />
               )}
               {pageIndex === 1 && user && (
                 <Questionnaire

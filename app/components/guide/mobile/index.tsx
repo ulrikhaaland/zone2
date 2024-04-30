@@ -32,8 +32,8 @@ const MobileGuideViewer: React.FC<MobileGuideViewerProps> = ({ status }) => {
   const [nextItem, setNextItem] = React.useState<GuideItem | undefined>(
     undefined
   );
-  const [expanded, setExpanded] = React.useState(false);
-  const [maxHeight] = useState(window.innerHeight - 200);
+  const [expanded, setExpanded] = React.useState(true);
+  const [maxHeight] = useState(window.innerHeight - 180);
   const containerRef = useRef<HTMLDivElement>(null);
   const sheetRef = useRef<RefHandles | null>(null);
 
@@ -85,6 +85,9 @@ const MobileGuideViewer: React.FC<MobileGuideViewerProps> = ({ status }) => {
     const timer = setTimeout(() => {
       if (isLoading) {
         expandSheet();
+      } else {
+        console.log("Collapsing sheet");
+        collapseSheet();
       }
     }, 1000); // Delaying the execution slightly to ensure the component is ready
 
@@ -101,13 +104,15 @@ const MobileGuideViewer: React.FC<MobileGuideViewerProps> = ({ status }) => {
 
   const collapseSheet = () => {
     if (sheetRef.current) {
-      sheetRef.current.snapTo(1); // Snap to the index corresponding to maxHeight
+      if (expanded) setExpanded(false);
+      sheetRef.current.snapTo(0); // Snap to the index corresponding to minHeight
     }
   };
 
   const expandSheet = () => {
     if (sheetRef.current) {
-      sheetRef.current.snapTo(maxHeight); // Snap to the index corresponding to maxHeight
+      if (!expanded) setExpanded(true);
+      sheetRef.current.snapTo(maxHeight);
     }
   };
 
@@ -121,7 +126,10 @@ const MobileGuideViewer: React.FC<MobileGuideViewerProps> = ({ status }) => {
         blocking={false}
         expandOnContentDrag={false}
         maxHeight={maxHeight}
-        snapPoints={({}) => [isLoading && !nextItem ? 130 : 78, maxHeight]}
+        snapPoints={({ footerHeight }) => [
+          isLoading && !nextItem ? 130 : 80,
+          maxHeight,
+        ]}
         footer={
           <BottomSheetHeader
             status={status}
@@ -133,7 +141,7 @@ const MobileGuideViewer: React.FC<MobileGuideViewerProps> = ({ status }) => {
             onExpand={setExpanded}
           />
         }
-        // footer={x  
+        // footer={x
         //   <button
         //     className="w-full p-2 text-white bg-blue-500"
         //     onClick={() => setOpen(false)}
@@ -142,10 +150,13 @@ const MobileGuideViewer: React.FC<MobileGuideViewerProps> = ({ status }) => {
         //   </button>
         // }
       >
-        <MobileNavigationMenu
-          setCurrentItem={handleOnSetCurrentItem}
-          status={status}
-        />
+        {expanded && (
+          <MobileNavigationMenu
+            setCurrentItem={handleOnSetCurrentItem}
+            status={status}
+            expanded={expanded}
+          />
+        )}
       </BottomSheet>
 
       {currentItem && (

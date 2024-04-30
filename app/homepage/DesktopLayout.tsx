@@ -136,7 +136,7 @@ export const HomeDesktopLayout: React.FC<HomeDesktopLayoutProps> = ({
               {emailSent ? (
                 <div>
                   <h2 className="text-3xl font-bold mb-6">Check Your Email</h2>
-                  <p className="mt-4 text-green-500">
+                  <p className="mt-4 text-whitebg">
                     We&apos;ve sent a login link to your email. Please check
                     your inbox and follow the instructions to complete the login
                     process.

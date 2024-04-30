@@ -2,7 +2,7 @@
   --rsbs-antigap-scale-y: 0;
   --rsbs-backdrop-bg: transparent;
   --rsbs-backdrop-opacity: 0;
-  --rsbs-bg: black;
+  --rsbs-bg: rgb(26, 32, 44);
   --rsbs-content-opacity: 0.5;
   /* header */
   --rsbs-handle-bg: white;
@@ -39,8 +39,7 @@
 }
 
 [data-rsbs-footer="true"] {
-  box-shadow: 0 -4px 0 transparent !important;
+  box-shadow: 0 0px 0 rgba(46, 59, 66, 0.1) !important;
   padding: 0px 0px 0px 0px;
   margin: 0px 16px 16px 0px;
-
 }

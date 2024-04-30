@@ -8,20 +8,22 @@ import { shimmerItems } from "../skeleton";
 interface MobileGuideNavigationProps {
   setCurrentItem: (item: GuideItem) => void;
   status: GuideStatus;
+  expanded: boolean;
 }
 
 // Add this method inside your Guide component
 const MobileGuideNavigation: React.FC<MobileGuideNavigationProps> = ({
   setCurrentItem,
   status,
+  expanded,
 }) => {
   const { guideStore } = useStore();
   const { guideItems, guideItemsCount } = guideStore;
 
   return (
     <nav
-      className="w-full bg-black/60 mx-4 rounded-lg md:border md:border-gray-700
-                items-center justify-center overflow-y-auto"
+      className="w-full bg-rgb(26, 32, 44) mx-4 rounded-lg md:border md:border-gray-700
+                items-center justify-center"
       style={{
         height:
           status === GuideStatus.LOADING
@@ -29,7 +31,13 @@ const MobileGuideNavigation: React.FC<MobileGuideNavigationProps> = ({
             : "calc(100dvh - 150px)",
       }}
     >
-      <ul className="list-none px-4">
+      {expanded && (
+        <>
+          <div className="fixed bottom-[68px] left-0 w-full h-12 bg-gradient-to-t from-black via-transparent to-transparent" />
+          <div className="fixed bottom-[64px] left-0 w-full h-3 bg-card" />
+        </>
+      )}
+      <ul className="list-none px-4 overflow-y-auto h-full">
         {guideItems.map((item) => (
           <li key={item.id} className="text-gray-300 cursor-pointer p-2">
             <span

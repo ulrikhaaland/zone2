@@ -4,7 +4,9 @@
   --rsbs-backdrop-opacity: 0;
   --rsbs-bg: black;
   --rsbs-content-opacity: 0.5;
+  /* header */
   --rsbs-handle-bg: white;
+  --rsbs-header-pt: 0px;
 
   --rsbs-overlay-h: 0px;
   /* --rsbs-overlay-rounded: 16px; */
@@ -20,8 +22,25 @@
 }
 [data-rsbs-header="true"] {
   box-shadow: 0 0px 0 rgba(46, 59, 66, 0.1) !important;
+  transition: height 0.3s ease; /* Smooth transition for height change */
+  box-sizing: border-box;
+  height: 0;
+  width: 0;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+}
+
+[data-rsbs-header]:before {
+  height: 0;
+  visibility: hidden; /* Makes the element not visible */
+  opacity: 0; /* Ensures the element is fully transparent */
+  content: none; /* Removes the content of the pseudo-element */
 }
 
 [data-rsbs-footer="true"] {
   box-shadow: 0 -4px 0 transparent !important;
+  padding: 0px 0px 0px 0px;
+  margin: 0px 16px 16px 0px;
+
 }

@@ -84,7 +84,7 @@ export const ContentPage: NextPageWithLayout = () => {
           ref={contentRef}
           className="overflow-y-auto flex w-7xl md:rounded flex-col items-center min-h-max p-4 relative"
           style={{
-            height: `calc(90dvh)`,
+            height: `88dvh`,
           }}
         >
           <div className="w-full relative md:shadow-md pb-12">

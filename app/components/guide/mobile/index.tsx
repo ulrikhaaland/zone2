@@ -32,6 +32,7 @@ const MobileGuideViewer: React.FC<MobileGuideViewerProps> = ({ status }) => {
   const [nextItem, setNextItem] = React.useState<GuideItem | undefined>(
     undefined
   );
+  const [expanded, setExpanded] = React.useState(false);
   const [maxHeight] = useState(window.innerHeight - 200);
   const containerRef = useRef<HTMLDivElement>(null);
   const sheetRef = useRef<RefHandles | null>(null);
@@ -82,19 +83,31 @@ const MobileGuideViewer: React.FC<MobileGuideViewerProps> = ({ status }) => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      if (sheetRef.current && isLoading) {
-        console.log("Executing snapTo after timeout");
-        sheetRef.current.snapTo(maxHeight); // Snap to the index corresponding to maxHeight
+      if (isLoading) {
+        expandSheet();
       }
     }, 1000); // Delaying the execution slightly to ensure the component is ready
 
     return () => clearTimeout(timer); // Cleanup the timer
   }, [sheetRef.current]);
 
+  useEffect(() => {
+    if (expanded) {
+      expandSheet();
+    } else {
+      collapseSheet();
+    }
+  }, [expanded]);
+
   const collapseSheet = () => {
     if (sheetRef.current) {
-      console.log("Executing snapTo after timeout");
       sheetRef.current.snapTo(1); // Snap to the index corresponding to maxHeight
+    }
+  };
+
+  const expandSheet = () => {
+    if (sheetRef.current) {
+      sheetRef.current.snapTo(maxHeight); // Snap to the index corresponding to maxHeight
     }
   };
 
@@ -106,9 +119,9 @@ const MobileGuideViewer: React.FC<MobileGuideViewerProps> = ({ status }) => {
         open={true}
         scrollLocking={false}
         blocking={false}
-        expandOnContentDrag={true}
+        expandOnContentDrag={false}
         maxHeight={maxHeight}
-        snapPoints={({}) => [isLoading && !nextItem ? 130 : 100, maxHeight]}
+        snapPoints={({}) => [isLoading && !nextItem ? 130 : 78, maxHeight]}
         footer={
           <BottomSheetHeader
             status={status}
@@ -116,9 +129,11 @@ const MobileGuideViewer: React.FC<MobileGuideViewerProps> = ({ status }) => {
             currentItem={currentItem}
             previousItem={previousItem}
             nextItem={nextItem}
+            expanded={expanded}
+            onExpand={setExpanded}
           />
         }
-        // footer={
+        // footer={x  
         //   <button
         //     className="w-full p-2 text-white bg-blue-500"
         //     onClick={() => setOpen(false)}

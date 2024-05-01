@@ -12,8 +12,9 @@ import "./style.css";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 import BottomSheetHeader from "./BottomSheetHeader";
-import { RefHandles } from "react-spring-bottom-sheet/dist/types";
+import { RefHandles, SpringEvent } from "react-spring-bottom-sheet/dist/types";
 import guide from "@/pages/guide";
+import { set } from "mobx";
 
 interface MobileGuideViewerProps {
   status: GuideStatus;
@@ -36,7 +37,7 @@ const MobileGuideViewer: React.FC<MobileGuideViewerProps> = ({ status }) => {
   const [maxHeight] = useState(window.innerHeight - 180);
   const containerRef = useRef<HTMLDivElement>(null);
   const sheetRef = useRef<RefHandles | null>(null);
-
+  const [init, setInit] = useState(false);
   const isLoading = status === GuideStatus.LOADING;
 
   useEffect(() => {
@@ -87,6 +88,7 @@ const MobileGuideViewer: React.FC<MobileGuideViewerProps> = ({ status }) => {
         expandSheet();
       } else {
         console.log("Collapsing sheet");
+        setInit(true);
         collapseSheet();
       }
     }, 1000); // Delaying the execution slightly to ensure the component is ready
@@ -106,6 +108,7 @@ const MobileGuideViewer: React.FC<MobileGuideViewerProps> = ({ status }) => {
     if (sheetRef.current) {
       if (expanded) setExpanded(false);
       sheetRef.current.snapTo(0); // Snap to the index corresponding to minHeight
+      lastHeightRef.current = 0;
     }
   };
 
@@ -113,6 +116,21 @@ const MobileGuideViewer: React.FC<MobileGuideViewerProps> = ({ status }) => {
     if (sheetRef.current) {
       if (!expanded) setExpanded(true);
       sheetRef.current.snapTo(maxHeight);
+      lastHeightRef.current = maxHeight;
+    }
+  };
+
+  const lastHeightRef = useRef<number>(0);
+
+  const handleOnSpringStart = (event: SpringEvent) => {
+    if (event.type === "SNAP" && event.source !== "custom") {
+      const currentHeight = getCurrentHeightSheetHeight(); // Implement this method based on your setup
+      if (currentHeight > lastHeightRef.current) {
+        setExpanded(true); // Assuming upward movement enlarges the height
+      } else {
+        setExpanded(false); // Downward movement or unchanged
+      }
+      lastHeightRef.current = currentHeight; // Update last known height
     }
   };
 
@@ -126,10 +144,8 @@ const MobileGuideViewer: React.FC<MobileGuideViewerProps> = ({ status }) => {
         blocking={false}
         expandOnContentDrag={false}
         maxHeight={maxHeight}
-        snapPoints={({ footerHeight }) => [
-          isLoading && !nextItem ? 130 : 80,
-          maxHeight,
-        ]}
+        onSpringStart={handleOnSpringStart}
+        snapPoints={({}) => [isLoading && !nextItem ? 130 : 80, maxHeight]}
         footer={
           <BottomSheetHeader
             status={status}
@@ -137,7 +153,7 @@ const MobileGuideViewer: React.FC<MobileGuideViewerProps> = ({ status }) => {
             currentItem={currentItem}
             previousItem={previousItem}
             nextItem={nextItem}
-            expanded={expanded}
+            expanded={!init ? false : expanded}
             onExpand={setExpanded}
           />
         }
@@ -150,12 +166,16 @@ const MobileGuideViewer: React.FC<MobileGuideViewerProps> = ({ status }) => {
         //   </button>
         // }
       >
-        {expanded && (
-          <MobileNavigationMenu
-            setCurrentItem={handleOnSetCurrentItem}
-            status={status}
-            expanded={expanded}
-          />
+        {!init ? (
+          <div className="init h-full w-full text-transparent">a</div>
+        ) : (
+          expanded && (
+            <MobileNavigationMenu
+              setCurrentItem={handleOnSetCurrentItem}
+              status={status}
+              expanded={expanded}
+            />
+          )
         )}
       </BottomSheet>
 
@@ -182,3 +202,9 @@ const MobileGuideViewer: React.FC<MobileGuideViewerProps> = ({ status }) => {
 };
 
 export default observer(MobileGuideViewer);
+
+function getCurrentHeightSheetHeight(): number {
+  const sheetElement = document.querySelector('div[role="dialog"]');
+  console.log(sheetElement?.clientHeight);
+  return sheetElement ? sheetElement.clientHeight : 0;
+}

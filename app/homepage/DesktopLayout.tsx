@@ -182,7 +182,7 @@ export const HomeDesktopLayout: React.FC<HomeDesktopLayoutProps> = ({
                   {message && (
                     <p
                       className={`mt-4 ${
-                        emailSent ? "text-green-500" : "text-red-500"
+                        emailSent ? "text-bgwhite" : "text-red-500"
                       }`}
                     >
                       {message}

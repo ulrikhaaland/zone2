@@ -43,3 +43,25 @@
   padding: 0px 0px 0px 0px;
   margin: 0px 16px 16px 0px;
 }
+
+.init {
+  scrollbar-width: auto; /* 'auto' or 'thin' */
+  scrollbar-color: transparent; /* thumb and track color */
+}
+
+[data-rsbs-scroll] {
+  flex-shrink: 1;
+  flex-grow: 1;
+  -webkit-tap-highlight-color: revert;
+  -webkit-touch-callout: revert;
+  -webkit-user-select: auto;
+  -ms-user-select: auto;
+  -moz-user-select: auto;
+  user-select: auto;
+  height: 0px;
+  overflow: auto;
+  scrollbar-color: transparent; /* thumb and track color */
+  -ms-scroll-chaining: none;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}

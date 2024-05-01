@@ -49,6 +49,7 @@ body {
   scrollbar-width: auto; /* 'auto' or 'thin' */
   scrollbar-color: white transparent; /* thumb and track color */
 }
+
 .custom-scrollbar::-webkit-scrollbar {
   width: 2px;
 }

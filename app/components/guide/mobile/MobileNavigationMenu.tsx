@@ -33,11 +33,11 @@ const MobileGuideNavigation: React.FC<MobileGuideNavigationProps> = ({
     >
       {expanded && (
         <>
-          <div className="fixed bottom-[68px] left-0 w-full h-12 bg-gradient-to-t from-black via-transparent to-transparent" />
-          <div className="fixed bottom-[64px] left-0 w-full h-3 bg-card" />
+          <div className="fixed bottom-[68px] z-100 left-0 w-full h-12 bg-gradient-to-t from-black via-transparent to-transparent" />
+          <div className="fixed bottom-[64px] z-100 left-0 w-full h-3 bg-card" />
         </>
       )}
-      <ul className="list-none px-4 overflow-y-auto h-full pb-8">
+      <ul className="list-none px-4 h-full pb-8">
         {guideItems.map((item) => (
           <li key={item.id} className="text-gray-300 cursor-pointer p-2">
             <span

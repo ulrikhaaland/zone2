@@ -20,6 +20,13 @@
   --rsbs-ml: auto;
   --rsbs-mr: auto;
 }
+
+[data-rsbs-content] {
+  overflow: hidden;
+  scrollbar-width: thin; /* 'auto' or 'thin' */
+  scrollbar-color: white; /* thumb and track color */
+}
+
 [data-rsbs-header="true"] {
   box-shadow: 0 0px 0 rgba(46, 59, 66, 0.1) !important;
   transition: height 0.3s ease; /* Smooth transition for height change */
@@ -45,23 +52,13 @@
 }
 
 .init {
-  scrollbar-width: auto; /* 'auto' or 'thin' */
+  scrollbar-width: thin; /* 'auto' or 'thin' */
   scrollbar-color: transparent; /* thumb and track color */
 }
 
-[data-rsbs-scroll] {
-  flex-shrink: 1;
-  flex-grow: 1;
-  -webkit-tap-highlight-color: revert;
-  -webkit-touch-callout: revert;
-  -webkit-user-select: auto;
-  -ms-user-select: auto;
-  -moz-user-select: auto;
-  user-select: auto;
-  height: 0px;
-  overflow: auto;
-  scrollbar-color: transparent; /* thumb and track color */
-  -ms-scroll-chaining: none;
-  overscroll-behavior: contain;
-  -webkit-overflow-scrolling: touch;
+div[data-rsbs-scroll="true"] {
+  height: 2px;
+  /* Optional: Set the scrollbar width */
+  scrollbar-width: none; /* For Firefox, shown below */
+  scrollbar-color: transparent; /* For Firefox, shown below */
 }

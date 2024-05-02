@@ -58,6 +58,7 @@ const MobileGuideViewer: React.FC<MobileGuideViewerProps> = ({ status }) => {
     }
   }, [currentItem, guideItems.length]);
 
+
   const scrollToItem = async (item: GuideItem) => {
     let itemElement = document.getElementById(`guide-item-${item.id}`);
 
@@ -78,7 +79,9 @@ const MobileGuideViewer: React.FC<MobileGuideViewerProps> = ({ status }) => {
       setTimeout(() => {
         scrollToItem(item);
       }, 50);
-    } else setCurrentItem(item);
+    } else {
+      setCurrentItem(item);
+    }
     collapseSheet();
   };
 
@@ -167,7 +170,7 @@ const MobileGuideViewer: React.FC<MobileGuideViewerProps> = ({ status }) => {
         // }
       >
         {!init ? (
-          <div className="init h-full w-full text-transparent">a</div>
+          <div className="init h-full w-full text-transparent text-hidden">a</div>
         ) : (
           expanded && (
             <MobileNavigationMenu
@@ -182,6 +185,7 @@ const MobileGuideViewer: React.FC<MobileGuideViewerProps> = ({ status }) => {
       {currentItem && (
         <div className="mx-4 justify-center text-bgwhite">
           <div
+            key={currentItem.id + "container"}
             ref={containerRef}
             className="w-full bg-black/60 px-4 rounded-lg md:border md:border-gray-700 items-center justify-center overflow-y-auto"
             style={{ height: "calc(100vh - 150px)" }}

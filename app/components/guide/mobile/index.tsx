@@ -137,8 +137,6 @@ const MobileGuideViewer: React.FC<MobileGuideViewerProps> = ({ status }) => {
     }
   };
 
-  
-
   return (
     <>
       <BottomSheet
@@ -150,7 +148,7 @@ const MobileGuideViewer: React.FC<MobileGuideViewerProps> = ({ status }) => {
         expandOnContentDrag={false}
         maxHeight={maxHeight}
         onSpringStart={handleOnSpringStart}
-        snapPoints={({}) => [isLoading && !nextItem ? 130 : 80, maxHeight]}
+        snapPoints={({}) => [isLoading && !nextItem ? 130 : 100, maxHeight]}
         footer={
           <BottomSheetHeader
             status={status}
@@ -171,19 +169,17 @@ const MobileGuideViewer: React.FC<MobileGuideViewerProps> = ({ status }) => {
         //   </button>
         // }
       >
-        {!init ? (
-          <div className="h-full w-full text-transparent text-hidden">
-            a
-          </div>
-        ) : (
-          expanded && (
-            <MobileNavigationMenu
-              setCurrentItem={handleOnSetCurrentItem}
-              status={status}
-              expanded={expanded}
-            />
-          )
+        {/* {!init ? (
+          <div className="h-full w-full text-transparent text-hidden">a</div>
+        ) : ( */}
+        {expanded && (
+          <MobileNavigationMenu
+            setCurrentItem={handleOnSetCurrentItem}
+            status={status}
+            expanded={expanded}
+          />
         )}
+        {/* )} */}
       </BottomSheet>
 
       {currentItem && (

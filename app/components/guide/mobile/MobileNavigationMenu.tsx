@@ -33,9 +33,11 @@ const MobileGuideNavigation: React.FC<MobileGuideNavigationProps> = ({
     >
       <ul
         className="list-none px-4 h-full"
-        style={{
-          // overflowY: "auto",
-        }}
+        style={
+          {
+            // overflowY: "auto",
+          }
+        }
       >
         {guideItems.map((item) => (
           <li
@@ -45,6 +47,9 @@ const MobileGuideNavigation: React.FC<MobileGuideNavigationProps> = ({
             <span
               className="hover:text-white text-lg font-bold"
               onClick={() => setCurrentItem(item)}
+              style={{
+                textShadow: "10px 10px 10px rgba(0,0,0,1)",
+              }}
             >
               {item.title}
             </span>

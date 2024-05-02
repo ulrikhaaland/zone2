@@ -30,11 +30,11 @@ const BottomSheetHeader: React.FC<BottomSheetHeaderProps> = ({
 }) => {
   if (status === GuideStatus.LOADING && !nextItem && !previousItem)
     return (
-      <div className="h-[82px] w-full z-100 absolute">
+      <div className="h-full w-full z-100">
         <h1
           className="text-2xl text-whitebg text-center font-bold relative z-10 animate-pulse"
           style={{
-            textShadow: "10px 10px 10px rgba(0,0,0,1)",
+            // textShadow: "10px 10px 10px rgba(0,0,0,1)",
           }}
         >
           Generating Guide...
@@ -42,10 +42,10 @@ const BottomSheetHeader: React.FC<BottomSheetHeaderProps> = ({
 
         <div
           className={
-            "text-center text-gray-300 items-center justify-center px-16 w-full text-sm pt-2 mb-4 relative z-10"
+            "text-center text-gray-300 items-center justify-center px-16 w-full text-sm pt-2 relative z-10"
           }
           style={{
-            textShadow: "10px 10px 10px rgba(0,0,0,1)",
+            // textShadow: "10px 10px 10px rgba(0,0,0,1)",
           }}
         >
           <p>

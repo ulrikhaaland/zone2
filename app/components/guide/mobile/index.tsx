@@ -35,9 +35,12 @@ const MobileGuideViewer: React.FC<MobileGuideViewerProps> = ({ status }) => {
   );
   const [expanded, setExpanded] = React.useState(true);
   const [maxHeight] = useState(window.innerHeight - 180);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const sheetRef = useRef<RefHandles | null>(null);
   const [init, setInit] = useState(false);
+
+  const containerRef = useRef<HTMLDivElement>(null);
+  const lastHeightRef = useRef<number>(0);
+  const sheetRef = useRef<RefHandles | null>(null);
+
   const isLoading = status === GuideStatus.LOADING;
 
   useEffect(() => {
@@ -57,7 +60,6 @@ const MobileGuideViewer: React.FC<MobileGuideViewerProps> = ({ status }) => {
       }
     }
   }, [currentItem, guideItems.length]);
-
 
   const scrollToItem = async (item: GuideItem) => {
     let itemElement = document.getElementById(`guide-item-${item.id}`);
@@ -123,8 +125,6 @@ const MobileGuideViewer: React.FC<MobileGuideViewerProps> = ({ status }) => {
     }
   };
 
-  const lastHeightRef = useRef<number>(0);
-
   const handleOnSpringStart = (event: SpringEvent) => {
     if (event.type === "SNAP" && event.source !== "custom") {
       const currentHeight = getCurrentHeightSheetHeight(); // Implement this method based on your setup
@@ -170,7 +170,9 @@ const MobileGuideViewer: React.FC<MobileGuideViewerProps> = ({ status }) => {
         // }
       >
         {!init ? (
-          <div className="init h-full w-full text-transparent text-hidden">a</div>
+          <div className="init h-full w-full text-transparent text-hidden">
+            a
+          </div>
         ) : (
           expanded && (
             <MobileNavigationMenu

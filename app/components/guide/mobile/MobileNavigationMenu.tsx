@@ -37,7 +37,7 @@ const MobileGuideNavigation: React.FC<MobileGuideNavigationProps> = ({
           <div className="fixed bottom-[64px] left-0 w-full h-3 bg-card" />
         </>
       )}
-      <ul className="list-none px-4 overflow-y-auto h-full">
+      <ul className="list-none px-4 overflow-y-auto h-full pb-8">
         {guideItems.map((item) => (
           <li key={item.id} className="text-gray-300 cursor-pointer p-2">
             <span

@@ -56,9 +56,3 @@
   scrollbar-color: transparent; /* thumb and track color */
 }
 
-div[data-rsbs-scroll="true"] {
-  height: 2px;
-  /* Optional: Set the scrollbar width */
-  scrollbar-width: none; /* For Firefox, shown below */
-  scrollbar-color: transparent; /* For Firefox, shown below */
-}

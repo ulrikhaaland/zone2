@@ -146,7 +146,7 @@ const MobileGuideViewer: React.FC<MobileGuideViewerProps> = ({ status }) => {
         className="text-whitebg"
         open={true}
         scrollLocking={false}
-        blocking={true}
+        blocking={false}
         expandOnContentDrag={false}
         maxHeight={maxHeight}
         onSpringStart={handleOnSpringStart}

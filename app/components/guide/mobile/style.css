@@ -23,10 +23,12 @@
 
 div[data-rsbs-scroll="true"] {
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
 div[data-rsbs-content] {
   overflow: visible;
+  /* overflow-x: none; */
 }
 
 [data-rsbs-header="true"] {

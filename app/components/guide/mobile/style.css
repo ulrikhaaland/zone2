@@ -21,6 +21,14 @@
   --rsbs-mr: auto;
 }
 
+div[data-rsbs-scroll="true"] {
+  overflow-y: auto;
+}
+
+div[data-rsbs-content] {
+  overflow: visible;
+}
+
 [data-rsbs-header="true"] {
   box-shadow: 0 0px 0 rgba(46, 59, 66, 0.1) !important;
   transition: height 0.3s ease; /* Smooth transition for height change */

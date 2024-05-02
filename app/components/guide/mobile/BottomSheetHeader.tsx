@@ -30,7 +30,7 @@ const BottomSheetHeader: React.FC<BottomSheetHeaderProps> = ({
 }) => {
   if (status === GuideStatus.LOADING && !nextItem && !previousItem)
     return (
-      <div className="h-[82px] w-full">
+      <div className="h-[82px] w-full z-100 absolute">
         <h1
           className="text-2xl text-whitebg text-center font-bold relative z-10 animate-pulse"
           style={{

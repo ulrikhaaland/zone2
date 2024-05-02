@@ -137,6 +137,8 @@ const MobileGuideViewer: React.FC<MobileGuideViewerProps> = ({ status }) => {
     }
   };
 
+  
+
   return (
     <>
       <BottomSheet
@@ -144,7 +146,7 @@ const MobileGuideViewer: React.FC<MobileGuideViewerProps> = ({ status }) => {
         className="text-whitebg"
         open={true}
         scrollLocking={false}
-        blocking={false}
+        blocking={true}
         expandOnContentDrag={false}
         maxHeight={maxHeight}
         onSpringStart={handleOnSpringStart}

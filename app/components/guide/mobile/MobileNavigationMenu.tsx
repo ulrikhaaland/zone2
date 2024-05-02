@@ -27,19 +27,21 @@ const MobileGuideNavigation: React.FC<MobileGuideNavigationProps> = ({
       style={{
         height:
           status === GuideStatus.LOADING
-            ? "calc(100dvh - 250px)"
-            : "calc(100dvh - 150px)",
+            ? "calc(100vh - 250px)"
+            : "calc(100vh - 150px)",
       }}
     >
-      {expanded && (
-        <>
-          <div className="fixed bottom-[68px] z-100 left-0 w-full h-12 bg-gradient-to-t from-black via-transparent to-transparent" />
-          <div className="fixed bottom-[64px] z-100 left-0 w-full h-3 bg-card" />
-        </>
-      )}
-      <ul className="list-none px-4 h-full pb-8">
+      <ul
+        className="list-none px-4 h-full"
+        style={{
+          // overflowY: "auto",
+        }}
+      >
         {guideItems.map((item) => (
-          <li key={item.id} className="text-gray-300 cursor-pointer p-2">
+          <li
+            key={item.id}
+            className="text-gray-300 cursor-pointer p-2 last:pb-8"
+          >
             <span
               className="hover:text-white text-lg font-bold"
               onClick={() => setCurrentItem(item)}
@@ -70,6 +72,12 @@ const MobileGuideNavigation: React.FC<MobileGuideNavigationProps> = ({
           ))}
           <span className="sr-only">Loading...</span>
         </div>
+      )}
+      {expanded && (
+        <>
+          <div className="fixed bottom-[68px] z-100 left-0 w-full h-12 bg-gradient-to-t from-black via-transparent to-transparent" />
+          <div className="fixed bottom-[64px] z-100 left-0 w-full h-3 bg-card" />
+        </>
       )}
     </nav>
   );

@@ -170,7 +170,7 @@ const MobileGuideViewer: React.FC<MobileGuideViewerProps> = ({ status }) => {
         // }
       >
         {!init ? (
-          <div className="init h-full w-full text-transparent text-hidden">
+          <div className="h-full w-full text-transparent text-hidden">
             a
           </div>
         ) : (

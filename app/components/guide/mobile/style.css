@@ -21,12 +21,6 @@
   --rsbs-mr: auto;
 }
 
-[data-rsbs-content] {
-  overflow: hidden;
-  scrollbar-width: thin; /* 'auto' or 'thin' */
-  scrollbar-color: white; /* thumb and track color */
-}
-
 [data-rsbs-header="true"] {
   box-shadow: 0 0px 0 rgba(46, 59, 66, 0.1) !important;
   transition: height 0.3s ease; /* Smooth transition for height change */
@@ -50,9 +44,3 @@
   padding: 0px 0px 0px 0px;
   margin: 0px 16px 16px 0px;
 }
-
-.init {
-  scrollbar-width: thin; /* 'auto' or 'thin' */
-  scrollbar-color: transparent; /* thumb and track color */
-}
-

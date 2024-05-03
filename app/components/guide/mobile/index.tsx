@@ -145,7 +145,7 @@ const MobileGuideViewer: React.FC<MobileGuideViewerProps> = ({ status }) => {
         open={true}
         scrollLocking={false}
         blocking={false}
-        expandOnContentDrag={false}
+        expandOnContentDrag={true}
         maxHeight={maxHeight}
         onSpringStart={handleOnSpringStart}
         snapPoints={({}) => [isLoading && !nextItem ? 130 : 100, maxHeight]}

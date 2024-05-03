@@ -31,14 +31,7 @@ const MobileGuideNavigation: React.FC<MobileGuideNavigationProps> = ({
             : "calc(100vh - 150px)",
       }}
     >
-      <ul
-        className="list-none px-4 h-full"
-        style={
-          {
-            // overflowY: "auto",
-          }
-        }
-      >
+      <ul className="list-none px-4">
         {guideItems.map((item) => (
           <li
             key={item.id}

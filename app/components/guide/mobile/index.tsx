@@ -45,6 +45,10 @@ const MobileGuideViewer: React.FC<MobileGuideViewerProps> = ({ status }) => {
 
   useEffect(() => {
     if (guideItems.length > 0) {
+      if (!currentItem) {
+        setCurrentItem(guideItems[0]);
+      }
+
       const indexOfCurrentItem = guideItems.findIndex(
         (item) => item.id === currentItem?.id
       );
@@ -89,7 +93,7 @@ const MobileGuideViewer: React.FC<MobileGuideViewerProps> = ({ status }) => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      if (isLoading) {
+      if (isLoading && currentItem) {
         expandSheet();
       } else {
         console.log("Collapsing sheet");
@@ -145,10 +149,10 @@ const MobileGuideViewer: React.FC<MobileGuideViewerProps> = ({ status }) => {
         open={true}
         scrollLocking={false}
         blocking={false}
-        expandOnContentDrag={true}
+        expandOnContentDrag={false}
         maxHeight={maxHeight}
         onSpringStart={handleOnSpringStart}
-        snapPoints={({}) => [isLoading && !nextItem ? 130 : 100, maxHeight]}
+        snapPoints={({}) => [isLoading && !nextItem ? 100 : 80, maxHeight]}
         footer={
           <BottomSheetHeader
             status={status}
@@ -172,14 +176,15 @@ const MobileGuideViewer: React.FC<MobileGuideViewerProps> = ({ status }) => {
         {/* {!init ? (
           <div className="h-full w-full text-transparent text-hidden">a</div>
         ) : ( */}
-        {expanded && (
+        {expanded && currentItem ? (
           <MobileNavigationMenu
             setCurrentItem={handleOnSetCurrentItem}
             status={status}
             expanded={expanded}
           />
+        ) : (
+          <div className="text-transparent text-sm">asd</div>
         )}
-        {/* )} */}
       </BottomSheet>
 
       {currentItem && (

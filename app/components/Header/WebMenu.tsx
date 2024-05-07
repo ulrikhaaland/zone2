@@ -37,7 +37,7 @@ const WebMenu: React.FC<WebMenuProps> = ({ router, authStore }) => {
   useEffect(() => {
     if (pathName === "/") {
       updateUnderline(titleRef);
-    } else if (pathName === "/guide") {
+    } else if (pathName === "/create") {
       updateUnderline(guideRef);
     } else if (pathName === "/heartratecalculator") {
       updateUnderline(zonesRef);
@@ -77,9 +77,9 @@ const WebMenu: React.FC<WebMenuProps> = ({ router, authStore }) => {
         <div className="flex justify-center relative">
           <p
             ref={guideRef}
-            onClick={() => router.push("/guide")}
+            onClick={() => router.push("/create")}
             className={`leading-6 mx-4 ${
-              pathName === "/guide"
+              pathName === "/create"
                 ? "text-white hover:text-gray-300 text-3xl font-bold"
                 : "text-gray-400 hover:text-gray-300 text-2xl font-semibold"
             }`}

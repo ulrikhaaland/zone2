@@ -274,7 +274,11 @@ export default function Questionnaire(props: QuestionnaireProps) {
   };
 
   const signOutButton = (
-    <div className={`flex justify-center ${isMobileView ? "mb-8" : "pt-8"}`}>
+    <div
+      className={`flex justify-center ${
+        isMobileView ? (!isProfile ? "mb-8" : "") : "pt-8"
+      }`}
+    >
       <button
         className={`flex items-center font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline transition duration-150 ease-in-out 
               ${"bg-black text-whitebg border border-gray-700 transition duration-150 ease-in-out"} hover:bg-gray-900`}
@@ -294,8 +298,8 @@ export default function Questionnaire(props: QuestionnaireProps) {
     <div
       className={`text-whitebg
       ${
-        isProfile
-          ? `bg-black/50 rounded-lg max-w-md md:min-h-[77.5dvh] md:max-h-[72.5dvh] md:border md:border-gray-700 md:rounded-lg`
+        isProfile && !isMobileView
+          ? `bg-black/50 rounded-lg max-w-md md:min-h-[85.5dvh] md:max-h-[72.5dvh] md:border md:border-gray-700 md:rounded-lg`
           : "max-w-md md:min-h-[77.5dvh] md:max-h-[77.5dvh]"
       }`}
     >
@@ -330,7 +334,7 @@ export default function Questionnaire(props: QuestionnaireProps) {
         style={{
           maxHeight: !isMobileView
             ? isProfile
-              ? "65dvh"
+              ? "74dvh"
               : "67.5dvh"
             : isProfile
             ? "calc(100dvh - 130px)"
@@ -402,11 +406,16 @@ export default function Questionnaire(props: QuestionnaireProps) {
             />
           ))}
         </div>
-        {isProfile && isMobileView && signOutButton}
       </div>
-
+      {isProfile && isMobileView && (
+        <div className="fixed w-full bottom-3 left-0 right-0">
+          {signOutButton}
+        </div>
+      )}
       {isProfile && !isMobileView && (
-        <div className="flex justify-center items-center text-center h-max">{signOutButton}</div>
+        <div className="flex justify-center items-center text-center h-max">
+          {signOutButton}
+        </div>
       )}
     </div>
   );

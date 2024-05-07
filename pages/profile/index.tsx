@@ -8,7 +8,7 @@ import ProfileDesktopLayout from "./DesktopLayout";
 import ProfileMobileLayout from "./MobileLayout";
 import { doc, updateDoc } from "firebase/firestore";
 import { it } from "node:test";
-import guide from "../guide";
+import guide from "../create";
 import { set } from "mobx";
 
 export type RunInfo = {

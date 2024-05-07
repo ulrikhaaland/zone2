@@ -3,7 +3,7 @@ import { GuideItem } from "@/app/model/guide";
 import { GuideStatus } from "@/app/model/user";
 import { observer } from "mobx-react";
 import React from "react";
-import { shimmerItems } from "./skeleton";
+import { shimmerItems } from "../skeleton";
 
 interface SideNavigationProps {
   scrollToItem: (item: GuideItem) => void;

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { GuideStatus, User } from "@/app/model/user";
-import Guide from "@/app/components/guide";
+import Guide from "@/app/components/guide/desktop";
 import Questionnaire from "@/app/components/questionnaire/Questionnaire";
 import { AnimatePresence, motion } from "framer-motion";
 import { Question } from "@/app/model/questionaire";
@@ -73,92 +73,20 @@ const ProfileMobileLayout: React.FC<ProfileMobileLayoutProps> = ({
         ></div>
       </div>
 
-      {/* Button Container */}
-      <div className="relative flex justify-center items-center mb-4 w-full mx-auto">
-        <button
-          className={`flex items-center font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline transition duration-150 ease-in-out ${
-            pageIndex === 0
-              ? "bg-whitebg text-black border border-gray-700 transition duration-150 ease-in-out hover:bg-gray-300"
-              : "bg-black text-whitebg border border-gray-700 transition duration-150 ease-in-out hover:bg-gray-900"
-          }`}
-          type="button"
-          onClick={() => setPageIndex(0)}
-        >
-          <MenuBookIcon
-            className="mr-2"
-            style={{ color: pageIndex === 0 ? "black" : "white" }}
-          />
-          Guide
-        </button>
-        <div
-          style={{
-            width: "10px",
-            height: "10px",
-            backgroundColor: "transparent",
-          }}
-        ></div>
-        <button
-          className={`flex items-center font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline transition duration-150 ease-in-out ${
-            pageIndex === 1
-              ? "bg-whitebg text-black border border-transparent hover:bg-gray-300"
-              : "bg-black text-whitebg border border-gray-700 hover:bg-gray-900"
-          }`}
-          type="submit"
-          onClick={(e) => setPageIndex(1)}
-        >
-          <AccountCircleIcon
-            className="mr-2"
-            style={{ color: pageIndex === 1 ? "black" : "white" }}
-          />
-          Profile
-        </button>
-      </div>
-
       {/* Page Content */}
       <div className="flex flex-col items-center relative">
         <div className="w-full">
-          <AnimatePresence mode="wait">
-            <motion.div
-              className="relative z-0 flex justify-center" // Ensure content is below the overlays
-              key={pageIndex}
-              initial={{ opacity: 0, x: pageIndex === 0 ? -100 : 100 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{
-                opacity: 0,
-                x: pageIndex === 0 ? -100 : 100,
-              }}
-              transition={{ duration: 0.25 }}
-            >
-              {pageIndex === 0 && user && user.guideStatus && (
-                <MobileGuideViewer status={user.guideStatus} />
-              )}
-              {pageIndex === 1 && user && (
-                <Questionnaire
-                  onQuestCompleted={(questions) => {
-                    updateUser(questions);
-                  }}
-                  user={user}
-                  questions={user.questions}
-                  canSubmit={() => null}
-                  isProfile={true}
-                />
-              )}
-            </motion.div>
-          </AnimatePresence>
+          <Questionnaire
+            onQuestCompleted={(questions) => {
+              updateUser(questions);
+            }}
+            user={user!}
+            questions={user!.questions}
+            canSubmit={() => null}
+            isProfile={true}
+          />
         </div>
       </div>
-      {/* {feedbackExpanded && showFeedback && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-20" // Backdrop with semi-transparent background
-          onClick={() => setFeedbackExpanded(false)} // Close feedback form when backdrop is clicked
-        ></div>
-      )}
-      {scrolledToTopOrBottom && showFeedback && (
-        <FeedbackFAB
-          onExpand={setFeedbackExpanded}
-          expanded={feedbackExpanded}
-        />
-      )} */}
     </div>
   );
 };

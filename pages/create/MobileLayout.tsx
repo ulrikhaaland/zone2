@@ -10,7 +10,7 @@ import { AiOutlineArrowLeft } from "react-icons/ai";
 import { Question, questToFitnessData } from "@/app/model/questionaire";
 
 // Define the props interface
-interface Zone2GuideDesktopLayoutProps {
+interface CreateGuideMobileProps {
   pageIndex: number;
   userID: string | undefined;
   questions: Question[] | undefined;
@@ -26,8 +26,8 @@ interface Zone2GuideDesktopLayoutProps {
   setCanSubmit: (canSubmit: boolean) => void;
 }
 
-// The Desktop Layout Component
-const Zone2GuideDesktopLayout: React.FC<Zone2GuideDesktopLayoutProps> = ({
+// The Mobile Layout Component
+const CreateGuideMobile: React.FC<CreateGuideMobileProps> = ({
   pageIndex,
   userID,
   questions,
@@ -43,14 +43,7 @@ const Zone2GuideDesktopLayout: React.FC<Zone2GuideDesktopLayoutProps> = ({
   setCanSubmit,
 }) => {
   return (
-    <div
-      className="w-full font-custom h-screen overflow-hidden relative"
-      style={
-        {
-          // max height 100dvh - 16rem
-        }
-      }
-    >
+    <div className="w-full h-full font-custom relative overflow-hidden">
       {/* Background Image */}
       {/* Container for Background Image and Black Overlay */}
       <div
@@ -66,7 +59,7 @@ const Zone2GuideDesktopLayout: React.FC<Zone2GuideDesktopLayoutProps> = ({
         {/* Background Image */}
         <div
           style={{
-            backgroundImage: "url('/assets/images/swimmer/swimmer.png')",
+            backgroundImage: "url('/assets/images/runner/runner12.png')",
             backgroundSize: "cover",
             backgroundPosition: "center",
             position: "absolute",
@@ -90,20 +83,14 @@ const Zone2GuideDesktopLayout: React.FC<Zone2GuideDesktopLayoutProps> = ({
         ></div>
       </div>
 
-      {/* <div className="ml-auto mr-auto flex bg-grey-300 h-[50px] relative">
-        <h1
-          className="text-5xl text-whitebg text-start font-bold pt-6 mb-4 relative z-10"
-          style={{
-            textShadow: "10px 10px 10px rgba(0,0,0,1)",
-          }}
-        >
-          Zone 2 Guide Creation
-        </h1>
-      </div> */}
-
       {user && (
-        <div className="flex overflow-hidden flex-col items-center min-h-max pt-16 md:pt-24 p-4 relative">
-          <div className="w-full md:border md:border-gray-700 md:rounded-lg bg-black/60 rounded-lg md:overflow-hidden max-w-md md:shadow-md md:min-h-[83.5dvh] md:max-h-[87.5dvh] min-h-[86.5dvh] max-h-[86.5dvh]">
+        <div className="pt-16  flex overflow-y-auto flex-col items-center relative">
+          <div
+            className="w-full"
+            style={{
+              height: "calc(100dvh - 50px)",
+            }}
+          >
             <AnimatePresence mode="wait">
               <motion.div
                 className="relative z-0" // Ensure content is below the overlays
@@ -149,64 +136,65 @@ const Zone2GuideDesktopLayout: React.FC<Zone2GuideDesktopLayoutProps> = ({
                 )}
               </motion.div>
             </AnimatePresence>
-            {/* Button Container */}
-            <div className="flex justify-between items-center md:px-6 relative pt-12 md:pt-2 md-pb-0 pb-4">
-              {pageIndex !== 0 ? (
-                <button
-                  className="flex items-center font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline
-                bg-black text-whitebg border border-gray-700 transition duration-150 ease-in-out hover:bg-gray-900"
-                  type="button"
-                  onClick={() => onBack(forward)}
-                >
-                  <AiOutlineArrowLeft className="mr-2" /> Back
-                </button>
-              ) : (
-                <button
-                  className="flex opacity-0 items-center font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline
-                bg-black text-whitebg border border-gray-700 transition duration-150 ease-in-out hover:bg-gray-900"
-                  type="button"
-                  disabled={true}
-                  onClick={() => onBack(forward)}
-                >
-                  <AiOutlineArrowLeft className="mr-2" /> Back
-                </button>
-              )}
-
-              {/* Pagination dots */}
-              <div className="flex items-center">
-                {[0, 1, 2].map((index) => (
-                  <span
-                    key={index}
-                    className={`h-2 w-2 mx-1 rounded-full ${
-                      pageIndex === index ? "bg-whitebg" : "bg-gray-600"
-                    }`}
-                  ></span>
-                ))}
-              </div>
-              <button
-                className={`font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline transition duration-150 ease-in-out ${
-                  canSubmit
-                    ? "bg-blue-600 hover:bg-blue-800 text-whitebg"
-                    : "bg-secondary-button-dark text-whitebg opacity-50 cursor-not-allowed"
-                }`}
-                type="submit"
-                disabled={!canSubmit}
-                onClick={(e) => {
-                  if (canSubmit) {
-                    onConfirm(forward);
-                  } else {
-                    e.preventDefault();
-                  }
-                }}
-              >
-                {pageIndex !== 2 ? "Continue" : "Purchase"}
-              </button>
-            </div>
           </div>
+        </div>
+      )}
+      {/* Button Container */}
+      {user && (
+        <div className="fixed bg-black h-[80px] flex justify-between items-center px-4 py-6 inset-x-0 bottom-0 left-0 right-0 z-20">
+          {pageIndex !== 0 ? (
+            <button
+              className="flex items-center font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline
+                bg-black text-whitebg border border-gray-700 transition duration-150 ease-in-out hover:bg-gray-900"
+              type="button"
+              onClick={() => onBack(forward)}
+            >
+              <AiOutlineArrowLeft className="mr-2" /> Back
+            </button>
+          ) : (
+            <button
+              className="flex opacity-0 items-center font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline
+                bg-black text-whitebg border border-gray-700 transition duration-150 ease-in-out hover:bg-gray-900"
+              type="button"
+              disabled={true}
+              onClick={() => onBack(forward)}
+            >
+              <AiOutlineArrowLeft className="mr-2" /> Back
+            </button>
+          )}
+          {/* Pagination dots */}
+          <div className="flex items-center">
+            {[0, 1, 2].map((index) => (
+              <span
+                key={index}
+                className={`h-2 w-2 mx-1 rounded-full ${
+                  pageIndex === index ? "bg-whitebg" : "bg-gray-600"
+                }`}
+              ></span>
+            ))}
+          </div>
+          <button
+            className={`font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline transition duration-150 ease-in-out ${
+              canSubmit
+                ? "bg-blue-600 hover:bg-blue-800 text-whitebg"
+                : "bg-secondary-button-dark text-whitebg opacity-50 cursor-not-allowed"
+            }`}
+            type="submit"
+            disabled={!canSubmit}
+            onClick={(e) => {
+              if (canSubmit) {
+                onConfirm(forward);
+              } else {
+                e.preventDefault();
+              }
+            }}
+          >
+            {pageIndex !== 2 ? "Continue" : "Purchase"}
+          </button>
         </div>
       )}
     </div>
   );
 };
 
-export default Zone2GuideDesktopLayout;
+export default CreateGuideMobile;

@@ -4,24 +4,24 @@ import { GuideStatus } from "@/app/model/user";
 import { observer } from "mobx-react";
 import React, { useEffect, useRef, useState } from "react";
 import MobileNavigationMenu from "./MobileNavigationMenu";
-import GuideSection from "../GuideSection";
 import MobileGuideSection from "./MobileGuideSection";
 import { BottomSheet } from "react-spring-bottom-sheet";
 import "react-spring-bottom-sheet/dist/style.css";
 import "./style.css";
-import NavigateNextIcon from "@mui/icons-material/NavigateNext";
-import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 import BottomSheetHeader from "./BottomSheetHeader";
 import { RefHandles, SpringEvent } from "react-spring-bottom-sheet/dist/types";
-import guide from "@/pages/guide";
-import { set } from "mobx";
+import FeedbackFAB from "../../feedback";
 
-interface MobileGuideViewerProps {
+interface GuideMobileLayoutProps {
   status: GuideStatus;
+  showFeedback: boolean;
 }
 
 // Add this method inside your Guide component
-const MobileGuideViewer: React.FC<MobileGuideViewerProps> = ({ status }) => {
+const GuideMobileLayout: React.FC<GuideMobileLayoutProps> = ({
+  status,
+  showFeedback,
+}) => {
   const { guideStore } = useStore();
   const { guideItems, guideItemsCount } = guideStore;
   const [currentItem, setCurrentItem] = React.useState<GuideItem | undefined>(
@@ -36,6 +36,8 @@ const MobileGuideViewer: React.FC<MobileGuideViewerProps> = ({ status }) => {
   const [expanded, setExpanded] = React.useState(true);
   const [maxHeight] = useState(window.innerHeight - 180);
   const [init, setInit] = useState(false);
+  const [scrolledToTopOrBottom, setScrolledToTopOrBottom] = useState(true);
+  const [feedbackExpanded, setFeedbackExpanded] = useState(false);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const lastHeightRef = useRef<number>(0);
@@ -142,75 +144,125 @@ const MobileGuideViewer: React.FC<MobileGuideViewerProps> = ({ status }) => {
   };
 
   return (
-    <>
-      <BottomSheet
-        ref={sheetRef}
-        className="text-whitebg"
-        open={true}
-        scrollLocking={false}
-        blocking={false}
-        expandOnContentDrag={false}
-        maxHeight={maxHeight}
-        onSpringStart={handleOnSpringStart}
-        snapPoints={({}) => [isLoading && !nextItem ? 100 : 80, maxHeight]}
-        footer={
-          <BottomSheetHeader
-            status={status}
-            setCurrentItem={handleOnSetCurrentItem}
-            currentItem={currentItem}
-            previousItem={previousItem}
-            nextItem={nextItem}
-            expanded={!init ? false : expanded}
-            onExpand={setExpanded}
-          />
-        }
-        // footer={x
-        //   <button
-        //     className="w-full p-2 text-white bg-blue-500"
-        //     onClick={() => setOpen(false)}
-        //   >
-        //     Close
-        //   </button>
-        // }
+    <div className="w-full pt-16 font-custom h-full overflow-hidden relative">
+      {/* Background Image */}
+      {/* Container for Background Image and Black Overlay */}
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          zIndex: 0, // Adjust zIndex as needed
+        }}
       >
-        {/* {!init ? (
-          <div className="h-full w-full text-transparent text-hidden">a</div>
-        ) : ( */}
-        {expanded && currentItem ? (
-          <MobileNavigationMenu
-            setCurrentItem={handleOnSetCurrentItem}
-            status={status}
-            expanded={expanded}
-          />
-        ) : (
-          <div className="text-transparent text-sm">asd</div>
-        )}
-      </BottomSheet>
+        {/* Background Image */}
+        <div
+          style={{
+            backgroundImage: "url('/assets/images/cyclist/cyclist.png')",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+          }}
+        ></div>
 
-      {currentItem && (
-        <div className="mx-4 justify-center text-bgwhite">
-          <div
-            key={currentItem.id + "container"}
-            ref={containerRef}
-            className="w-full bg-black/60 px-4 rounded-lg md:border md:border-gray-700 items-center justify-center overflow-y-auto"
-            style={{ height: "calc(100vh - 150px)" }}
-          >
-            <ul className="list-none p-0 pb-12">
-              <MobileGuideSection
-                key={currentItem.id}
-                item={currentItem}
-                isSubItem={false}
-                isLast={true}
-              />
-            </ul>
-          </div>
+        {/* Black Overlay with Opacity */}
+        <div
+          style={{
+            backgroundColor: "rgba(0, 0, 0, 0.5)", // Black with 50% opacity
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+          }}
+        ></div>
+      </div>
+
+      {/* Page Content */}
+      <div className="flex flex-col items-center relative">
+        <div className="w-full">
+          <>
+            <BottomSheet
+              ref={sheetRef}
+              className="text-whitebg"
+              open={true}
+              scrollLocking={false}
+              blocking={false}
+              expandOnContentDrag={false}
+              maxHeight={maxHeight}
+              onSpringStart={handleOnSpringStart}
+              snapPoints={({}) => [
+                isLoading && !nextItem ? 100 : 80,
+                maxHeight,
+              ]}
+              footer={
+                <BottomSheetHeader
+                  status={status}
+                  setCurrentItem={handleOnSetCurrentItem}
+                  currentItem={currentItem}
+                  previousItem={previousItem}
+                  nextItem={nextItem}
+                  expanded={!init ? false : expanded}
+                  onExpand={setExpanded}
+                />
+              }
+            >
+              {expanded && currentItem ? (
+                <MobileNavigationMenu
+                  setCurrentItem={handleOnSetCurrentItem}
+                  status={status}
+                  expanded={expanded}
+                />
+              ) : (
+                <div className="text-transparent text-sm">asd</div>
+              )}
+            </BottomSheet>
+
+            {currentItem && (
+              <div className="mx-4 justify-center text-bgwhite">
+                <div
+                  key={currentItem.id + "container"}
+                  ref={containerRef}
+                  className="w-full bg-black/60 px-4 rounded-lg md:border md:border-gray-700 items-center justify-center overflow-y-auto"
+                  style={{ height: "calc(100vh - 150px)" }}
+                >
+                  <ul className="list-none p-0 pb-12">
+                    <MobileGuideSection
+                      key={currentItem.id}
+                      item={currentItem}
+                      isSubItem={false}
+                      isLast={true}
+                    />
+                  </ul>
+                </div>
+              </div>
+            )}
+          </>
         </div>
+      </div>
+      {feedbackExpanded && showFeedback && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-20" // Backdrop with semi-transparent background
+          onClick={() => setFeedbackExpanded(false)} // Close feedback form when backdrop is clicked
+        ></div>
       )}
-    </>
+      {scrolledToTopOrBottom && showFeedback && (
+        <FeedbackFAB
+          onExpand={setFeedbackExpanded}
+          expanded={feedbackExpanded}
+        />
+      )}
+    </div>
   );
 };
 
-export default observer(MobileGuideViewer);
+export default observer(GuideMobileLayout);
 
 function getCurrentHeightSheetHeight(): number {
   const sheetElement = document.querySelector('div[role="dialog"]');

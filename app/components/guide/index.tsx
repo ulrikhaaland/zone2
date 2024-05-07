@@ -1,270 +1,215 @@
-import React, { useEffect, useRef, useState } from "react";
-import { GuideStatus, User } from "../../model/user";
-import { GuideItem } from "../../model/guide";
-import GuideSection from "./GuideSection";
-import {
-  GuideSkeletonDesktop,
-  GuideSkeletonMobile,
-  shimmerItems,
-} from "./skeleton";
-import { Create as CreateIcon } from "@mui/icons-material";
-import { Replay as ReplayIcon } from "@mui/icons-material";
-import { useRouter } from "next/router";
+import { ReactElement, useEffect, useRef, useState } from "react";
 import { useStore } from "@/RootStoreProvider";
+import { GuideStatus, User } from "@/app/model/user";
+import { Question, questToFitnessData } from "@/app/model/questionaire";
 import { observer } from "mobx-react";
-import GuideSideNavigation from "./SideNavigation";
+import { doc, updateDoc } from "firebase/firestore";
+import { db } from "@/pages/_app";
+import GuideDesktopLayout from "./desktop";
+import GuideMobileLayout from "./mobile";
 
-interface GuideProps {
-  status: GuideStatus;
-  generateGuide: () => void;
-  onScrolledToTopOrBottom?: (scrolledTopOrBottom: boolean) => void;
-}
+const Guide = () => {
+  const { authStore, generalStore, guideStore } = useStore();
 
-const Guide = (props: GuideProps) => {
-  const { status, generateGuide, onScrolledToTopOrBottom } = props;
-  const { generalStore, authStore, guideStore } = useStore();
   const { isMobileView } = generalStore;
-  const { user } = authStore;
-  const { guideItems } = guideStore;
 
-  const router = useRouter();
+  const { setGuideItems, addGuideItem } = guideStore;
 
-  const containerRef = useRef<HTMLDivElement>(null); 
+  const [user, setUser] = useState<User | undefined>(
+    authStore.user ?? undefined
+  );
 
-  const [expandedItemId, setExpandedItemId] = useState<number | null>(null);
+  const [pageIndex, setPageIndex] = useState(0);
 
-  useEffect(() => {}, [guideItems]);
+  const [guideStatus, setGuideStatus] = useState(user?.guideStatus);
+  const [showFeedback, setShowFeedback] = useState(false);
+
+  const updateUser = (questions: Question[]) => {
+    const updatedUser = {
+      ...user!,
+      questions: questions,
+    };
+    console.log(updatedUser);
+    authStore.updateUserData(updatedUser);
+  };
 
   useEffect(() => {
-    if (expandedItemId !== null && containerRef.current) {
-      const itemElement = document.getElementById(
-        `guide-item-${expandedItemId}`
-      );
-      if (itemElement) {
-        // Calculate the top offset of the item relative to the container
-        const itemOffsetTop = itemElement.offsetTop;
-        // Scroll the container to bring the item to the top
-        containerRef.current.scrollTo({
-          top: itemOffsetTop,
-          behavior: "smooth",
+    if (user) {
+      setGuideStatus(user.guideStatus);
+    }
+  }, [user]);
+
+  const isFetching = useRef<boolean>(false);
+  const isSubscribed = useRef<boolean>(false);
+
+  const generateGuide = (user: User) => {
+    isFetching.current = true;
+    const newUser = { ...user, guideStatus: GuideStatus.LOADING };
+    authStore.setUser(newUser);
+    setUser(newUser);
+    setGuideStatus(GuideStatus.LOADING);
+    updateDoc(doc(db, "users", user.uid), {
+      guideStatus: GuideStatus.LOADING,
+    }).then(() => {
+      const body = JSON.stringify({
+        fitnessData: questToFitnessData(user!.questions),
+        uid: user!.uid,
+      });
+      console.log(body);
+      fetch("/api/generate-stream", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: body,
+      })
+        .then(async (value) => {
+          isFetching.current = false;
+        })
+        .catch((error) => {
+          console.error("Fetch error:", error);
+          isFetching.current = false;
         });
-      }
-    }
-    const handleScroll = () => {
-      if (!containerRef.current) return;
+    });
+  };
 
-      const { scrollTop, scrollHeight, clientHeight } = containerRef.current;
-      const scrolledToTop = scrollTop === 0;
-      const scrolledToBottom = scrollTop + clientHeight >= scrollHeight;
+  useEffect(() => {
+    if (!authStore.user) {
+      authStore.checkAuth();
+      return;
+    } else if (
+      !user ||
+      (user?.guideStatus === GuideStatus.HASPAID && user?.hasPaid === true)
+    ) {
+      const user = authStore.user;
 
-      if (scrolledToTop || scrolledToBottom) {
-        // Call the prop function with true when scrolled to top or bottom
-        onScrolledToTopOrBottom?.(true);
+      if (
+        (user.guideStatus === GuideStatus.HASPAID &&
+          user.hasPaid &&
+          !isFetching.current) ||
+        (user.guideStatus === GuideStatus.LOADING && !isFetching.current)
+      ) {
+        generateGuide(user);
       } else {
-        // Optionally, call the prop function with false when not at edges
-        // This is useful if you want to toggle some state based on scroll position
-        onScrolledToTopOrBottom?.(false);
+        if (isFetching.current) {
+          console.log("Setting user to loading");
+          setUser({ ...user, guideStatus: GuideStatus.LOADING });
+        } else setUser(user);
       }
-    };
+    }
+  }, []);
 
-    // Add the scroll event listener
-    const currentContainer = containerRef.current;
-    currentContainer?.addEventListener("scroll", handleScroll);
-
-    // Cleanup function to remove the event listener
-    return () => {
-      currentContainer?.removeEventListener("scroll", handleScroll);
-    };
-  }, [expandedItemId]);
-
-  const handleExpand = (item: GuideItem) => {
-    setExpandedItemId(item.id);
+  const handleShowFeedback = (user: User) => {
+    const showFeedback =
+      user.guideItems !== undefined &&
+      user.guideItems?.length > 0 &&
+      user.hasReviewed === false &&
+      user.guideStatus === GuideStatus.LOADED;
+    setShowFeedback(showFeedback);
   };
 
-  const scrollToTop = () => {
-    if (containerRef.current) {
-      containerRef.current.scrollTo({
-        top: 0,
-        behavior: "smooth", // This makes the scroll smooth
+  useEffect(() => {
+    if (guideStatus === GuideStatus.LOADING && !isSubscribed.current) {
+      isSubscribed.current = true;
+
+      // Setup listener for guideStatus updates
+      const unsubscribe = authStore.listenToUserGuideStatus((status, items) => {
+        const guideItems = guideStore.getGuideItems();
+        if (items.length > 0) {
+          let itemToAdd = items[items.length - 1];
+
+          if (
+            itemToAdd.subItems &&
+            itemToAdd.subItems?.length > 0 &&
+            guideItems.find((item) => item.id === itemToAdd.id) !== undefined
+          ) {
+            itemToAdd = itemToAdd.subItems![itemToAdd.subItems!.length - 1];
+            if (itemToAdd.subItems && itemToAdd.subItems?.length > 0) {
+              itemToAdd = itemToAdd.subItems![itemToAdd.subItems!.length - 1];
+            }
+          }
+
+          let isAlreadyAdded = false;
+          for (const item of guideItems) {
+            if (item.id === itemToAdd.id) {
+              console.log("Item is already added to guide.");
+              isAlreadyAdded = true;
+              break;
+            }
+            if (item.subItems) {
+              for (const subItem of item.subItems) {
+                if (subItem.id === itemToAdd.id) {
+                  console.log("Item is already added to guide.");
+                  isAlreadyAdded = true;
+                  break;
+                }
+                if (subItem.subItems) {
+                  for (const subSubItem of subItem.subItems) {
+                    if (subSubItem.id === itemToAdd.id) {
+                      console.log("Item is already added to guide.");
+                      isAlreadyAdded = true;
+                      break;
+                    }
+                  }
+                }
+              }
+            }
+          }
+
+          if (itemToAdd.id <= 3) {
+            itemToAdd.expanded = true;
+          }
+
+          if (!isAlreadyAdded) addGuideItem(itemToAdd);
+        } else {
+          setGuideItems([]);
+        }
+
+        if (status === GuideStatus.LOADED) {
+          setShowFeedback(true);
+          setGuideStatus(GuideStatus.LOADED);
+          console.log("Guide is loaded, unsubscribing from updates.");
+          onGuideLoaded();
+          unsubscribe?.();
+          isSubscribed.current = false;
+        }
       });
+
+      // Cleanup function to unsubscribe
+      return () => {
+        isSubscribed.current = false;
+        unsubscribe?.();
+      };
     }
-  };
+  }, [guideStatus]);
 
-  const scrollToItem = async (item: GuideItem) => {
-    let itemElement = document.getElementById(`guide-item-${item.id}`);
-
-    if (itemElement === null && item.parentId) {
-      const parentItem = guideItems.find((i) => i.id === item.parentId);
-      if (parentItem) {
-        parentItem.expanded = true;
-        // timer
-        return setTimeout(() => {
-          scrollToItem(item);
-        }, 50);
-      }
-    }
-
-    if (itemElement && containerRef.current) {
-      if (!item.expanded) {
-        item.expanded = true;
-        /// await 50 ms
-        return setTimeout(() => {
-          scrollToItem(item);
-        }, 50);
-      }
-      console.log("scrolling to item", item.title);
-      const itemOffsetTop =
-        itemElement.offsetTop - containerRef.current.offsetTop; // Adjust if your item's offset is calculated differently
-      containerRef.current.scrollTo({
-        top: itemOffsetTop,
-        behavior: "smooth",
+  const onGuideLoaded = () => {
+    authStore
+      .getUserOrCreateIfNotExists(authStore.user!.firebaseUser!)
+      .then((updatedUser) => {
+        setGuideStatus(GuideStatus.LOADED);
+        authStore.setUser(updatedUser);
+        setUser(updatedUser);
+        handleShowFeedback(updatedUser);
       });
-    }
   };
 
-  const handleCollapse = (item: GuideItem) => {
-    // Assume collapsedItemId is the ID of the item that was just collapsed.
-    let previousExpandedItem = null;
-
-    // Find the closest previous item that is expanded.
-    for (let i = item.id - 1; i >= 0; i--) {
-      const item = guideItems.find(
-        (item) => item.id === i && item.expanded && !item.parentId
-      );
-      if (item) {
-        previousExpandedItem = item;
-        break;
-      }
-    }
-
-    if (previousExpandedItem !== null) {
-      // If a previous expanded item exists, scroll to it
-      scrollToItem(previousExpandedItem);
-    } else {
-      // If no previous expanded item exists, scroll to the top
-      scrollToTop();
-    }
-  };
-
-  const renderGuideItems = () => (
-    <div>
-      <ul className="list-none p-0">
-        {guideItems.map((item, index) => (
-          <GuideSection
-            key={item.id}
-            item={item}
-            isSubItem={false}
-            isLast={index === guideItems.length - 1}
-            onExpand={handleExpand}
-            onCollapse={(item) => handleCollapse(item)}
-          />
-        ))}
-      </ul>
-      {status === GuideStatus.LOADING && (
-        <div
-          role="status"
-          className={`max-w ${guideItems.length * 6 > 18 && "mb-8"}`}
-        >
-          {shimmerItems
-            .slice(guideItems.length * 6 <= 18 ? guideItems.length * 6 : 18, 30)
-            .map((item, index) => (
-              <div key={index}>{item}</div>
-            ))}
-          <span className="sr-only">Loading...</span>
-        </div>
-      )}
-    </div>
-  );
-
-  const getContent = (): React.JSX.Element => {
-    if (GuideStatus.LOADED || guideItems.length > 0) return renderGuideItems();
-
-    switch (status) {
-      case GuideStatus.NONE:
-        return (
-          <div className="flex justify-center items-center h-full">
-            <button
-              className="flex justify-center items-center font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline transition duration-150 ease-in-out bg-whitebg text-black border border-gray-700"
-              onClick={() => {
-                router.push("/guide");
-              }}
-            >
-              <CreateIcon className="mr-2" style={{ color: "black" }} />
-              Create your guide
-            </button>
-          </div>
-        );
-      case GuideStatus.LOADED:
-        return renderGuideItems();
-      case GuideStatus.LOADING:
-        // Return skeleton loader
-        return isMobileView ? (
-          <GuideSkeletonMobile />
-        ) : (
-          <GuideSkeletonDesktop />
-        );
-      case GuideStatus.ERROR || GuideStatus.HASPAID:
-        return (
-          <div className="flex flex-col justify-center items-center h-full">
-            <p className="text-whitebg text-center mb-4">
-              There was an error creating your guide. Please try again.
-            </p>
-            <button
-              className="flex justify-center items-center font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline transition duration-150 ease-in-out bg-whitebg text-black border border-gray-700"
-              onClick={() => generateGuide()}
-              disabled={user !== undefined && user!.retries! >= 5}
-            >
-              <ReplayIcon className="mr-2" style={{ color: "black" }} />
-              Retry
-            </button>
-          </div>
-        );
-      default:
-        return isMobileView ? (
-          <GuideSkeletonMobile />
-        ) : (
-          <GuideSkeletonDesktop />
-        );
-    }
-  };
-
-  const content = (
-    <div
-      className={`
-        justify-center h-full items-center relative w-[850px] 
-        inset-0 bg-black/60 rounded-lg md:border md:border-gray-700
-        ${isMobileView && "mx-4"}`}
-    >
-      <div
-        className="px-4 mt-2 h-full overflow-y-auto max-w-[850px] mx-auto text-whitebg custom-scrollbar"
-        ref={containerRef}
-        style={{
-          height: isMobileView
-            ? status === GuideStatus.LOADING
-              ? "calc(100dvh - 250px)"
-              : "calc(100dvh - 150px)"
-            : "",
-        }}
-      >
-        {getContent()}
-      </div>
-    </div>
-  );
-
-  if (!isMobileView && (status === GuideStatus.LOADED || GuideStatus.LOADING)) {
+  if (isMobileView) {
     return (
-      <div
-        className={`flex ${
-          status === GuideStatus.LOADING ? "h-[62.5dvh]" : "h-[74.5dvh]"
-        }`}
-      >
-        <GuideSideNavigation scrollToItem={scrollToItem} status={status} />
-        {content}
-      </div>
+      <GuideMobileLayout
+        status={guideStatus ?? GuideStatus.NONE}
+        showFeedback={showFeedback}
+      />
+    );
+  } else {
+    return (
+      <GuideDesktopLayout
+        status={guideStatus ?? GuideStatus.NONE}
+        generateGuide={() => generateGuide(user!)}
+        showFeedback={showFeedback}
+      />
     );
   }
-
-  return content;
 };
 
 export default observer(Guide);

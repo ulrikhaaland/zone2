@@ -19,7 +19,7 @@ const Header = ({}) => {
   const { isMobileView, scrollableContentRef } = generalStore;
 
   const isHome = router.pathname === "/";
-  const isGuide = router.pathname === "/guide";
+  const isGuide = router.pathname === "/create";
   const isProfile = router.pathname === "/profile";
   const isZones = router.pathname === "/heartratecalculator";
   const isArticles = router.pathname === "/articles";

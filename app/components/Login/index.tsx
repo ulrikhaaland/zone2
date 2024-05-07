@@ -14,7 +14,7 @@ export default function Login() {
 
   const router = useRouter();
 
-  const isGuide = router.pathname === "/guide";
+  const isGuide = router.pathname === "/create";
 
   const isHeartRateZones = router.pathname === "/heartratecalculator";
 

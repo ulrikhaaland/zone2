@@ -15,7 +15,7 @@ function MobileMenu({ isOpen, onClose, router, authStore }: MobileMenuProps) {
   const pathName = router.pathname;
 
   const isHome = pathName === "/";
-  const isGuide = pathName === "/guide";
+  const isGuide = pathName === "/create";
   const isProfile = pathName === "/profile";
   const isZones = pathName === "/heartratecalculator";
   const isArticles = pathName === "/articles";
@@ -109,7 +109,7 @@ function MobileMenu({ isOpen, onClose, router, authStore }: MobileMenuProps) {
                   onClick={() => {
                     onClose();
 
-                    router.push("/guide");
+                    router.push("/create");
                   }}
                   style={{ cursor: "pointer" }}
                   className={`-mx-3 text-lg block rounded-lg px-3 py-2 text-base leading-7 font-semibold

@@ -19,7 +19,7 @@ function Layout({ children }: { children: React.ReactNode }) {
   const [isLoaded, setIsLoaded] = useState(false);
   const isMobileView = generalStore.isMobileView;
   const currentRoute = router.pathname;
-  const isGuide = currentRoute === "/guide";
+  const isGuide = currentRoute === "/create";
 
   const isHome = router.pathname === "/";
 

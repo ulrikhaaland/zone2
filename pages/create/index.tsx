@@ -15,7 +15,7 @@ const stripePromise = loadStripe(
   "pk_test_51Oc6ntFwAwE234wG9Lu3IfmZQXEv7nHPJx7alrzq00EzVaO74jpv7RifR5iRrkjvTS8BSv67QvoQJz2W2ccTt2bC00gLDhFGLf"
 );
 
-const HomePage: NextPageWithLayout = () => {
+const CreateGuide: NextPageWithLayout = () => {
   const { authStore, generalStore, guideStore } = useStore();
   const router = useRouter();
 
@@ -189,8 +189,8 @@ const HomePage: NextPageWithLayout = () => {
   }
 };
 
-HomePage.getLayout = function getLayout(page: ReactElement) {
+CreateGuide.getLayout = function getLayout(page: ReactElement) {
   return <>{page}</>;
 };
 
-export default observer(HomePage);
+export default observer(CreateGuide);

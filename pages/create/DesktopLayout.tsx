@@ -90,20 +90,9 @@ const CreateGuideDesktop: React.FC<CreateGuideDesktopProps> = ({
         ></div>
       </div>
 
-      {/* <div className="ml-auto mr-auto flex bg-grey-300 h-[50px] relative">
-        <h1
-          className="text-5xl text-whitebg text-start font-bold pt-6 mb-4 relative z-10"
-          style={{
-            textShadow: "10px 10px 10px rgba(0,0,0,1)",
-          }}
-        >
-          Zone 2 Guide Creation
-        </h1>
-      </div> */}
-
       {user && (
-        <div className="flex overflow-hidden flex-col items-center min-h-max pt-16 md:pt-24 p-4 relative">
-          <div className="w-full md:border md:border-gray-700 md:rounded-lg bg-black/60 rounded-lg md:overflow-hidden max-w-md md:shadow-md md:min-h-[83.5dvh] md:max-h-[87.5dvh] min-h-[86.5dvh] max-h-[86.5dvh]">
+        <div className="flex overflow-hidden flex-col items-center pt-24 md:pt-28 px-4 relative">
+          <div className="w-full md:border md:border-gray-700 md:rounded-lg bg-black/60 rounded-lg md:overflow-hidden max-w-md md:shadow-md md:min-h-[70.5dvh] min-h-[86.5dvh]">
             <AnimatePresence mode="wait">
               <motion.div
                 className="relative z-0" // Ensure content is below the overlays

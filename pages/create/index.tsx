@@ -98,7 +98,7 @@ const CreateGuide: NextPageWithLayout = () => {
           hasPaid: true,
         };
         await authStore.updateUserData(newNewUser);
-        router.push("/profile");
+        router.push("/");
       } else {
         await authStore.updateUserData(newUser);
         redirectToStripe();

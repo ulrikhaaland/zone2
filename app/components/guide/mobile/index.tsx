@@ -11,6 +11,7 @@ import "./style.css";
 import BottomSheetHeader from "./BottomSheetHeader";
 import { RefHandles, SpringEvent } from "react-spring-bottom-sheet/dist/types";
 import FeedbackFAB from "../../feedback";
+import Loading from "../../loading";
 
 interface GuideMobileLayoutProps {
   status: GuideStatus;
@@ -81,6 +82,8 @@ const GuideMobileLayout: React.FC<GuideMobileLayoutProps> = ({
   };
 
   const handleOnSetCurrentItem = (item: GuideItem) => {
+    if (feedbackExpanded) setFeedbackExpanded(false);
+    
     if (item.parentId) {
       const parentItem = guideItems.find((i) => i.id === item.parentId);
       setCurrentItem(parentItem);
@@ -157,31 +160,7 @@ const GuideMobileLayout: React.FC<GuideMobileLayoutProps> = ({
           zIndex: 0, // Adjust zIndex as needed
         }}
       >
-        {/* Background Image */}
-        <div
-          style={{
-            backgroundImage: "url('/assets/images/cyclist/cyclist.png')",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            position: "absolute",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-          }}
-        ></div>
-
-        {/* Black Overlay with Opacity */}
-        <div
-          style={{
-            backgroundColor: "rgba(0, 0, 0, 0.5)", // Black with 50% opacity
-            position: "absolute",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-          }}
-        ></div>
+        {status === GuideStatus.LOADING && !currentItem && <Loading />}
       </div>
 
       {/* Page Content */}
@@ -205,11 +184,11 @@ const GuideMobileLayout: React.FC<GuideMobileLayoutProps> = ({
                 <BottomSheetHeader
                   status={status}
                   setCurrentItem={handleOnSetCurrentItem}
-                  currentItem={currentItem}
                   previousItem={previousItem}
                   nextItem={nextItem}
                   expanded={!init ? false : expanded}
                   onExpand={setExpanded}
+                  onProvideFeedback={() => setFeedbackExpanded(true)}
                 />
               }
             >
@@ -223,41 +202,32 @@ const GuideMobileLayout: React.FC<GuideMobileLayoutProps> = ({
                 <div className="text-transparent text-sm">asd</div>
               )}
             </BottomSheet>
-
-            {currentItem && (
-              <div className="mx-4 justify-center text-bgwhite">
-                <div
-                  key={currentItem.id + "container"}
-                  ref={containerRef}
-                  className="w-full bg-black/60 px-4 rounded-lg md:border md:border-gray-700 items-center justify-center overflow-y-auto"
-                  style={{ height: "calc(100vh - 150px)" }}
-                >
-                  <ul className="list-none p-0 pb-12">
-                    <MobileGuideSection
-                      key={currentItem.id}
-                      item={currentItem}
-                      isSubItem={false}
-                      isLast={true}
-                    />
-                  </ul>
+            {feedbackExpanded ? (
+              <FeedbackFAB onExpand={() => setFeedbackExpanded(false)} />
+            ) : (
+              currentItem && (
+                <div className="justify-center text-bgwhite">
+                  <div
+                    key={currentItem.id + "container"}
+                    ref={containerRef}
+                    className="w-full bg-black/60 px-4 rounded-lg md:border md:border-gray-700 items-center justify-center overflow-y-auto"
+                    style={{ height: "calc(100vh - 150px)" }}
+                  >
+                    <ul className="list-none p-0 pb-12">
+                      <MobileGuideSection
+                        key={currentItem.id}
+                        item={currentItem}
+                        isSubItem={false}
+                        isLast={true}
+                      />
+                    </ul>
+                  </div>
                 </div>
-              </div>
+              )
             )}
           </>
         </div>
       </div>
-      {feedbackExpanded && showFeedback && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-20" // Backdrop with semi-transparent background
-          onClick={() => setFeedbackExpanded(false)} // Close feedback form when backdrop is clicked
-        ></div>
-      )}
-      {scrolledToTopOrBottom && showFeedback && (
-        <FeedbackFAB
-          onExpand={setFeedbackExpanded}
-          expanded={feedbackExpanded}
-        />
-      )}
     </div>
   );
 };

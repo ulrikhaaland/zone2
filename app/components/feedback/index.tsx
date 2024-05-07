@@ -82,6 +82,76 @@ const FeedbackFAB = (props: FeedbackFABProps) => {
     setExpanded(false);
   };
 
+  const form = (
+    <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
+      {/* Negative Feedback */}
+      <label htmlFor="negativeFeedback" className="text-white font-semibold">
+        Negative Feedback
+      </label>
+      <textarea
+        id="negativeFeedback"
+        className="w-full py-2 px-3 leading-tight border border-gray-700 rounded-lg focus:outline-none focus:border-white bg-black text-white transition duration-300"
+        placeholder="What didn't you like?"
+        value={negativeFeedback}
+        onChange={handleNegativeFeedbackChange}
+        rows={isMobileView ? 6 : 3}
+        autoFocus={true}
+      />
+      {/* Positive Feedback */}
+      <label htmlFor="positiveFeedback" className="text-white font-semibold">
+        Positive Feedback
+      </label>
+      <textarea
+        id="positiveFeedback"
+        className="w-full py-2 px-3 leading-tight border border-gray-700 rounded-lg focus:outline-none focus:border-white bg-black text-white transition duration-300"
+        placeholder="What did you like?"
+        value={positiveFeedback}
+        onChange={handlePositiveFeedbackChange}
+        rows={isMobileView ? 6 : 3}
+      />
+      <button
+        type="submit"
+        disabled={isSubmitDisabled}
+        className={`${
+          isSubmitDisabled
+            ? "bg-gray-500 cursor-not-allowed"
+            : "bg-white hover:bg-gray-300"
+        } text-black py-3 rounded-lg transition duration-300 flex justify-center items-center`}
+      >
+        Submit
+      </button>
+    </form>
+  );
+
+  if (isMobileView)
+    return (
+      <div className="px-4 flex flex-col">
+        <p
+          className="text-3xl font-bold text-whitebg pb-4"
+          style={{
+            textShadow: "10px 10px 10px rgba(0,0,0,1)",
+          }}
+        >
+          Provide some feedback
+        </p>
+        {form}
+        <div className="w-full flex pt-4 items-center justify-center">
+          <button
+            className="flex w-[90%] justify-center items-center font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline transition duration-150 ease-in-out ${
+            bg-black text-whitebg border border-gray-700 hover:bg-gray-900"
+            type="submit"
+            onClick={(e) => onExpand?.(false)}
+          >
+            {/* <CalcIcon
+            className="mr-2"
+            style={{ color: pageIndex === 1 ? "black" : "white" }}
+          /> */}
+            Close
+          </button>
+        </div>
+      </div>
+    );
+
   return (
     <div className="fixed bottom-4 right-4 flex flex-col items-end z-30">
       {expanded && (
@@ -95,49 +165,7 @@ const FeedbackFAB = (props: FeedbackFABProps) => {
           >
             <CloseIcon />
           </IconButton>
-          <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
-            {/* Negative Feedback */}
-            <label
-              htmlFor="negativeFeedback"
-              className="text-white font-semibold"
-            >
-              Negative Feedback
-            </label>
-            <textarea
-              id="negativeFeedback"
-              className="w-full py-2 px-3 leading-tight border border-gray-700 rounded-lg focus:outline-none focus:border-white bg-black text-white transition duration-300"
-              placeholder="What didn't you like?"
-              value={negativeFeedback}
-              onChange={handleNegativeFeedbackChange}
-              rows={3}
-            />
-            {/* Positive Feedback */}
-            <label
-              htmlFor="positiveFeedback"
-              className="text-white font-semibold"
-            >
-              Positive Feedback
-            </label>
-            <textarea
-              id="positiveFeedback"
-              className="w-full py-2 px-3 leading-tight border border-gray-700 rounded-lg focus:outline-none focus:border-white bg-black text-white transition duration-300"
-              placeholder="What did you like?"
-              value={positiveFeedback}
-              onChange={handlePositiveFeedbackChange}
-              rows={3}
-            />
-            <button
-              type="submit"
-              disabled={isSubmitDisabled}
-              className={`${
-                isSubmitDisabled
-                  ? "bg-gray-500 cursor-not-allowed"
-                  : "bg-white hover:bg-gray-300"
-              } text-black py-3 rounded-lg transition duration-300 flex justify-center items-center`}
-            >
-              Submit
-            </button>
-          </form>
+          {form}
         </div>
       )}
       <button

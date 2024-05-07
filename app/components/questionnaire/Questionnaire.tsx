@@ -276,7 +276,7 @@ export default function Questionnaire(props: QuestionnaireProps) {
   const signOutButton = (
     <div
       className={`flex justify-center ${
-        isMobileView ? (!isProfile ? "mb-8" : "") : "pt-8"
+        isMobileView ? (!isProfile ? "mb-8" : "") : "pt-6"
       }`}
     >
       <button
@@ -299,8 +299,8 @@ export default function Questionnaire(props: QuestionnaireProps) {
       className={`text-whitebg
       ${
         isProfile && !isMobileView
-          ? `bg-black/50 rounded-lg max-w-md md:min-h-[85.5dvh] md:max-h-[72.5dvh] md:border md:border-gray-700 md:rounded-lg`
-          : "max-w-md md:min-h-[77.5dvh] md:max-h-[77.5dvh]"
+          ? `bg-black/50 rounded-lg max-w-md md:min-h-[83.5dvh] md:border md:border-gray-700 md:rounded-lg`
+          : "max-w-md md:min-h-[70.5dvh]"
       }`}
     >
       {/* Header with progress bar */}
@@ -335,7 +335,7 @@ export default function Questionnaire(props: QuestionnaireProps) {
           maxHeight: !isMobileView
             ? isProfile
               ? "74dvh"
-              : "67.5dvh"
+              : "66.5dvh"
             : isProfile
             ? "calc(100dvh - 130px)"
             : "calc(100dvh - 160px)",
@@ -413,7 +413,7 @@ export default function Questionnaire(props: QuestionnaireProps) {
         </div>
       )}
       {isProfile && !isMobileView && (
-        <div className="flex justify-center items-center text-center h-max">
+        <div className="flex justify-center items-center text-center">
           {signOutButton}
         </div>
       )}

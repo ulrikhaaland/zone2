@@ -99,6 +99,12 @@ const Guide = () => {
     }
   }, []);
 
+  useEffect(() => {
+    if (user?.guideStatus === GuideStatus.LOADED) {
+      handleShowFeedback(user);
+    }
+  }, [user]);
+
   const handleShowFeedback = (user: User) => {
     const showFeedback =
       user.guideItems !== undefined &&

@@ -269,7 +269,7 @@ const GuideDesktopLayout: React.FC<GuideDesktopLayoutProps> = ({
         )}
         <div
           className={`flex ${
-            status === GuideStatus.LOADING ? "h-[72.5dvh]" : "h-[84.5dvh]"
+            status === GuideStatus.LOADING ? "h-[72.5dvh]" : "h-[82.5dvh]"
           }`}
         >
           <GuideSideNavigation scrollToItem={scrollToItem} status={status} />

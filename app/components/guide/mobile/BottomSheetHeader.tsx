@@ -1,12 +1,10 @@
 import { GuideItem } from "@/app/model/guide";
-import { GuideStatus } from "@/app/model/user";
+import { GuideStatus, User } from "@/app/model/user";
 import { observer } from "mobx-react";
 import React from "react";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
-import Loading from "../../loading";
-import { IconButton } from "@mui/material";
-import { on } from "events";
+import { useStore } from "@/RootStoreProvider";
 
 interface BottomSheetHeaderProps {
   status: GuideStatus;
@@ -28,6 +26,7 @@ const BottomSheetHeader: React.FC<BottomSheetHeaderProps> = ({
   nextItem,
   onProvideFeedback,
 }) => {
+  const { user } = useStore().authStore;
   const isLast = !nextItem && status === GuideStatus.LOADED;
 
   if (status === GuideStatus.LOADING && !nextItem && !previousItem)
@@ -99,13 +98,14 @@ const BottomSheetHeader: React.FC<BottomSheetHeaderProps> = ({
             </div>
             <button
               className="w-[40%] h-[50px] flex items-center justify-end text-sm"
-              onClick={() => !nextItem ? onProvideFeedback() : setCurrentItem(nextItem!)}
+              onClick={() =>
+                !nextItem ? onProvideFeedback() : setCurrentItem(nextItem!)
+              }
               disabled={!nextItem && status === GuideStatus.LOADING}
             >
-              {nextItem || isLast ? (
+              {nextItem || (isLast && user?.hasReviewed) ? (
                 <>
                   <p> {isLast ? "Provide Feedback" : nextItem?.title}</p>{" "}
-                  
                   <NavigateNextIcon fontSize="medium" />
                 </>
               ) : null}

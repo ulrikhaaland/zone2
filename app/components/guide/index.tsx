@@ -201,12 +201,7 @@ const Guide = () => {
   };
 
   if (isMobileView) {
-    return (
-      <GuideMobileLayout
-        status={guideStatus ?? GuideStatus.NONE}
-        showFeedback={showFeedback}
-      />
-    );
+    return <GuideMobileLayout status={guideStatus ?? GuideStatus.NONE} />;
   } else {
     return (
       <GuideDesktopLayout

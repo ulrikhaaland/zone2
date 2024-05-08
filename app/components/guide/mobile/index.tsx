@@ -15,14 +15,10 @@ import Loading from "../../loading";
 
 interface GuideMobileLayoutProps {
   status: GuideStatus;
-  showFeedback: boolean;
 }
 
 // Add this method inside your Guide component
-const GuideMobileLayout: React.FC<GuideMobileLayoutProps> = ({
-  status,
-  showFeedback,
-}) => {
+const GuideMobileLayout: React.FC<GuideMobileLayoutProps> = ({ status }) => {
   const { guideStore } = useStore();
   const { guideItems, guideItemsCount } = guideStore;
   const [currentItem, setCurrentItem] = React.useState<GuideItem | undefined>(
@@ -83,7 +79,7 @@ const GuideMobileLayout: React.FC<GuideMobileLayoutProps> = ({
 
   const handleOnSetCurrentItem = (item: GuideItem) => {
     if (feedbackExpanded) setFeedbackExpanded(false);
-    
+
     if (item.parentId) {
       const parentItem = guideItems.find((i) => i.id === item.parentId);
       setCurrentItem(parentItem);

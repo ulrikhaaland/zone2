@@ -80,6 +80,7 @@ const FeedbackFAB = (props: FeedbackFABProps) => {
     console.log("Positive Feedback:", positiveFeedback);
     console.log("Negative Feedback:", negativeFeedback);
     setExpanded(false);
+    onExpand?.(false);
   };
 
   const form = (

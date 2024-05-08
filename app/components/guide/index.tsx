@@ -45,6 +45,7 @@ const Guide = () => {
   const generateGuide = (user: User) => {
     isFetching.current = true;
     const newUser = { ...user, guideStatus: GuideStatus.LOADING };
+    guideStore.setGuideItems([]);
     authStore.setUser(newUser);
     setUser(newUser);
     setGuideStatus(GuideStatus.LOADING);
@@ -201,7 +202,12 @@ const Guide = () => {
   };
 
   if (isMobileView) {
-    return <GuideMobileLayout status={guideStatus ?? GuideStatus.NONE} />;
+    return (
+      <GuideMobileLayout
+        status={guideStatus ?? GuideStatus.NONE}
+        generateGuide={() => generateGuide(user!)}
+      />
+    );
   } else {
     return (
       <GuideDesktopLayout

@@ -28,6 +28,9 @@ const BottomSheetHeader: React.FC<BottomSheetHeaderProps> = ({
 }) => {
   const { user } = useStore().authStore;
   const isLast = !nextItem && status === GuideStatus.LOADED;
+  const [showReview, setShowReview] = React.useState<boolean>(
+    isLast && !user?.hasReviewed
+  );
 
   if (status === GuideStatus.LOADING && !nextItem && !previousItem)
     return (
@@ -98,12 +101,17 @@ const BottomSheetHeader: React.FC<BottomSheetHeaderProps> = ({
             </div>
             <button
               className="w-[40%] h-[50px] flex items-center justify-end text-sm"
-              onClick={() =>
-                !nextItem ? onProvideFeedback() : setCurrentItem(nextItem!)
-              }
-              disabled={!nextItem && status === GuideStatus.LOADING}
+              onClick={() => {
+                if (!nextItem) {
+                  setShowReview(false);
+                  onProvideFeedback();
+                } else {
+                  setCurrentItem(nextItem!);
+                }
+              }}
+              disabled={!nextItem && !showReview}
             >
-              {nextItem || (isLast && user?.hasReviewed) ? (
+              {nextItem || showReview ? (
                 <>
                   <p> {isLast ? "Provide Feedback" : nextItem?.title}</p>{" "}
                   <NavigateNextIcon fontSize="medium" />

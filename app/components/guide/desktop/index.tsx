@@ -182,7 +182,12 @@ const GuideDesktopLayout: React.FC<GuideDesktopLayoutProps> = ({
   );
 
   const getContent = (): React.JSX.Element => {
-    if (GuideStatus.LOADED || guideItems.length > 0) return renderGuideItems();
+    if (
+      (status === GuideStatus.LOADED || status === GuideStatus.LOADING) &&
+      guideItems.length > 0
+    ) {
+      return renderGuideItems();
+    }
 
     switch (status) {
       case GuideStatus.NONE:
@@ -239,7 +244,7 @@ const GuideDesktopLayout: React.FC<GuideDesktopLayoutProps> = ({
     </div>
   );
 
-  if (status === GuideStatus.LOADED || GuideStatus.LOADING) {
+  if (status === GuideStatus.LOADED || status === GuideStatus.LOADING) {
     content = (
       <div className="">
         {status === GuideStatus.LOADING && (
@@ -320,10 +325,10 @@ const GuideDesktopLayout: React.FC<GuideDesktopLayoutProps> = ({
           }}
         ></div>
       </div>
-      <div className="pt-24">
+      <div className="pt-24 h-full">
         {/* Page Content */}
-        <div className="flex overflow-hidden md:rounded flex-col items-center min-h-max p-4 relative">
-          <div className="md:overflow-hidden md:shadow-md">{content}</div>
+        <div className="flex h-full overflow-hidden md:rounded flex-col items-center min-h-max p-4 relative">
+          <div className="md:overflow-hidden md:shadow-md h-full">{content}</div>
         </div>
       </div>
     </div>

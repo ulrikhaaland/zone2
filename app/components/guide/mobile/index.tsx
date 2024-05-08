@@ -12,15 +12,20 @@ import BottomSheetHeader from "./BottomSheetHeader";
 import { RefHandles, SpringEvent } from "react-spring-bottom-sheet/dist/types";
 import FeedbackFAB from "../../feedback";
 import Loading from "../../loading";
+import GuideMobileContent from "./PageContent";
 
 interface GuideMobileLayoutProps {
   status: GuideStatus;
+  generateGuide: () => void;
 }
 
 // Add this method inside your Guide component
-const GuideMobileLayout: React.FC<GuideMobileLayoutProps> = ({ status }) => {
+const GuideMobileLayout: React.FC<GuideMobileLayoutProps> = ({
+  status,
+  generateGuide,
+}) => {
   const { guideStore } = useStore();
-  const { guideItems, guideItemsCount } = guideStore;
+  const { guideItems } = guideStore;
   const [currentItem, setCurrentItem] = React.useState<GuideItem | undefined>(
     guideItems.length > 0 ? guideItems[0] : undefined
   );
@@ -33,7 +38,6 @@ const GuideMobileLayout: React.FC<GuideMobileLayoutProps> = ({ status }) => {
   const [expanded, setExpanded] = React.useState(true);
   const [maxHeight] = useState(window.innerHeight - 180);
   const [init, setInit] = useState(false);
-  const [scrolledToTopOrBottom, setScrolledToTopOrBottom] = useState(true);
   const [feedbackExpanded, setFeedbackExpanded] = useState(false);
 
   const containerRef = useRef<HTMLDivElement>(null);
@@ -143,9 +147,8 @@ const GuideMobileLayout: React.FC<GuideMobileLayoutProps> = ({ status }) => {
   };
 
   return (
-    <div className="w-full pt-16 font-custom h-full overflow-hidden relative">
-      {/* Background Image */}
-      {/* Container for Background Image and Black Overlay */}
+    <div className="w-full pt-16 font-custom h-full overflow-hidden relative"
+    onClick={collapseSheet}>
       <div
         style={{
           position: "absolute",
@@ -198,29 +201,14 @@ const GuideMobileLayout: React.FC<GuideMobileLayoutProps> = ({ status }) => {
                 <div className="text-transparent text-sm">asd</div>
               )}
             </BottomSheet>
-            {feedbackExpanded ? (
-              <FeedbackFAB onExpand={() => setFeedbackExpanded(false)} />
-            ) : (
-              currentItem && (
-                <div className="justify-center text-bgwhite">
-                  <div
-                    key={currentItem.id + "container"}
-                    ref={containerRef}
-                    className="w-full bg-black/60 px-4 rounded-lg md:border md:border-gray-700 items-center justify-center overflow-y-auto"
-                    style={{ height: "calc(100dvh - 170px)" }}
-                  >
-                    <ul className="list-none p-0 pb-12">
-                      <MobileGuideSection
-                        key={currentItem.id}
-                        item={currentItem}
-                        isSubItem={false}
-                        isLast={true}
-                      />
-                    </ul>
-                  </div>
-                </div>
-              )
-            )}
+            <GuideMobileContent
+              feedbackExpanded={feedbackExpanded}
+              setFeedbackExpanded={setFeedbackExpanded}
+              currentItem={currentItem}
+              containerRef={containerRef}
+              status={status}
+              generateGuide={generateGuide}
+            />
           </>
         </div>
       </div>

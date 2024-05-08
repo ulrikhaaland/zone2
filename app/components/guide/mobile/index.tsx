@@ -207,7 +207,7 @@ const GuideMobileLayout: React.FC<GuideMobileLayoutProps> = ({ status }) => {
                     key={currentItem.id + "container"}
                     ref={containerRef}
                     className="w-full bg-black/60 px-4 rounded-lg md:border md:border-gray-700 items-center justify-center overflow-y-auto"
-                    style={{ height: "calc(100vh - 150px)" }}
+                    style={{ height: "calc(100dvh - 170px)" }}
                   >
                     <ul className="list-none p-0 pb-12">
                       <MobileGuideSection

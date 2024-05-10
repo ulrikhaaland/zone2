@@ -4,17 +4,18 @@ import * as admin from "firebase-admin";
 import { Request, Response } from "express";
 import { GuideItem, appendGuideItem, jsonToGuideItem } from "@/app/model/guide";
 
-export const maxDuration = 600; 
+export const maxDuration = 600;
 
 if (!admin.apps.length) {
   const admin = require("firebase-admin");
-
+  const pk = process.env.FIREBASE_PRIVATE_KEY!.replace(/\\n/g, "\n");
+  console.log(pk);
   admin.initializeApp({
     credential: admin.credential.cert({
       type: "service_account",
       project_id: "zone2program-a24ce",
       private_key_id: "3eff7214d07d4cde7091b9740b83d2e0d5e88bcb",
-      private_key: process.env.FIREBASE_PRIVATE_KEY!.replace(/\\n/g, "\n"),
+      private_key: pk,
       client_email: "zone2program@zone2program-a24ce.iam.gserviceaccount.com",
       client_id: "114782319148971071520",
       auth_uri: "https://accounts.google.com/o/oauth2/auth",

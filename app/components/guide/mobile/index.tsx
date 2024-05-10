@@ -172,7 +172,6 @@ const GuideMobileLayout: React.FC<GuideMobileLayoutProps> = ({
       >
         {!currentItem && (
           <>
-            {" "}
             <div
               style={{
                 backgroundImage: "url('/assets/images/cyclist/cyclist.png')",

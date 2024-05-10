@@ -161,6 +161,7 @@ const GuideMobileLayout: React.FC<GuideMobileLayoutProps> = ({
     >
       <div
         style={{
+          height: "100dvh",
           position: "absolute",
           top: 0,
           left: 0,
@@ -169,6 +170,33 @@ const GuideMobileLayout: React.FC<GuideMobileLayoutProps> = ({
           zIndex: 0, // Adjust zIndex as needed
         }}
       >
+        {!currentItem && (
+          <>
+            {" "}
+            <div
+              style={{
+                backgroundImage: "url('/assets/images/cyclist/cyclist.png')",
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                position: "absolute",
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+              }}
+            ></div>
+            <div
+              style={{
+                backgroundColor: "rgba(0, 0, 0, 0.8)", // Black with 50% opacity
+                position: "absolute",
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+              }}
+            ></div>
+          </>
+        )}
         {status === GuideStatus.LOADING && !currentItem && <Loading />}
       </div>
 

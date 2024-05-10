@@ -4,7 +4,7 @@ import * as admin from "firebase-admin";
 import { Request, Response } from "express";
 import { GuideItem, appendGuideItem, jsonToGuideItem } from "@/app/model/guide";
 
-export const maxDuration = 600; // This function can run for a maximum of 5 seconds
+export const maxDuration = 600; 
 
 if (!admin.apps.length) {
   const admin = require("firebase-admin");

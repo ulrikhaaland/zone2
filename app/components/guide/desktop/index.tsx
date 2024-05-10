@@ -236,7 +236,7 @@ const GuideDesktopLayout: React.FC<GuideDesktopLayoutProps> = ({
         inset-0 bg-black/60 rounded-lg md:border md:border-gray-700"
     >
       <div
-        className="px-4 mt-2 h-full overflow-y-auto max-w-[850px] mx-auto text-whitebg custom-scrollbar"
+        className="px-4 h-full overflow-y-auto max-w-[850px] mx-auto text-whitebg custom-scrollbar"
         ref={containerRef}
       >
         {getContent()}

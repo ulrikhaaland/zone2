@@ -4,10 +4,11 @@ import * as admin from "firebase-admin";
 import { Request, Response } from "express";
 import { GuideItem, appendGuideItem, jsonToGuideItem } from "@/app/model/guide";
 
-export const maxDuration = 600;
+export const maxDuration = 600; 
 
 if (!admin.apps.length) {
   const admin = require("firebase-admin");
+
   admin.initializeApp({
     credential: admin.credential.cert({
       type: "service_account",
@@ -42,11 +43,6 @@ export default async function handler(req: Request, res: Response) {
     await logErrorToFirestore(uid, "Missing fitnessData or uid");
     return res.status(400).json({ error: "Missing fitnessData or uid" });
   }
-  const userRef = db.collection("users").doc(uid);
-  await userRef.update({
-    guideStatus: GuideStatus.LOADED,
-  });
-  return;
 
   try {
     const thread = await client.beta.threads.create();

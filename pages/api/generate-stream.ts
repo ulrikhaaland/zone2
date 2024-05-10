@@ -43,6 +43,12 @@ export default async function handler(req: Request, res: Response) {
     await logErrorToFirestore(uid, "Missing fitnessData or uid");
     return res.status(400).json({ error: "Missing fitnessData or uid" });
   }
+  const userRef = db.collection("users").doc(uid);
+
+  await userRef.update({
+    guideStatus: GuideStatus.LOADED,
+  });
+  return;
 
   try {
     const thread = await client.beta.threads.create();

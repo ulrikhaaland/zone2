@@ -92,7 +92,7 @@ const CreateGuideDesktop: React.FC<CreateGuideDesktopProps> = ({
 
       {user && (
         <div className="flex overflow-hidden flex-col items-center pt-24 md:pt-28 px-4 relative">
-          <div className="w-full md:border md:border-gray-700 md:rounded-lg bg-black/60 rounded-lg md:overflow-hidden max-w-md md:shadow-md md:min-h-[70.5dvh] min-h-[86.5dvh]">
+          <div className="w-full md:border md:border-gray-700 md:rounded-lg bg-black/60 rounded-lg md:overflow-hidden max-w-md md:shadow-md">
             <AnimatePresence mode="wait">
               <motion.div
                 className="relative z-0" // Ensure content is below the overlays

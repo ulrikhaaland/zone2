@@ -3,11 +3,9 @@ import Header from "./Header";
 import Login from "./Login";
 import { observer } from "mobx-react";
 import { useStore } from "../../RootStoreProvider";
-import { AppProps } from "next/app";
 import { useState, useEffect, useRef } from "react";
 import { NextRouter, useRouter } from "next/router";
 import Head from "next/head";
-import { has, set } from "mobx";
 import Loading from "./loading";
 
 function Layout({ children }: { children: React.ReactNode }) {
@@ -19,7 +17,6 @@ function Layout({ children }: { children: React.ReactNode }) {
   const [isLoaded, setIsLoaded] = useState(false);
   const isMobileView = generalStore.isMobileView;
   const currentRoute = router.pathname;
-  const isGuide = currentRoute === "/guide";
 
   const isHome = router.pathname === "/";
 
@@ -38,13 +35,6 @@ function Layout({ children }: { children: React.ReactNode }) {
   };
 
   useEffect(() => {
-    if (hasCheckedAuth && user) {
-      console.log("Setting guide items");
-      guideStore.setGuideItems(user.guideItems);
-    }
-  }, [hasCheckedAuth, user]);
-
-  useEffect(() => {
     if (!user) {
       if ((open && !isHome) || (!isArticles && !isHome)) {
         setShowLogin(true);
@@ -58,6 +48,9 @@ function Layout({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (hasCheckedAuth && !isLoaded) {
+      if (user) {
+        guideStore.setGuideItems(user.guideItems);
+      }
       setIsLoaded(true);
     }
 

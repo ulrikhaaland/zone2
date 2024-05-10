@@ -9,10 +9,10 @@ const CheckoutPage = (props: CheckoutPageProps) => {
 
   return (
     <div
-      className="text-whitebg h-full md:min-h-[77.5dvh] md:max-h-[77.5dvh] overflow-y-auto"
+      className="text-whitebg h-full md:min-h-[75.8dvh] overflow-y-auto"
       style={{
         textShadow: "10px 10px 10px rgba(0,0,0,1)",
-        height: "calc(100dvh - 50px)",
+        // height: "calc(100dvh - 50px)",
         paddingBottom: isMobileView ? "150px" : "",
       }}
     >

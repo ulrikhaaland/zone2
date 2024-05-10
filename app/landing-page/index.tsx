@@ -123,7 +123,7 @@ const LandingPage = () => {
                 authStore.user?.guideItems?.length &&
                 authStore.user.guideItems.length > 0
               ) {
-                router.push("/profile");
+                // router.push("/profile");
               } else {
                 router.push("/create");
               }

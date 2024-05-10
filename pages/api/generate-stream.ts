@@ -123,8 +123,6 @@ export default async function handler(req: Request, res: Response) {
       await processStream();
     };
 
-    // Send a response to the client to indicate that the guide generation has been initiated
-
     processStream();
 
     runStream.on("error", async (error) => {

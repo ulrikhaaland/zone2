@@ -8,7 +8,9 @@ export const maxDuration = 600;
 
 if (!admin.apps.length) {
   const admin = require("firebase-admin");
-  const pk = process.env.FIREBASE_PRIVATE_KEY!.replace(/\\n/g, "\n");
+  const pk = process.env.FIREBASE_PRIVATE_KEY;
+
+  // process.env.FIREBASE_PRIVATE_KEY!.replace(/\\n/g, "\n");
   console.log(pk);
   admin.initializeApp({
     credential: admin.credential.cert({

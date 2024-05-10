@@ -1,37 +1,17 @@
-import React, { useState } from "react";
-import { GuideStatus, User } from "@/app/model/user";
-import Guide from "@/app/components/guide/desktop";
+import React from "react";
+import { User } from "@/app/model/user";
 import Questionnaire from "@/app/components/questionnaire/Questionnaire";
-import { AnimatePresence, motion } from "framer-motion";
 import { Question } from "@/app/model/questionaire";
-import MenuBookIcon from "@mui/icons-material/MenuBook";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import FeedbackFAB from "@/app/components/feedback";
-import { GuideItem } from "@/app/model/guide";
-import MobileGuideViewer from "@/app/components/guide/mobile/index";
 
 interface ProfileMobileLayoutProps {
-  pageIndex: number;
   user: User | undefined;
-  guideStatus: GuideStatus;
   updateUser: (questions: Question[]) => void;
-  setPageIndex: (index: number) => void;
-  genGuide: () => void;
-  showFeedback: boolean;
 }
 
 const ProfileMobileLayout: React.FC<ProfileMobileLayoutProps> = ({
-  pageIndex,
   user,
-  guideStatus,
   updateUser,
-  setPageIndex,
-  genGuide,
-  showFeedback,
 }) => {
-  const [scrolledToTopOrBottom, setScrolledToTopOrBottom] = useState(true);
-  const [feedbackExpanded, setFeedbackExpanded] = useState(false);
-
   return (
     <div className="w-full pt-16 font-custom h-full overflow-hidden relative">
       {/* Background Image */}

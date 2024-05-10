@@ -1,32 +1,17 @@
 import React from "react";
-import { GuideStatus, User } from "@/app/model/user";
-import Guide from "@/app/components/guide/desktop";
+import { User } from "@/app/model/user";
 import Questionnaire from "@/app/components/questionnaire/Questionnaire";
-import { AnimatePresence, motion } from "framer-motion";
 import { Question } from "@/app/model/questionaire";
-import MenuBookIcon from "@mui/icons-material/MenuBook";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import FeedbackFAB from "@/app/components/feedback";
 import "../../app/globals.css";
 
 interface ProfileDesktopLayoutProps {
-  pageIndex: number;
   user: User | undefined;
-  guideStatus: GuideStatus | undefined;
   updateUser: (questions: Question[]) => void;
-  setPageIndex: (index: number) => void;
-  genGuide: () => void;
-  showFeedback: boolean;
 }
 
 const ProfileDesktopLayout: React.FC<ProfileDesktopLayoutProps> = ({
-  pageIndex,
   user,
-  guideStatus,
   updateUser,
-  setPageIndex,
-  genGuide,
-  showFeedback,
 }) => {
   return (
     <div className="w-full font-custom h-screen overflow-hidden relative">

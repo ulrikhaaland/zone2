@@ -20,6 +20,7 @@ export function jsonToGuideItem(
     trimmedResponse = jsonResponse
       .replace(/\\(?![/u"bfnrt])/g, "") // Remove invalid backslashes
       .replace(/\【[\d:]+†[^】]*\】/g, "")
+      .replace("  .", ".")
       .replace(" .", "."); // Remove citations like &#8203;``【oaicite:0】``&#8203;
   } catch (e) {
     // If an error occurs, throw it to be handled by the caller

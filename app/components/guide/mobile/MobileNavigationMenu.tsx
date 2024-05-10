@@ -35,7 +35,9 @@ const MobileGuideNavigation: React.FC<MobileGuideNavigationProps> = ({
         {guideItems.map((item) => (
           <li
             key={item.id}
-            className="text-gray-300 cursor-pointer p-2 last:pb-8"
+            className={`text-gray-300 cursor-pointer p-2 ${
+              status === GuideStatus.LOADED && "last:pb-8"
+            } `}
           >
             <span
               className="hover:text-white text-lg font-bold"

@@ -83,6 +83,7 @@ export default async function handler(req: Request, res: Response) {
         await userRef.update({
           guideItems: guideItems,
           guideStatus: GuideStatus.LOADED,
+          hasReviewed: false,
         });
         return;
       }

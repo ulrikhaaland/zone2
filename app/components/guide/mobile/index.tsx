@@ -25,7 +25,7 @@ const GuideMobileLayout: React.FC<GuideMobileLayoutProps> = ({
   generateGuide,
 }) => {
   const { guideStore } = useStore();
-  const { guideItems } = guideStore;
+  const { guideItems, guideItemsCount } = guideStore;
   const [currentItem, setCurrentItem] = React.useState<GuideItem | undefined>(
     guideItems.length > 0 ? guideItems[0] : undefined
   );
@@ -46,6 +46,12 @@ const GuideMobileLayout: React.FC<GuideMobileLayoutProps> = ({
 
   const isLoading = status === GuideStatus.LOADING;
 
+  const resetItems = () => {
+    setCurrentItem(undefined);
+    setNextItem(undefined);
+    setPreviousItem(undefined);
+  };
+
   useEffect(() => {
     if (guideItems.length > 0) {
       if (!currentItem) {
@@ -65,8 +71,10 @@ const GuideMobileLayout: React.FC<GuideMobileLayoutProps> = ({
       } else {
         setNextItem(undefined);
       }
+    } else {
+      resetItems();
     }
-  }, [currentItem, guideItems.length]);
+  }, [currentItem, guideItemsCount]);
 
   const scrollToItem = async (item: GuideItem) => {
     let itemElement = document.getElementById(`guide-item-${item.id}`);
@@ -147,8 +155,10 @@ const GuideMobileLayout: React.FC<GuideMobileLayoutProps> = ({
   };
 
   return (
-    <div className="w-full pt-16 font-custom h-full overflow-hidden relative"
-    onClick={collapseSheet}>
+    <div
+      className="w-full pt-16 font-custom h-full overflow-hidden relative"
+      onClick={collapseSheet}
+    >
       <div
         style={{
           position: "absolute",
@@ -169,14 +179,16 @@ const GuideMobileLayout: React.FC<GuideMobileLayoutProps> = ({
             <BottomSheet
               ref={sheetRef}
               className="text-whitebg"
-              open={true}
+              open={
+                status === GuideStatus.LOADING || status === GuideStatus.LOADED
+              }
               scrollLocking={false}
               blocking={false}
               expandOnContentDrag={false}
               maxHeight={maxHeight}
               onSpringStart={handleOnSpringStart}
               snapPoints={({}) => [
-                isLoading && !nextItem ? 100 : 80,
+                isLoading && guideItems.length < 2 ? 100 : 80,
                 maxHeight,
               ]}
               footer={
@@ -188,6 +200,7 @@ const GuideMobileLayout: React.FC<GuideMobileLayoutProps> = ({
                   expanded={!init ? false : expanded}
                   onExpand={setExpanded}
                   onProvideFeedback={() => setFeedbackExpanded(true)}
+                  feedbackExpanded={feedbackExpanded}
                 />
               }
             >
@@ -207,7 +220,11 @@ const GuideMobileLayout: React.FC<GuideMobileLayoutProps> = ({
               currentItem={currentItem}
               containerRef={containerRef}
               status={status}
-              generateGuide={generateGuide}
+              generateGuide={() => {
+                guideStore.setGuideItems([]); // Clear guide items
+                resetItems();
+                generateGuide();
+              }}
             />
           </>
         </div>

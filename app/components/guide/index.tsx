@@ -43,12 +43,14 @@ const Guide = () => {
   const isSubscribed = useRef<boolean>(false);
 
   const generateGuide = (user: User) => {
+    // Set Loading status
     isFetching.current = true;
+    setGuideStatus(GuideStatus.LOADING);
+
     const newUser = { ...user, guideStatus: GuideStatus.LOADING };
     guideStore.setGuideItems([]);
     authStore.setUser(newUser);
     setUser(newUser);
-    setGuideStatus(GuideStatus.LOADING);
     updateDoc(doc(db, "users", user.uid), {
       guideStatus: GuideStatus.LOADING,
     }).then(() => {

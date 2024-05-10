@@ -8,9 +8,7 @@ export const maxDuration = 600;
 
 if (!admin.apps.length) {
   const admin = require("firebase-admin");
-  const pk = process.env.FIREBASE_PRIVATE_KEY;
-
-  // process.env.FIREBASE_PRIVATE_KEY!.replace(/\\n/g, "\n");
+  const pk = process.env.FIREBASE_PRIVATE_KEY!.replace(/\\n/g, "\n");
   console.log(pk);
   admin.initializeApp({
     credential: admin.credential.cert({
@@ -46,6 +44,11 @@ export default async function handler(req: Request, res: Response) {
     await logErrorToFirestore(uid, "Missing fitnessData or uid");
     return res.status(400).json({ error: "Missing fitnessData or uid" });
   }
+  const userRef = db.collection("users").doc(uid);
+  userRef.update({
+    guideStatus: GuideStatus.LOADED,
+  });
+  return;
 
   try {
     const thread = await client.beta.threads.create();

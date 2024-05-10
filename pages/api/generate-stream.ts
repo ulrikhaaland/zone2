@@ -4,7 +4,7 @@ import * as admin from "firebase-admin";
 import { Request, Response } from "express";
 import { GuideItem, appendGuideItem, jsonToGuideItem } from "@/app/model/guide";
 
-export const maxDuration = 600; 
+export const maxDuration = 600;
 
 if (!admin.apps.length) {
   const admin = require("firebase-admin");
@@ -43,12 +43,6 @@ export default async function handler(req: Request, res: Response) {
     await logErrorToFirestore(uid, "Missing fitnessData or uid");
     return res.status(400).json({ error: "Missing fitnessData or uid" });
   }
-  const userRef = db.collection("users").doc(uid);
-
-  await userRef.update({
-    guideStatus: GuideStatus.LOADED,
-  });
-  return;
 
   try {
     const thread = await client.beta.threads.create();
@@ -91,6 +85,11 @@ export default async function handler(req: Request, res: Response) {
           guideStatus: GuideStatus.LOADED,
           hasReviewed: false,
         });
+        res.status(202).json({
+          success: true,
+          message: "Guide generation initiated",
+        });
+
         return;
       }
 
@@ -125,10 +124,6 @@ export default async function handler(req: Request, res: Response) {
     };
 
     // Send a response to the client to indicate that the guide generation has been initiated
-    res.status(202).json({
-      success: true,
-      message: "Guide generation initiated",
-    });
 
     processStream();
 

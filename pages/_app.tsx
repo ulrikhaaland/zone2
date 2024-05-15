@@ -5,11 +5,14 @@ import type { AppProps } from "next/app";
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
+import { getAnalytics } from "firebase/analytics";
 import React, { ReactElement, ReactNode, useEffect } from "react";
 import { NextPage } from "next";
 import { RootStoreProvider, useStore } from "@/RootStoreProvider";
 import { Inter } from "next/font/google";
 import Layout from "../app/components/layout";
+import { useRouter } from "next/router";
+import { logPageView } from "@/app/analytics";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,7 +28,7 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-// const analytics = getAnalytics(app);
+const analytics = getAnalytics(app);
 const auth = getAuth();
 const provider = new GoogleAuthProvider();
 const db = getFirestore(app);
@@ -43,6 +46,18 @@ type AppPropsWithLayout = AppProps & {
 export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const { authStore, generalStore, guideStore } = useStore();
   const [isMobileView, setIsMobileView] = React.useState(false);
+  const router = useRouter();
+  
+  useEffect(() => {
+    const handleRouteChange = () => {
+      logPageView();
+    };
+
+    router.events.on('routeChangeComplete', handleRouteChange);
+    return () => {
+      router.events.off('routeChangeComplete', handleRouteChange);
+    };
+  }, [router.events]);
 
   useEffect(() => {
     if (!authStore.user && auth) authStore.checkAuth();

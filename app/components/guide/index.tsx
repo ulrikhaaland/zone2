@@ -174,6 +174,14 @@ const Guide = () => {
           setGuideItems([]);
         }
 
+        // handle guide error
+        if (status === GuideStatus.ERROR) {
+          setGuideStatus(GuideStatus.ERROR);
+          console.log("Guide error occurred, unsubscribing from updates.");
+          unsubscribe?.();
+          isSubscribed.current = false;
+        }
+
         if (status === GuideStatus.LOADED) {
           setShowFeedback(true);
           setGuideStatus(GuideStatus.LOADED);

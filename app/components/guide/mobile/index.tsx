@@ -8,11 +8,12 @@ import MobileGuideSection from "./MobileGuideSection";
 import { BottomSheet } from "react-spring-bottom-sheet";
 import "react-spring-bottom-sheet/dist/style.css";
 import "./style.css";
-import BottomSheetHeader from "./BottomSheetHeader";
+import BottomSheetHeader from "./BottomSheetFooter";
 import { RefHandles, SpringEvent } from "react-spring-bottom-sheet/dist/types";
 import FeedbackFAB from "../../feedback";
 import Loading from "../../loading";
 import GuideMobileContent from "./PageContent";
+import BottomSheetFooter from "./BottomSheetFooter";
 
 interface GuideMobileLayoutProps {
   status: GuideStatus;
@@ -219,7 +220,7 @@ const GuideMobileLayout: React.FC<GuideMobileLayoutProps> = ({
                 maxHeight,
               ]}
               footer={
-                <BottomSheetHeader
+                <BottomSheetFooter
                   status={status}
                   setCurrentItem={handleOnSetCurrentItem}
                   previousItem={previousItem}

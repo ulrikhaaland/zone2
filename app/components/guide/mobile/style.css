@@ -31,9 +31,9 @@ div[data-rsbs-content] {
   /* overflow-x: none; */
 }
 
-[data-rsbs-header="true"] {
+/* [data-rsbs-header="true"] {
   box-shadow: 0 0px 0 rgba(46, 59, 66, 0.1) !important;
-  transition: height 0.3s ease; /* Smooth transition for height change */
+  transition: height 0.3s ease;
   box-sizing: border-box;
   height: 0;
   width: 0;
@@ -44,10 +44,10 @@ div[data-rsbs-content] {
 
 [data-rsbs-header]:before {
   height: 0;
-  visibility: hidden; /* Makes the element not visible */
-  opacity: 0; /* Ensures the element is fully transparent */
-  content: none; /* Removes the content of the pseudo-element */
-}
+  visibility: hidden; 
+  opacity: 0; 
+  content: none;
+} */
 
 [data-rsbs-footer="true"] {
   box-shadow: 0 0px 0 rgba(46, 59, 66, 0.1) !important;

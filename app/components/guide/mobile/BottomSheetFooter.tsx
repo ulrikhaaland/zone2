@@ -7,7 +7,7 @@ import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 import { useStore } from "@/RootStoreProvider";
 import Loading from "../../loading";
 
-interface BottomSheetHeaderProps {
+interface BottomSheetFooter {
   status: GuideStatus;
   setCurrentItem: (item: GuideItem) => void;
   onExpand: (expanded: boolean) => void;
@@ -19,7 +19,7 @@ interface BottomSheetHeaderProps {
 }
 
 // Add this method inside your Guide component
-const BottomSheetHeader: React.FC<BottomSheetHeaderProps> = ({
+const BottomSheetFooter: React.FC<BottomSheetFooter> = ({
   status,
   setCurrentItem,
   onExpand,
@@ -69,9 +69,9 @@ const BottomSheetHeader: React.FC<BottomSheetHeaderProps> = ({
     <div className="h-full w-full">
       <div className="w-full h-full flex-nowrap">
         <div>
-          <div className="flex w-full h-full overflow-hidden items-center justify-between">
+          <div className="flex w-screen h-full overflow-hidden items-center">
             <button
-              className="w-[40%] h-[50px] flex items-center justify-start text-sm"
+              className="w-[45%] h-[50px] flex items-center justify-start text-sm"
               onClick={() => setCurrentItem(previousItem!)}
               disabled={!previousItem}
             >
@@ -82,10 +82,7 @@ const BottomSheetHeader: React.FC<BottomSheetHeaderProps> = ({
                 </>
               )}
             </button>
-            <div onClick={() => onExpand(!expanded)}>
-              {/* {status === GuideStatus.LOADING ? (
-                <Loading size={8} />
-              ) : ( */}
+            <div className="w-[10%] flex items-center justify-center" onClick={() => onExpand(!expanded)}>
               <svg
                 className={`w-8 h-8 transform ${!expanded ? "rotate-180" : ""}`}
                 fill="none"
@@ -101,7 +98,7 @@ const BottomSheetHeader: React.FC<BottomSheetHeaderProps> = ({
               </svg>
             </div>
             <button
-              className={`w-[40%] h-[50px] flex items-center justify-end text-sm
+              className={`w-[42%] h-[50px] flex items-center justify-end text-sm
               ${
                 nextDisabled && status === GuideStatus.LOADING
                   ? "justify-center"
@@ -132,4 +129,4 @@ const BottomSheetHeader: React.FC<BottomSheetHeaderProps> = ({
   );
 };
 
-export default observer(BottomSheetHeader);
+export default observer(BottomSheetFooter);

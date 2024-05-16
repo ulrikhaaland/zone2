@@ -52,6 +52,9 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
     if (typeof window !== "undefined") {
       firebaseAnalytics = getAnalytics(app);
     }
+  }, []);
+
+  useEffect(() => {
     const handleRouteChange = () => {
       logPageView();
     };

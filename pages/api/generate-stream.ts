@@ -53,6 +53,7 @@ export default async function handler(req: Request, res: Response) {
 
     const runStream = client.beta.threads.runs.stream(thread.id, {
       assistant_id: "asst_P04Kgk0OWercjCtYJtNzUV8G",
+      max_completion_tokens: 120000,
     });
 
     let currentBuffer = "";

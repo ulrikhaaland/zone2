@@ -247,7 +247,7 @@ export function questToFitnessData(answers: Question[]): FitnessData {
     }
   } else {
     const walksRegularly: boolean =
-      answers.find((q) => q.identifier === "doesWalk")!.answer === "yes";
+      answers.find((q) => q.identifier === "doesWalk")?.answer === "yes";
 
     if (walksRegularly) {
       fitnessLevel = FitnessLevel.BEGINNER;

@@ -5,7 +5,7 @@ import type { AppProps } from "next/app";
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
-import { getAnalytics } from "firebase/analytics";
+import { Analytics, getAnalytics } from "firebase/analytics";
 import React, { ReactElement, ReactNode, useEffect } from "react";
 import { NextPage } from "next";
 import { RootStoreProvider, useStore } from "@/RootStoreProvider";
@@ -28,12 +28,11 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
 const auth = getAuth();
 const provider = new GoogleAuthProvider();
 const db = getFirestore(app);
 
-export { auth, provider, db };
+let firebaseAnalytics: Analytics | undefined;
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -47,15 +46,19 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const { authStore, generalStore, guideStore } = useStore();
   const [isMobileView, setIsMobileView] = React.useState(false);
   const router = useRouter();
-  
+
   useEffect(() => {
+    // Initialize Firebase Analytics only in client-side
+    if (typeof window !== "undefined") {
+      firebaseAnalytics = getAnalytics(app);
+    }
     const handleRouteChange = () => {
       logPageView();
     };
 
-    router.events.on('routeChangeComplete', handleRouteChange);
+    router.events.on("routeChangeComplete", handleRouteChange);
     return () => {
-      router.events.off('routeChangeComplete', handleRouteChange);
+      router.events.off("routeChangeComplete", handleRouteChange);
     };
   }, [router.events]);
 
@@ -98,3 +101,4 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
     </main>
   );
 }
+export { auth, provider, db, firebaseAnalytics };

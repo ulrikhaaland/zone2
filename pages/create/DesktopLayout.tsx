@@ -43,14 +43,7 @@ const CreateGuideDesktop: React.FC<CreateGuideDesktopProps> = ({
   setCanSubmit,
 }) => {
   return (
-    <div
-      className="w-full font-custom h-screen overflow-hidden relative"
-      style={
-        {
-          // max height 100dvh - 16rem
-        }
-      }
-    >
+    <div className="w-full font-custom h-screen overflow-hidden relative">
       {/* Background Image */}
       {/* Container for Background Image and Black Overlay */}
       <div
@@ -97,7 +90,7 @@ const CreateGuideDesktop: React.FC<CreateGuideDesktopProps> = ({
               <motion.div
                 className="relative z-0" // Ensure content is below the overlays
                 key={pageIndex}
-                initial={{ opacity: 0, x: getInitial() }}
+                initial={{ opacity: 0, x: canSubmit ? getInitial() : 0 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{
                   opacity: 0,

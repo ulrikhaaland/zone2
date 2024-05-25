@@ -38,6 +38,8 @@ const GuideDesktopLayout: React.FC<GuideDesktopLayoutProps> = ({
 
   const [expandedItemId, setExpandedItemId] = useState<number | null>(null);
 
+  const [feedbackOpen, setFeedbackOpen] = useState(false);
+
   useEffect(() => {}, [guideItems]);
 
   useEffect(() => {
@@ -280,7 +282,9 @@ const GuideDesktopLayout: React.FC<GuideDesktopLayoutProps> = ({
           <GuideSideNavigation scrollToItem={scrollToItem} status={status} />
           {content}
         </div>
-        {showFeedback && <FeedbackFAB />}
+        {showFeedback && (
+          <FeedbackFAB onExpand={setFeedbackOpen} expanded={feedbackOpen} />
+        )}
       </div>
     );
   }
@@ -325,10 +329,30 @@ const GuideDesktopLayout: React.FC<GuideDesktopLayoutProps> = ({
           }}
         ></div>
       </div>
-      <div className="pt-24 h-full">
+      <div
+        className="pt-24 h-full"
+        onClick={() => {
+          setFeedbackOpen(false);
+        }}
+      >
+        {feedbackOpen && (
+          <div
+            style={{
+              backgroundColor: "rgba(0, 0, 0, 0.5)", // Black with 50% opacity
+              position: "absolute",
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              zIndex: 29,
+            }}
+          ></div>
+        )}
         {/* Page Content */}
         <div className="flex h-full overflow-hidden md:rounded flex-col items-center min-h-max p-4 relative">
-          <div className="md:overflow-hidden md:shadow-md h-full">{content}</div>
+          <div className="md:overflow-hidden md:shadow-md h-full">
+            {content}
+          </div>
         </div>
       </div>
     </div>

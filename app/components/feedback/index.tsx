@@ -30,7 +30,9 @@ const FeedbackFAB = (props: FeedbackFABProps) => {
     setExpanded(props.expanded || false);
   }, [props.expanded]);
 
-  const toggleExpand = () => {
+  const toggleExpand = (e: any) => {
+    e.preventDefault();
+    e.stopPropagation();
     const expand = !expanded;
     setExpanded(expand);
     onExpand && onExpand(expand);
@@ -95,7 +97,7 @@ const FeedbackFAB = (props: FeedbackFABProps) => {
         placeholder="What didn't you like?"
         value={negativeFeedback}
         onChange={handleNegativeFeedbackChange}
-        rows={isMobileView ? 6 : 3}
+        rows={isMobileView ? 6 : 8}
         autoFocus={true}
       />
       {/* Positive Feedback */}
@@ -108,7 +110,7 @@ const FeedbackFAB = (props: FeedbackFABProps) => {
         placeholder="What did you like?"
         value={positiveFeedback}
         onChange={handlePositiveFeedbackChange}
-        rows={isMobileView ? 6 : 3}
+        rows={isMobileView ? 6 : 8}
       />
       <button
         type="submit"
@@ -158,7 +160,7 @@ const FeedbackFAB = (props: FeedbackFABProps) => {
       {expanded && (
         <div
           className={`absolute bottom-12 right-0 mb-4 p-4 bg-black bg-opacity-60 rounded-lg border border-gray-700 z-0
-                    ${isMobileView ? "w-[92.5dvw]" : "w-80"}`}
+                    ${isMobileView ? "w-[92.5dvw]" : "w-[500px] h-[600px]"}`}
         >
           <IconButton
             className="absolute top-0 right-0 text-white"

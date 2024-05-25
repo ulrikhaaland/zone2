@@ -1,12 +1,13 @@
-import { ReactElement, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useStore } from "@/RootStoreProvider";
 import { GuideStatus, User } from "@/app/model/user";
-import { Question, questToFitnessData } from "@/app/model/questionaire";
+import { questToFitnessData } from "@/app/model/questionaire";
 import { observer } from "mobx-react";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "@/pages/_app";
 import GuideDesktopLayout from "./desktop";
 import GuideMobileLayout from "./mobile";
+import { a } from "react-spring";
 
 const Guide = () => {
   const { authStore, generalStore, guideStore } = useStore();
@@ -19,19 +20,8 @@ const Guide = () => {
     authStore.user ?? undefined
   );
 
-  const [pageIndex, setPageIndex] = useState(0);
-
   const [guideStatus, setGuideStatus] = useState(user?.guideStatus);
   const [showFeedback, setShowFeedback] = useState(false);
-
-  const updateUser = (questions: Question[]) => {
-    const updatedUser = {
-      ...user!,
-      questions: questions,
-    };
-    console.log(updatedUser);
-    authStore.updateUserData(updatedUser);
-  };
 
   useEffect(() => {
     if (user) {
@@ -58,7 +48,6 @@ const Guide = () => {
         fitnessData: questToFitnessData(user!.questions),
         uid: user!.uid,
       });
-      console.log(body);
       fetch("/api/generate-stream", {
         method: "POST",
         headers: {
@@ -95,7 +84,6 @@ const Guide = () => {
         generateGuide(user);
       } else {
         if (isFetching.current) {
-          console.log("Setting user to loading");
           setUser({ ...user, guideStatus: GuideStatus.LOADING });
         } else setUser(user);
       }
@@ -104,9 +92,9 @@ const Guide = () => {
 
   useEffect(() => {
     if (user?.guideStatus === GuideStatus.LOADED) {
-      handleShowFeedback(user);
+      handleShowFeedback(authStore.user!);
     }
-  }, [user]);
+  }, [user, authStore.user]);
 
   const handleShowFeedback = (user: User) => {
     const showFeedback =
@@ -141,21 +129,18 @@ const Guide = () => {
           let isAlreadyAdded = false;
           for (const item of guideItems) {
             if (item.id === itemToAdd.id) {
-              console.log("Item is already added to guide.");
               isAlreadyAdded = true;
               break;
             }
             if (item.subItems) {
               for (const subItem of item.subItems) {
                 if (subItem.id === itemToAdd.id) {
-                  console.log("Item is already added to guide.");
                   isAlreadyAdded = true;
                   break;
                 }
                 if (subItem.subItems) {
                   for (const subSubItem of subItem.subItems) {
                     if (subSubItem.id === itemToAdd.id) {
-                      console.log("Item is already added to guide.");
                       isAlreadyAdded = true;
                       break;
                     }
@@ -177,7 +162,6 @@ const Guide = () => {
         // handle guide error
         if (status === GuideStatus.ERROR) {
           setGuideStatus(GuideStatus.ERROR);
-          console.log("Guide error occurred, unsubscribing from updates.");
           unsubscribe?.();
           isSubscribed.current = false;
         }
@@ -185,7 +169,6 @@ const Guide = () => {
         if (status === GuideStatus.LOADED) {
           setShowFeedback(true);
           setGuideStatus(GuideStatus.LOADED);
-          console.log("Guide is loaded, unsubscribing from updates.");
           onGuideLoaded();
           unsubscribe?.();
           isSubscribed.current = false;

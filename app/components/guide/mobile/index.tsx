@@ -208,7 +208,9 @@ const GuideMobileLayout: React.FC<GuideMobileLayoutProps> = ({
               ref={sheetRef}
               className="text-whitebg"
               open={
-                status === GuideStatus.LOADING || status === GuideStatus.LOADED
+                !feedbackExpanded &&
+                (status === GuideStatus.LOADING ||
+                  status === GuideStatus.LOADED)
               }
               scrollLocking={false}
               blocking={false}
@@ -227,7 +229,9 @@ const GuideMobileLayout: React.FC<GuideMobileLayoutProps> = ({
                   nextItem={nextItem}
                   expanded={!init ? false : expanded}
                   onExpand={setExpanded}
-                  onProvideFeedback={() => setFeedbackExpanded(true)}
+                  onProvideFeedback={() => {
+                    setFeedbackExpanded(true);
+                  }}
                   feedbackExpanded={feedbackExpanded}
                 />
               }

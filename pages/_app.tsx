@@ -43,7 +43,7 @@ type AppPropsWithLayout = AppProps & {
 };
 
 export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
-  const { authStore, generalStore, guideStore } = useStore();
+  const { authStore, generalStore } = useStore();
   const [isMobileView, setIsMobileView] = React.useState(false);
   const router = useRouter();
 

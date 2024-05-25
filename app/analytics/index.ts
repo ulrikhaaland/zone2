@@ -1,5 +1,5 @@
 import { firebaseAnalytics } from "@/pages/_app";
-import { getAnalytics, logEvent } from "firebase/analytics";
+import { logEvent } from "firebase/analytics";
 
 export function logPageView() {
   if (window && typeof window !== "undefined") {

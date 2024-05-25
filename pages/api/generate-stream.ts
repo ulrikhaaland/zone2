@@ -120,7 +120,7 @@ export default async function handler(req: Request, res: Response) {
         appendGuideItem(guideItems, guideItem);
         currentBuffer = ""; // Reset buffer after processing
       }
-      updateFirebase(uid, guideItems, GuideStatus.LOADING);
+      updateFirebase(uid, guideItems);
       await processStream();
     };
 
@@ -147,13 +147,18 @@ export default async function handler(req: Request, res: Response) {
 function updateFirebase(
   uid: string,
   guideItems: GuideItem[],
-  guideStatus: GuideStatus
+  guideStatus?: GuideStatus
 ) {
   const userRef = db.collection("users").doc(uid);
-  userRef.update({
-    guideItems: guideItems,
-    guideStatus: guideStatus,
-  });
+  if (!guideStatus) {
+    userRef.update({
+      guideItems: guideItems,
+    });
+  } else
+    userRef.update({
+      guideItems: guideItems,
+      guideStatus: guideStatus,
+    });
 }
 
 function trimBuffer(buffer: string): string {
@@ -163,7 +168,6 @@ function trimBuffer(buffer: string): string {
     if (lastIndex !== -1) {
       // Cut the string to end at the last found closing brace of the JSON object
       currentBuffer = currentBuffer.substring(0, lastIndex + 1);
-      console.log("Processed JSON content:", currentBuffer);
     }
   }
   // slice string for first item
@@ -180,7 +184,6 @@ function trimBuffer(buffer: string): string {
   const trimmedBuffer = currentBuffer.trim();
   if (trimmedBuffer[trimmedBuffer.length - 1] === ",") {
     currentBuffer = trimmedBuffer.slice(0, -1);
-    console.log(currentBuffer);
   }
   return currentBuffer;
 }

@@ -165,6 +165,11 @@ export function parseJsonToGuideItems(jsonResponse: string): GuideItem[] {
 export function appendGuideItem(guideItems: GuideItem[], guideItem: GuideItem) {
   let parentItem: GuideItem | undefined;
 
+  // set expanded === true for first 3 items
+  if (guideItems.length < 3) {
+    guideItem.expanded = true;
+  }
+
   if (guideItem.parentId === null) {
     parentItem = findParentItemByTitle(
       guideItems,
@@ -213,6 +218,15 @@ export function findParentItemByTitle(
   ) {
     return guideItems.find(
       (item) => item.title.toLowerCase() === "realistic goals & expectations"
+    );
+  } else if (
+    title === "stress accumulation" ||
+    title === "recovery" ||
+    title === "preventing overtraining"
+  ) {
+    return guideItems.find(
+      (item) =>
+        item.title.toLowerCase() === "recovery & preventing overtraining"
     );
   } else {
     return undefined;

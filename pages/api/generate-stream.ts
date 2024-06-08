@@ -4,7 +4,7 @@ import * as admin from "firebase-admin";
 import { Request, Response } from "express";
 import { GuideItem, appendGuideItem, jsonToGuideItem } from "@/app/model/guide";
 
-export const maxDuration = 600;
+export const maxDuration = 300;
 
 if (!admin.apps.length) {
   const admin = require("firebase-admin");
@@ -68,9 +68,9 @@ export default async function handler(req: Request, res: Response) {
       if (done) {
         // Handle any remaining data
         if (currentBuffer.trim()) {
-          currentBuffer = trimBufferOnDone(currentBuffer);
-
           try {
+            currentBuffer = trimBufferOnDone(currentBuffer);
+
             const guideItem = jsonToGuideItem(currentBuffer);
             appendGuideItem(guideItems, guideItem);
           } catch (error) {
@@ -81,6 +81,8 @@ export default async function handler(req: Request, res: Response) {
         console.log("Final state of buffer:", currentBuffer);
 
         const userRef = db.collection("users").doc(uid);
+
+        console.log("final item:", guideItems[guideItems.length - 1]);
         await userRef.update({
           guideItems: guideItems,
           guideStatus: GuideStatus.LOADED,

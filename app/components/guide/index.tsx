@@ -7,7 +7,6 @@ import { doc, updateDoc } from "firebase/firestore";
 import { db } from "@/pages/_app";
 import GuideDesktopLayout from "./desktop";
 import GuideMobileLayout from "./mobile";
-import { a } from "react-spring";
 
 const Guide = () => {
   const { authStore, generalStore, guideStore } = useStore();
@@ -150,10 +149,6 @@ const Guide = () => {
             }
           }
 
-          if (itemToAdd.id <= 3) {
-            itemToAdd.expanded = true;
-          }
-
           if (!isAlreadyAdded) addGuideItem(itemToAdd);
         } else {
           setGuideItems([]);
@@ -167,10 +162,9 @@ const Guide = () => {
         }
 
         if (status === GuideStatus.LOADED) {
-          setShowFeedback(true);
-          setGuideStatus(GuideStatus.LOADED);
           onGuideLoaded();
           unsubscribe?.();
+
           isSubscribed.current = false;
         }
       });
@@ -184,13 +178,15 @@ const Guide = () => {
   }, [guideStatus]);
 
   const onGuideLoaded = () => {
+    setGuideStatus(GuideStatus.LOADED);
+    setShowFeedback(true);
+    handleShowFeedback(authStore.user!);
+
     authStore
       .getUserOrCreateIfNotExists(authStore.user!.firebaseUser!)
       .then((updatedUser) => {
-        setGuideStatus(GuideStatus.LOADED);
         authStore.setUser(updatedUser);
         setUser(updatedUser);
-        handleShowFeedback(updatedUser);
       });
   };
 

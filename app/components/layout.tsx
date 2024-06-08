@@ -48,10 +48,8 @@ function Layout({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (hasCheckedAuth) {
-      console.log("hasCheckedAuth");
       if (user) {
-        console.log("user");
-        console.log(user.guideItems);
+        if(guideStore.guideItems.length < 1)
         guideStore.setGuideItems(user.guideItems);
       }
       if (!isLoaded) setIsLoaded(true);

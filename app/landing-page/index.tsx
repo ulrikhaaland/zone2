@@ -7,6 +7,7 @@ import { HomeDesktopLayout } from "@/app/landing-page/DesktopLayout";
 import { HomeMobileLayout } from "@/app/landing-page/MobileLayout";
 import { auth } from "@/pages/_app";
 import Guide from "../components/guide";
+import Head from "next/head";
 
 const LandingPage = () => {
   const { authStore, generalStore } = useStore();
@@ -146,12 +147,12 @@ const LandingPage = () => {
     }
   }, [authStore.open]);
 
-  if (user?.hasPaid) {
-    return <Guide />;
-  }
+  let content;
 
-  if (isMobileView) {
-    return (
+  if (user?.hasPaid) {
+    content = <Guide />;
+  } else if (isMobileView) {
+    content = (
       <HomeMobileLayout
         isMuted={isMuted}
         isPlaying={isPlaying}
@@ -173,7 +174,7 @@ const LandingPage = () => {
       />
     );
   } else
-    return (
+    content = (
       <HomeDesktopLayout
         isMuted={isMuted}
         isPlaying={isPlaying}
@@ -192,6 +193,15 @@ const LandingPage = () => {
         handleVideoPlay={handleVideoPlay}
       />
     );
+
+  return (
+    <>
+      <Head>
+        <title>Zone 2 Guide</title>
+      </Head>
+      {content}
+    </>
+  );
 };
 
 export default observer(LandingPage);

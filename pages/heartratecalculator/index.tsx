@@ -13,6 +13,7 @@ import {
 } from "@/app/utils/HRZonesCalculator";
 import { observer } from "mobx-react";
 import { User } from "@/app/model/user";
+import Head from "next/head";
 
 const questions = questionnaireList;
 
@@ -74,6 +75,9 @@ export const HeartRateZonesPage: NextPageWithLayout = () => {
 
   return (
     <div className="w-full font-custom h-screen overflow-hidden relative">
+      <Head>
+        <title>Training Zones</title>
+      </Head>
       {/* Background Image */}
       {/* Container for Background Image and Black Overlay */}
       <div

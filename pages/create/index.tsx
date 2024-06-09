@@ -10,6 +10,7 @@ import { observer } from "mobx-react";
 import Zone2GuideDesktopLayout from "./DesktopLayout";
 import Zone2GuideMobileLayout from "./MobileLayout";
 import { useRouter } from "next/router";
+import Head from "next/head";
 
 const stripePromise = loadStripe(
   "pk_test_51Oc6ntFwAwE234wG9Lu3IfmZQXEv7nHPJx7alrzq00EzVaO74jpv7RifR5iRrkjvTS8BSv67QvoQJz2W2ccTt2bC00gLDhFGLf"
@@ -150,8 +151,10 @@ const CreateGuide: NextPageWithLayout = () => {
     else if (pageIndex < previousPageIndex) return 100;
     return 100;
   };
+
+  let content;
   if (isMobileView) {
-    return (
+    content = (
       <Zone2GuideMobileLayout
         pageIndex={pageIndex}
         userID={userID}
@@ -169,7 +172,7 @@ const CreateGuide: NextPageWithLayout = () => {
       />
     );
   } else {
-    return (
+    content = (
       <Zone2GuideDesktopLayout
         pageIndex={pageIndex}
         userID={userID}
@@ -187,6 +190,15 @@ const CreateGuide: NextPageWithLayout = () => {
       />
     );
   }
+
+  return (
+    <>
+      <Head>
+        <title>Create Guide</title>
+      </Head>
+      {content}
+    </>
+  );
 };
 
 CreateGuide.getLayout = function getLayout(page: ReactElement) {

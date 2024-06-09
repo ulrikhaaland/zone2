@@ -4,6 +4,7 @@ import { observer } from "mobx-react";
 import { useEffect, useRef, useState } from "react";
 import BlogSection from "./BlogPostSection";
 import { BlogItem } from "@/app/model/blog";
+import Head from "next/head";
 
 interface BlogPostScaffoldProps {
   post: BlogPost;
@@ -48,6 +49,9 @@ const BlogPostScaffold: React.FC<BlogPostScaffoldProps> = ({ post }) => {
 
   return (
     <div className="w-full font-custom min-h-screen flex relative bg-black">
+      <Head>
+        <title>{post.title}</title>
+      </Head>
       <div
         style={{
           position: "absolute",

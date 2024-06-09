@@ -7,6 +7,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import VideoSection from "@/app/components/content/VideoSection";
 import BlogSection from "@/app/components/content/BlogSection";
 import { useRouter } from "next/router";
+import Head from "next/head";
 
 export const ContentPage: NextPageWithLayout = () => {
   const { generalStore, authStore } = useStore();
@@ -38,6 +39,9 @@ export const ContentPage: NextPageWithLayout = () => {
 
   return (
     <div className="w-full font-custom h-screen relative bg-blackbg">
+      <Head>
+        <title>Zone 2 Articles</title>
+      </Head>
       <div className="pt-24">
         {/* Button Container */}
         {/* <div className="relative flex justify-between items-center md:px-6 pt-12 md:pt-0 md-pb-0 pb-4 w-[300px] mx-auto">

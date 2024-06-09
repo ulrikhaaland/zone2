@@ -29,6 +29,7 @@ export function jsonToGuideItem(
     // );
   }
 
+  trimmedResponse = trimmedResponse + "asd"
   let item;
   try {
     item = JSON.parse(trimmedResponse ?? jsonResponse);

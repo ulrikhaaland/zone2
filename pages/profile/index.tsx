@@ -7,6 +7,7 @@ import { observer } from "mobx-react";
 import ProfileDesktopLayout from "./DesktopLayout";
 import ProfileMobileLayout from "./MobileLayout";
 import { doc, updateDoc } from "firebase/firestore";
+import Head from "next/head";
 
 const UserProfile: NextPageWithLayout = () => {
   const { authStore, generalStore } = useStore();
@@ -26,11 +27,22 @@ const UserProfile: NextPageWithLayout = () => {
     authStore.updateUserData(updatedUser);
   };
 
+  let content;
+
   if (isMobileView) {
-    return <ProfileMobileLayout user={user} updateUser={updateUser} />;
+    content = <ProfileMobileLayout user={user} updateUser={updateUser} />;
   } else {
-    return <ProfileDesktopLayout user={user} updateUser={updateUser} />;
+    content = <ProfileDesktopLayout user={user} updateUser={updateUser} />;
   }
+  
+  return (
+    <>
+      <Head>
+        <title>Profile</title>
+      </Head>
+      {content}
+    </>
+  );
 };
 
 UserProfile.getLayout = function getLayout(page: ReactElement) {

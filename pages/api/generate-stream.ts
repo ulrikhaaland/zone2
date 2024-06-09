@@ -102,6 +102,7 @@ export default async function handler(req: Request, res: Response) {
       } catch (error) {
         console.error("Error decoding JSON:", error);
         if (value === undefined) {
+          console.error("Value is undefined, skipping");
           return;
         }
       }
@@ -118,9 +119,16 @@ export default async function handler(req: Request, res: Response) {
       if (currentBuffer.includes("},") || currentBuffer.trim().endsWith("}]")) {
         currentBuffer = trimBuffer(currentBuffer);
 
-        const guideItem = jsonToGuideItem(currentBuffer, guideItems);
-        appendGuideItem(guideItems, guideItem);
-        currentBuffer = ""; // Reset buffer after processing
+        try {
+          const guideItem = jsonToGuideItem(currentBuffer, guideItems);
+          appendGuideItem(guideItems, guideItem);
+          currentBuffer = ""; // Reset buffer after processing
+        } catch (error) {
+          logErrorToFirestore(uid, error);
+          reader.cancel();
+          runStream.abort();
+          return;
+        }
       }
       updateFirebase(uid, guideItems);
       await processStream();

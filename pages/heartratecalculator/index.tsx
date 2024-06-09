@@ -172,7 +172,7 @@ export const HeartRateZonesPage: NextPageWithLayout = () => {
         )}
         {/* Page Content */}
         <div className="flex w-full overflow-hidden md:rounded flex-col items-center min-h-max p-4 relative">
-          <div className="w-full relative md:overflow-hidden md:shadow-md md:max-h-[77.5dvh] max-h-[76.5dvh]">
+          <div className="w-full relative md:overflow-hidden md:shadow-md md:max-h-[78.5dvh] max-h-[76.5dvh]">
             <AnimatePresence mode="wait">
               <motion.div
                 className="relative z-0 flex justify-center" // Ensure content is below the overlays

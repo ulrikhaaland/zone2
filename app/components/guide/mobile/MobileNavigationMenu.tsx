@@ -43,7 +43,10 @@ const MobileGuideNavigation: React.FC<MobileGuideNavigationProps> = ({
               className="hover:text-white text-lg font-bold"
               onClick={() => setCurrentItem(item)}
               style={{
-                textShadow: "10px 10px 10px rgba(0,0,0,1)",
+                textShadow:
+                  item.subItems && item.subItems?.length > 0
+                    ? "10px 10px 10px rgba(0,0,0,1)"
+                    : "",
               }}
             >
               {item.title}

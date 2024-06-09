@@ -41,7 +41,7 @@ export default function HeartRateZones(props: HeartRateZonesProps) {
 
   return (
     <div
-      className={`md:max-h-[72.5dvh] 
+      className={`md:max-h-[78.5dvh] 
       justify-center items-center relative w-[850px] 
       inset-0 bg-black bg-opacity-60 rounded-lg md:border md:border-gray-700
       ${isMobileView && "mx-0"}`}

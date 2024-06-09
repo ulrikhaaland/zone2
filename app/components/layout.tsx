@@ -49,8 +49,15 @@ function Layout({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (hasCheckedAuth) {
       if (user) {
-        if(guideStore.guideItems.length < 1)
-        guideStore.setGuideItems(user.guideItems);
+        if (
+          guideStore.guideItems.length < 1 ||
+          (guideStore.guideItems.length > 0 &&
+            user.guideItems.length > 0 &&
+            guideStore.guideItems[guideStore.guideItems.length - 1].id !==
+              user.guideItems[user.guideItems.length - 1].id)
+        ) {
+          guideStore.setGuideItems(user.guideItems);
+        }
       }
       if (!isLoaded) setIsLoaded(true);
     }

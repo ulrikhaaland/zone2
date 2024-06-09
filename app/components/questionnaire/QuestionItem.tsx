@@ -1,6 +1,7 @@
 import { AnswerType, Question } from "@/app/model/questionaire";
 import { User } from "@/app/model/user";
 import { get } from "http";
+import { set } from "mobx";
 import {
   KeyboardEvent,
   KeyboardEventHandler,
@@ -92,7 +93,11 @@ export default function QuestionItem(props: QuestionItemProps) {
   }, []);
 
   useEffect(() => {
-    if (question.identifier === "height" && unit === "feet" && feet && inches) {
+    if (
+      question.identifier === "height" &&
+      unit === "feet" &&
+      (feet || inches)
+    ) {
       user.usesCM = false;
       // Convert feet and inches to total inches
       const totalInches =
@@ -101,6 +106,7 @@ export default function QuestionItem(props: QuestionItemProps) {
       const cm = (totalInches * 2.54).toFixed(0);
       question.answer = cm;
       setAnswer(cm); // Set answer in centimeters
+      handleOnAnswer(cm);
     }
   }, [feet, inches]);
 
@@ -129,6 +135,15 @@ export default function QuestionItem(props: QuestionItemProps) {
 
   // This effect will run once on component mount
   useEffect(() => {
+    if (question.identifier === "height") {
+      if (!user.usesCM) {
+        toggleUnit("feet");
+      }
+    } else if (question.identifier === "weight") {
+      if (!user.usesKG) {
+        toggleUnit("lbs");
+      }
+    }
     if (question.answer && question.answer !== "") {
       setShowSkipButton(false);
       question.hasSkipped = true;
@@ -233,6 +248,7 @@ export default function QuestionItem(props: QuestionItemProps) {
       onFocusNext();
     }
   };
+
   const toggleUnit = (newUnit: string) => {
     /// todo: make sure answer is converted once unit is changed with old value
     if (newUnit === "cm") {
@@ -242,6 +258,7 @@ export default function QuestionItem(props: QuestionItemProps) {
     } else if (newUnit === "feet") {
       user.usesCM = false;
     } else if (newUnit === "lbs") {
+      setAnswer(convertKgToLbs());
       user.usesKG = false;
     }
 
@@ -302,11 +319,7 @@ export default function QuestionItem(props: QuestionItemProps) {
               placeholder={isHeight ? "Height" : "Weight"}
               type="number"
               value={
-                isHeight
-                  ? answer
-                  : unit === "kg"
-                  ? question.answer
-                  : convertKgToLbs()
+                isHeight ? answer : unit === "kg" ? question.answer : answer
               }
               onChange={(e) => handleOnAnswer(e.target.value)}
               onKeyDown={handleKeyPress}

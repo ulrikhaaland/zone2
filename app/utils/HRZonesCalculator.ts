@@ -52,7 +52,7 @@ export const zoneDescriptions: HRZoneDescription[] = [
     title: "Zone 4: Threshold",
     characteristics:
       "High-intensity training zone, complete reliance on carbohydrates, significant lactate production.",
-    energySource: "Carbohydrates only, no fat oxidation.",
+    energySource: "Mostly Carbohydrates, minimal fat oxidation.",
     muscleFiberType: "Fast-twitch muscle fibers.",
     benefits:
       "Develops glycolytic capacity, critical for short, intense efforts.",

@@ -18,7 +18,9 @@ const HeartRateZoneItem: React.FC<HeartRateZoneItemProps> = ({
 }) => {
   const { generalStore } = useStore();
   const { isMobileView } = generalStore;
-  const [expanded, setExpanded] = React.useState(zone.expanded);
+  const [expanded, setExpanded] = React.useState(
+    isMobileView ? zone.expanded : true
+  );
 
   // Adjusted toggle function to prevent sub-subitems from toggling their expanded state
   const handleToggleExpand = () => {

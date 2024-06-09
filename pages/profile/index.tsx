@@ -34,7 +34,7 @@ const UserProfile: NextPageWithLayout = () => {
   } else {
     content = <ProfileDesktopLayout user={user} updateUser={updateUser} />;
   }
-  
+
   return (
     <>
       <Head>

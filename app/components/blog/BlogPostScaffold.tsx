@@ -48,7 +48,7 @@ const BlogPostScaffold: React.FC<BlogPostScaffoldProps> = ({ post }) => {
   };
 
   return (
-    <div className="w-full font-custom min-h-screen flex relative bg-black">
+    <div className="w-full font-custom min-h-screen flex relative bg-white">
       <Head>
         <title>{post.title}</title>
       </Head>
@@ -77,10 +77,8 @@ const BlogPostScaffold: React.FC<BlogPostScaffoldProps> = ({ post }) => {
           ></div>
         )}
         <div
+          className={isMobileView ? "bg-blackbg" : "bg-black/80"}
           style={{
-            backgroundColor: `${
-              isMobileView ? "rgba(0, 0, 0, 1)" : "rgba(0, 0, 0, 0.8)"
-            }`,
             position: "absolute",
             top: 0,
             left: 0,
@@ -109,8 +107,8 @@ const BlogPostScaffold: React.FC<BlogPostScaffoldProps> = ({ post }) => {
             <div className="flex justify-center w-full md:shadow-md">
               <div
                 className={`justify-center items-center relative
-                        inset-0 bg-black bg-opacity-60 rounded-lg md:border md:border-gray-700
-                        ${isMobileView && "mx-4"}`}
+                        inset-0 rounded-lg md:border md:border-gray-700
+                        ${isMobileView ? "mx-4" : "bg-black bg-opacity-60"}`}
               >
                 <div className="px-4 pb-4 text-whitebg" ref={containerRef}>
                   <ul className="list-none">

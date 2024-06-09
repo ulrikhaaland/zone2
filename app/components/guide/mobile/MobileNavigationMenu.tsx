@@ -22,7 +22,7 @@ const MobileGuideNavigation: React.FC<MobileGuideNavigationProps> = ({
 
   return (
     <nav
-      className="w-full bg-rgb(26, 32, 44) mx-4 rounded-lg md:border md:border-gray-700
+      className="w-full bg-bottomsheet mx-4 rounded-lg md:border md:border-gray-700
                 items-center justify-center"
       style={{
         height:
@@ -79,7 +79,7 @@ const MobileGuideNavigation: React.FC<MobileGuideNavigationProps> = ({
       {expanded && (
         <>
           <div className="fixed bottom-[68px] z-100 left-0 w-full h-12 bg-gradient-to-t from-black via-transparent to-transparent" />
-          <div className="fixed bottom-[64px] z-100 left-0 w-full h-3 bg-card" />
+          <div className="fixed bottom-[64px] z-100 left-0 w-full h-3 bg-bottomsheet" />
         </>
       )}
     </nav>

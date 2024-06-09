@@ -157,7 +157,7 @@ const GuideMobileLayout: React.FC<GuideMobileLayoutProps> = ({
 
   return (
     <div
-      className="w-full pt-16 font-custom h-full overflow-hidden relative"
+      className="w-full pt-16 bg-blackbg font-custom h-full overflow-hidden relative"
       onClick={collapseSheet}
     >
       <div
@@ -171,7 +171,7 @@ const GuideMobileLayout: React.FC<GuideMobileLayoutProps> = ({
           zIndex: 0, // Adjust zIndex as needed
         }}
       >
-        {!currentItem && (
+        {!currentItem || status !== GuideStatus.LOADED && (
           <>
             <div
               style={{

@@ -28,8 +28,7 @@ export function jsonToGuideItem(
     //   `Error trimming jsonResponse: ${e instanceof Error ? e.message : e}`
     // );
   }
-
-  trimmedResponse = trimmedResponse + "asd"
+  
   let item;
   try {
     item = JSON.parse(trimmedResponse ?? jsonResponse);

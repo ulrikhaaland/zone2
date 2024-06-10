@@ -66,8 +66,8 @@ const BlogPostRestingHeartRate: NextPageWithLayout = () => {
     imagePath: "/assets/images/runner/runner8.png",
     items: items,
     date: "2021-09-01",
-    categories: ["Health"],
-    description: "What is Resting Heart Rate and how to measure it?",
+    categories: ["Training Zones", "Heart Rate Training", "Resting Heart Rate"],
+    description: "Learn how to measure and interpret your resting heart rate.",
     readingTime: 5,
   };
 

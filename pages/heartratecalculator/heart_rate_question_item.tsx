@@ -1,3 +1,4 @@
+import { useStore } from "@/RootStoreProvider";
 import { AnswerType, Question } from "@/app/model/questionaire";
 import { User } from "@/app/model/user";
 import { on } from "events";
@@ -18,6 +19,8 @@ interface HRQuestionItemProps {
 export default function HRQuestionItem(props: HRQuestionItemProps) {
   const { question, onAnswer, user, autoFocus, onFocusCurrent, onFocusNext } =
     props;
+
+  const { isMobileView } = useStore().generalStore;
 
   const router = useRouter();
 
@@ -121,9 +124,14 @@ export default function HRQuestionItem(props: HRQuestionItemProps) {
             className="font-bold px-4 text-sm rounded-lg mt-4 border transition duration-150 ease-in-out bg-black/50 text-whitebg hover:bg-gray-700 border-gray-700"
             onClick={() => {
               if (question.id === 11) {
-                router.push("/blog/resting-heart-rate");
+                // open in new tab
+                if (isMobileView)
+                  window.open("/articles/resting-heart-rate", "_blank");
+                else router.push("/articles/resting-heart-rate");
               } else {
-                router.push("/blog/maximum-heart-rate");
+                if (isMobileView)
+                  window.open("/articles/maximum-heart-rate", "_blank");
+                else router.push("/articles/maximum-heart-rate");
               }
             }}
           >

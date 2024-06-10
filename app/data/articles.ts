@@ -1241,6 +1241,160 @@ const recoveryAndPreventingOvertraining: BlogPost = {
   ],
 };
 
+const mhr: BlogPost = {
+  title: "Finding Your Maximum Heart Rate",
+  href: "maximum-heart-rate",
+  imagePath: "/assets/images/runner/runner8.png",
+  items: [
+    {
+      id: 1,
+      title: "Understanding Maximum Heart Rate",
+      content: [
+        "Maximum Heart Rate (MHR) is the highest heart rate an individual can achieve during Maximum physical exertion. It's a crucial metric for tailoring workout intensity and understanding cardiovascular capacity. Knowing your MHR helps in structuring training sessions to maximize efficiency and safety.",
+      ],
+    },
+    {
+      id: 2,
+      title: "Methods to Determine Your Maximum Heart Rate",
+      content: [
+        "There are various methods to determine MHR, including theoretical calculations and empirical testing. Each method offers different levels of accuracy and practicality, from quick estimates to detailed, personalized testing.",
+      ],
+      subItems: [
+        {
+          id: 3,
+          title: "Theoretical Calculation",
+          content: [
+            "Theoretical calculations provide a quick way to estimate MHR using formulas such as 220-minus-age or the Tanaka formula. While convenient, these methods may not account for individual variations and are less accurate than empirical testing.",
+          ],
+          parentId: 2,
+          subItems: [
+            {
+              id: 4,
+              title: "The 220-minus-age Formula",
+              content: [
+                "A simple estimation of MHR is achieved by subtracting your age from 220. This method offers a general approximation but can vary significantly from actual Maximum heart rates.",
+              ],
+              parentId: 3,
+            },
+            {
+              id: 5,
+              title: "The Tanaka Formula",
+              content: [
+                "The Tanaka formula, calculated as 208 - (0.7 × age), provides a refined estimate of MHR, offering closer approximations for a wider age range compared to the 220-minus-age formula.",
+              ],
+              parentId: 3,
+            },
+          ],
+        },
+        {
+          id: 6,
+          title: "Empirical Testing",
+          content: [
+            "Empirical testing methods, including Graded Exercise Tests (GET) and field tests, measure MHR through actual physical exertion. These tests are more accurate and personalized, reflecting individual cardiovascular capacities.",
+          ],
+          parentId: 2,
+          subItems: [
+            {
+              id: 7,
+              title: "Graded Exercise Test (GET)",
+              content: [
+                "GET involves increasing exercise intensity under professional supervision until exhaustion. It's the most accurate method to determine MHR, providing personalized results based on actual performance.",
+              ],
+              parentId: 6,
+            },
+            {
+              id: 8,
+              title: "Field Tests",
+              content: [
+                "Field tests are practical alternatives to lab-based GET, requiring individuals to reach maximum effort during high-intensity exercises like sprinting. Using a heart rate monitor to track the peak heart rate can offer insights into MHR.",
+              ],
+              parentId: 6,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      id: 9,
+      title: "Considerations for Accurate MHR Measurement",
+      content: [
+        "Accurate MHR measurement requires attention to detail, including professional supervision for safety, understanding personal factors influencing MHR, using reliable monitoring equipment, proper warm-up, and ensuring recovery between tests for consistency.",
+      ],
+    },
+  ],
+  date: "2021-09-01",
+  categories: ["Training Zones", "Heart Rate Training", "Maximum Heart Rate"],
+
+  description:
+    "This piece explores the different methods you can use to find your maximum heart rate.",
+  readingTime: 5,
+};
+
+const rhr: BlogPost = {
+  title: "Finding Your Resting Heart Rate",
+  href: "resting-heart-rate",
+  imagePath: "/assets/images/runner/runner8.png",
+  items: [
+    {
+      id: 1,
+      title: "The Significance of Resting Heart Rate",
+      content: [
+        "Resting Heart Rate (RHR) is a crucial indicator of cardiovascular health and fitness. A normal RHR ranges between 60 to 100 bpm for adults, with lower rates often observed in physically active individuals. Understanding your RHR can help you monitor your heart's health and efficiency.",
+      ],
+      expanded: true,
+    },
+    {
+      id: 2,
+      title: "Accurate Measurement of RHR with Equipment",
+      content: [
+        "Measuring your RHR accurately requires the use of specific equipment, such as smartwatches and heart rate belts. Each method has its own set of guidelines to ensure precision in tracking your heart rate.",
+      ],
+      expanded: true,
+      subItems: [
+        {
+          id: 3,
+          title: "Utilizing Smartwatches",
+          content: [
+            "Smartwatches use optical sensors to measure RHR through the skin. For accurate readings, ensure a snug fit, measure after waking up, keep conditions consistent, adjust device settings for continuous monitoring, and interpret data trends over time.",
+          ],
+          parentId: 2,
+          expanded: true,
+        },
+        {
+          id: 4,
+          title: "Leveraging Heart Rate Belts",
+          content: [
+            "Heart rate belts measure RHR through electrical signals. For optimal accuracy, position the belt correctly, conduct a brief warm-up, maintain a consistent body position, use reliable equipment, and cross-check readings manually.",
+          ],
+          parentId: 2,
+          expanded: true,
+        },
+      ],
+    },
+
+    {
+      id: 5,
+      title: "Measuring RHR Without Equipment",
+      content: [
+        "You can measure your RHR manually by locating your pulse on your neck or wrist, counting the beats per minute, and repeating the process for accuracy. This method requires no equipment but a consistent approach for precise results.",
+      ],
+      expanded: true,
+    },
+    {
+      id: 6,
+      title: "Key Considerations for All Methods",
+      content: [
+        "Regardless of the method used to measure RHR, avoid stimulants, ensure hydration, and engage in regular monitoring. These practices contribute to the accuracy of RHR readings and the overall understanding of your cardiovascular health.",
+      ],
+      expanded: true,
+    },
+  ],
+  date: "2021-09-01",
+  categories: ["Training Zones", "Heart Rate Training", "Resting Heart Rate"],
+  description: "Learn how to measure and interpret your resting heart rate.",
+  readingTime: 5,
+};
+
 export const fitnessLevelOneBlogPosts: BlogPost[] = [
   Intro,
   bioEnergetics,
@@ -1258,4 +1412,6 @@ export const fitnessLevelOneBlogPosts: BlogPost[] = [
   goalsAndExpectations,
   runnersApproach,
   recoveryAndPreventingOvertraining,
+  mhr,
+  rhr,
 ];

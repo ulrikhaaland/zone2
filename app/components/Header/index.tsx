@@ -15,34 +15,32 @@ const Header = ({}) => {
   const { authStore, generalStore } = useStore();
   const [hideHeader, setHideHeader] = useState(false);
   const [currentPath, setCurrentPath] = useState(router.pathname);
+  const [currentTitle, setCurrentTitle] = useState("Zone 2 Guide");
 
   const { isMobileView, scrollableContentRef } = generalStore;
 
   const isHome = router.pathname === "/";
-  const isGuide = router.pathname === "/create";
-  const isProfile = router.pathname === "/profile";
-  const isZones = router.pathname === "/heartratecalculator";
-  const isArticles = router.pathname === "/articles";
 
   useEffect(() => {
     setHideHeader(false);
+    if (router.pathname === "/create") {
+      setCurrentTitle("Create Guide");
+      setCurrentPath("/create");
+    } else if (router.pathname === "/profile") {
+      setCurrentTitle("Profile");
+      setCurrentPath("/profile");
+    } else if (router.pathname === "/heartratecalculator") {
+      setCurrentTitle("Training Zones");
+      setCurrentPath("/heartratecalculator");
+    } else if (router.pathname.includes("/articles")) {
+      setCurrentTitle("Articles");
+      setCurrentPath("/articles");
+    } else {
+      setCurrentTitle("Zone 2 Guide");
+      setCurrentPath("/");
+    }
   }, [router.pathname]);
 
-  const getTitle = () => {
-    if (isMobileView) {
-      if (isGuide) {
-        return "Create Guide";
-      } else if (isProfile) {
-        return "Profile";
-      } else if (isZones) {
-        return "Training Zones";
-      } else if (isArticles) {
-        return "Articles";
-      }
-    }
-
-    return "Zone 2 Guide";
-  };
   const headerHideThreshold = isMobileView ? 52 : 20;
 
   useEffect(() => {
@@ -87,7 +85,7 @@ const Header = ({}) => {
           <div
             style={{ cursor: "pointer" }}
             className="flex items-center" // Ensure alignment
-            onClick={() => router.push("/")}
+            onClick={() => router.push(currentPath)}
           >
             <h1
               className={`text-3xl font-semibold leading-6 ${
@@ -99,7 +97,7 @@ const Header = ({}) => {
                 textShadow: "10px 10px 10px rgba(0,0,0,1)",
               }}
             >
-              {getTitle()}
+              {currentTitle}
             </h1>
           </div>
         )}

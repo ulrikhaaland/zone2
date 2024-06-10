@@ -182,11 +182,11 @@ export const questionnaireList: Question[] = [
   },
   {
     id: 13,
-    question: "Do you have a smart watch?",
+    question: "Do you have a heart rate monitor?",
     answerType: AnswerType.YES_NO,
     identifier: "hasHeartRateMonitor",
     description:
-      "If you have a heart rate monitoring device, such as a smart watch, it allows for precise guidance in heart rate-based training and effective tracking of your progress.",
+      "If you have a heart rate monitoring device, such as a smart watch or a chest strap, it allows for precise guidance in heart rate-based training and effective tracking of your progress.",
   },
   {
     id: 14,

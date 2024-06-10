@@ -1,9 +1,7 @@
 import React from "react";
 import { useStore } from "@/RootStoreProvider";
 
-interface CheckoutPageProps {}
-
-const CheckoutPage = (props: CheckoutPageProps) => {
+const CheckoutPage = () => {
   const { generalStore } = useStore();
   const { isMobileView } = generalStore;
 

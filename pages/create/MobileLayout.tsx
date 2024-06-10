@@ -5,7 +5,7 @@ import { Elements } from "@stripe/react-stripe-js";
 import Questionnaire from "../../app/components/questionnaire/Questionnaire";
 import UserInfoConfirmationPage from "../../app/pages/UserInfoConfirmationPage";
 import CheckoutPage from "../../app/pages/CheckoutForm";
-import { User } from "../../app/model/user";
+import { GuideStatus, User } from "../../app/model/user";
 import { AiOutlineArrowLeft } from "react-icons/ai";
 import { Question, questToFitnessData } from "@/app/model/questionaire";
 
@@ -189,7 +189,11 @@ const CreateGuideMobile: React.FC<CreateGuideMobileProps> = ({
               }
             }}
           >
-            {pageIndex !== 2 ? "Continue" : "Purchase"}
+            {pageIndex !== 2
+              ? pageIndex === 0 && user.guideStatus === GuideStatus.FREEBIE
+                ? "Create"
+                : "Continue"
+              : "Purchase"}
           </button>
         </div>
       )}

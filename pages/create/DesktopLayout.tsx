@@ -5,7 +5,7 @@ import { Elements } from "@stripe/react-stripe-js";
 import Questionnaire from "../../app/components/questionnaire/Questionnaire";
 import UserInfoConfirmationPage from "../../app/pages/UserInfoConfirmationPage";
 import CheckoutPage from "../../app/pages/CheckoutForm";
-import { User } from "../../app/model/user";
+import { GuideStatus, User } from "../../app/model/user";
 import { AiOutlineArrowLeft } from "react-icons/ai";
 import { Question, questToFitnessData } from "@/app/model/questionaire";
 
@@ -155,16 +155,18 @@ const CreateGuideDesktop: React.FC<CreateGuideDesktopProps> = ({
               )}
 
               {/* Pagination dots */}
-              <div className="flex items-center">
-                {[0, 1, 2].map((index) => (
-                  <span
-                    key={index}
-                    className={`h-2 w-2 mx-1 rounded-full ${
-                      pageIndex === index ? "bg-whitebg" : "bg-gray-600"
-                    }`}
-                  ></span>
-                ))}
-              </div>
+              {user.guideStatus !== GuideStatus.FREEBIE && (
+                <div className="flex items-center">
+                  {[0, 1, 2].map((index) => (
+                    <span
+                      key={index}
+                      className={`h-2 w-2 mx-1 rounded-full ${
+                        pageIndex === index ? "bg-whitebg" : "bg-gray-600"
+                      }`}
+                    ></span>
+                  ))}
+                </div>
+              )}
               <button
                 className={`font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline transition duration-150 ease-in-out ${
                   canSubmit
@@ -181,7 +183,11 @@ const CreateGuideDesktop: React.FC<CreateGuideDesktopProps> = ({
                   }
                 }}
               >
-                {pageIndex !== 2 ? "Continue" : "Purchase"}
+                {pageIndex !== 2
+                  ? pageIndex === 0 && user.guideStatus === GuideStatus.FREEBIE
+                    ? "Create"
+                    : "Continue"
+                  : "Purchase"}
               </button>
             </div>
           </div>

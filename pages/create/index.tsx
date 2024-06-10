@@ -72,7 +72,7 @@ const CreateGuide: NextPageWithLayout = () => {
   };
 
   const onConfirm = async (isForward: boolean) => {
-    if (pageIndex < 2) {
+    if (pageIndex < 2 && user?.guideStatus !== GuideStatus.FREEBIE) {
       if (pageIndex === 1 && !isForward) {
         setForward(true);
         setTimeout(() => {

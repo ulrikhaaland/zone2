@@ -236,10 +236,11 @@ export function questToFitnessData(answers: Question[]): FitnessData {
       if (cardioFrequency === cardioFreqQuestion.availableAnswers![0]) {
         fitnessLevel = FitnessLevel.BEGINNER;
         currentAverageWeeklyCardio = 0;
+      } else if (cardioFrequency === cardioFreqQuestion.availableAnswers![1]) {
+        currentAverageWeeklyCardio = 1;
+        fitnessLevel = FitnessLevel.BEGINNER;
       } else {
-        if (cardioFrequency === cardioFreqQuestion.availableAnswers![1])
-          currentAverageWeeklyCardio = 1;
-        else currentAverageWeeklyCardio = 2;
+        currentAverageWeeklyCardio = 2;
         fitnessLevel = FitnessLevel.ACTIVE;
       }
     } else {

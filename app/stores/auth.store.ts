@@ -248,7 +248,7 @@ export default class AuthStore {
       usesKG: true,
       usesCM: true,
       hasPaid: false,
-      guideStatus: userCount < 50 ? GuideStatus.FREEBIE : GuideStatus.NONE,
+      guideStatus: userCount < 100 ? GuideStatus.FREEBIE : GuideStatus.NONE,
       retries: 0,
       hasReviewed: false,
       hasDeclinedReview: false,

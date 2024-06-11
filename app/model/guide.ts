@@ -28,7 +28,7 @@ export function jsonToGuideItem(
     //   `Error trimming jsonResponse: ${e instanceof Error ? e.message : e}`
     // );
   }
-  
+
   let item;
   try {
     item = JSON.parse(trimmedResponse ?? jsonResponse);
@@ -228,6 +228,13 @@ export function findParentItemByTitle(
       (item) =>
         item.title.toLowerCase() === "recovery & preventing overtraining"
     );
+  } else if (title === "duration" || title === "frequency") {
+    const effExerciseDoses = guideItems.find(
+      (item) => item.title.toLowerCase() === "effective exercise doses"
+    );
+    if (effExerciseDoses) {
+      return effExerciseDoses.subItems![effExerciseDoses.subItems!.length - 1];
+    }
   } else {
     return undefined;
   }

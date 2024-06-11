@@ -775,7 +775,7 @@ const benefitsOfZone2: BlogPost = {
 const choosingTheRightExercise: BlogPost = {
   title: "Choosing the Right Exercise for Zone 2 Training",
   href: "choosing-the-right-exercise",
-  imagePath: "/assets/images/articles/12.png",
+  imagePath: "/assets/images/articles/shoes.png",
   date: "2024-01-01",
   categories: [
     "Endurance Training",
@@ -895,7 +895,7 @@ const choosingTheRightExercise: BlogPost = {
 const volumeDurationFrequency: BlogPost = {
   title: "Core Components of a Zone 2 Training Plan",
   href: "balancing-volume-duration-frequency",
-  imagePath: "/assets/images/swimmer/swimmer.png",
+  imagePath: "/assets/images/swimmer/swimmer2.png",
   date: "2024-01-01",
   categories: ["Zone 2", "Training"],
   description:
@@ -1139,7 +1139,7 @@ const goalsAndExpectations: BlogPost = {
 const runnersApproach: BlogPost = {
   title: "Insights into Zone 2 Training: A Runner's Approach",
   href: "runners-approach",
-  imagePath: "/assets/images/runner/runner8.png",
+  imagePath: "/assets/images/runner/runner6.png",
   date: "2024-01-01",
   categories: ["Running", "Cardiovascular Training", "Endurance"],
   description:

@@ -63,6 +63,13 @@ export default async function handler(req: Request, res: Response) {
 
     const guideItems: GuideItem[] = [];
 
+    const handleOnError = async (error: unknown) => {
+      console.error("Error during guide generation:", error);
+      logErrorToFirestore(uid, error);
+      reader.cancel();
+      runStream.abort();
+    };
+
     const processStream = async () => {
       const { value, done } = await reader.read();
       if (done) {
@@ -74,7 +81,8 @@ export default async function handler(req: Request, res: Response) {
             const guideItem = jsonToGuideItem(currentBuffer);
             appendGuideItem(guideItems, guideItem);
           } catch (error) {
-            logErrorToFirestore(uid, error);
+            handleOnError(error);
+            return;
           }
         }
 
@@ -102,7 +110,7 @@ export default async function handler(req: Request, res: Response) {
       } catch (error) {
         console.error("Error decoding JSON:", error);
         if (value === undefined) {
-          console.error("Value is undefined, skipping");
+          handleOnError("Value is undefined");
           return;
         }
       }
@@ -124,9 +132,7 @@ export default async function handler(req: Request, res: Response) {
           appendGuideItem(guideItems, guideItem);
           currentBuffer = ""; // Reset buffer after processing
         } catch (error) {
-          logErrorToFirestore(uid, error);
-          reader.cancel();
-          runStream.abort();
+          handleOnError(error);
           return;
         }
       }
@@ -137,8 +143,7 @@ export default async function handler(req: Request, res: Response) {
     processStream();
 
     runStream.on("error", async (error) => {
-      console.error("Streaming error:", error);
-      await logErrorToFirestore(uid, error);
+      handleOnError(error);
       res.status(500).json({
         success: false,
         error: "Failed during guide generation due to streaming error",

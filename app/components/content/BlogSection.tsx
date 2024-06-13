@@ -1,14 +1,12 @@
 import { FitnessLevel, User } from "@/app/model/user";
 import Image from "next/image";
-import { useRouter } from "next/router";
 import { fitnessLevelOneBlogPosts } from "@/app/data/articles";
 
 interface Props {
-  user?: User | null;
   onClickArticle: (path: string) => void;
 }
 
-export default function SectionBlog({ user, onClickArticle }: Props) {
+export default function SectionBlog({ onClickArticle }: Props) {
   return (
     <div className="mx-auto max-w-7xl px-6 lg:px-8">
       <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 lg:mx-0 lg:max-w-none lg:grid-cols-3">
@@ -17,7 +15,7 @@ export default function SectionBlog({ user, onClickArticle }: Props) {
             key={post.title}
             className="max-w-xl flex-col items-start justify-between"
           >
-            <div className="relative w-full h-52  rounded-lg overflow-hidden">
+            <div className="relative w-full h-52 rounded-lg overflow-hidden">
               <span
                 style={{
                   cursor: "pointer",

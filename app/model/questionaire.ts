@@ -226,12 +226,11 @@ export function questToFitnessData(answers: Question[]): FitnessData {
   let currentAverageWeeklyCardio: number | undefined = undefined;
 
   if (doesExercise) {
-    if (doesCardio) {
-      const cardioFreqQuestion: Question = answers.find(
-        (q) => q.identifier === "cardioFrequency"
-      )!;
-
-      const cardioFrequency: string = cardioFreqQuestion.answer;
+    const cardioFreqQuestion: Question = answers.find(
+      (q) => q.identifier === "cardioFrequency"
+    )!;
+    if (doesCardio && cardioFreqQuestion?.answer !== undefined) {
+      const cardioFrequency: string = cardioFreqQuestion?.answer;
 
       if (cardioFrequency === cardioFreqQuestion.availableAnswers![0]) {
         fitnessLevel = FitnessLevel.BEGINNER;

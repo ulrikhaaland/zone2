@@ -112,44 +112,46 @@ const Guide = () => {
       const unsubscribe = authStore.listenToUserGuideStatus((status, items) => {
         const guideItems = guideStore.getGuideItems();
         if (items.length > 0) {
-          let itemToAdd = items[items.length - 1];
+          for (let i = 0; i < items.length - 1; i++) {
+            let itemToAdd = items[i];
 
-          if (
-            itemToAdd.subItems &&
-            itemToAdd.subItems?.length > 0 &&
-            guideItems.find((item) => item.id === itemToAdd.id) !== undefined
-          ) {
-            itemToAdd = itemToAdd.subItems![itemToAdd.subItems!.length - 1];
-            if (itemToAdd.subItems && itemToAdd.subItems?.length > 0) {
+            if (
+              itemToAdd.subItems &&
+              itemToAdd.subItems?.length > 0 &&
+              guideItems.find((item) => item.id === itemToAdd.id) !== undefined
+            ) {
               itemToAdd = itemToAdd.subItems![itemToAdd.subItems!.length - 1];
+              if (itemToAdd.subItems && itemToAdd.subItems?.length > 0) {
+                itemToAdd = itemToAdd.subItems![itemToAdd.subItems!.length - 1];
+              }
             }
-          }
 
-          let isAlreadyAdded = false;
-          for (const item of guideItems) {
-            if (item.id === itemToAdd.id) {
-              isAlreadyAdded = true;
-              break;
-            }
-            if (item.subItems) {
-              for (const subItem of item.subItems) {
-                if (subItem.id === itemToAdd.id) {
-                  isAlreadyAdded = true;
-                  break;
-                }
-                if (subItem.subItems) {
-                  for (const subSubItem of subItem.subItems) {
-                    if (subSubItem.id === itemToAdd.id) {
-                      isAlreadyAdded = true;
-                      break;
+            let isAlreadyAdded = false;
+            for (const item of guideItems) {
+              if (item.id === itemToAdd.id) {
+                isAlreadyAdded = true;
+                break;
+              }
+              if (item.subItems) {
+                for (const subItem of item.subItems) {
+                  if (subItem.id === itemToAdd.id) {
+                    isAlreadyAdded = true;
+                    break;
+                  }
+                  if (subItem.subItems) {
+                    for (const subSubItem of subItem.subItems) {
+                      if (subSubItem.id === itemToAdd.id) {
+                        isAlreadyAdded = true;
+                        break;
+                      }
                     }
                   }
                 }
               }
             }
-          }
 
-          if (!isAlreadyAdded) addGuideItem(itemToAdd);
+            if (!isAlreadyAdded) addGuideItem(itemToAdd);
+          }
         } else {
           setGuideItems([]);
         }

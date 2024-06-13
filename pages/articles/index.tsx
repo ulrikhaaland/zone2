@@ -1,8 +1,7 @@
 import { ReactElement, useEffect, useRef, useState } from "react";
 import { NextPageWithLayout } from "../_app";
-import { useStore } from "@/RootStoreProvider";
-import VideoIcon from "@mui/icons-material/YouTube";
-import ArticleIcon from "@mui/icons-material/Article";
+// import VideoIcon from "@mui/icons-material/YouTube";
+// import ArticleIcon from "@mui/icons-material/Article";
 import { AnimatePresence, motion } from "framer-motion";
 import VideoSection from "@/app/components/content/VideoSection";
 import BlogSection from "@/app/components/content/BlogSection";
@@ -10,11 +9,7 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 
 export const ContentPage: NextPageWithLayout = () => {
-  const { generalStore, authStore } = useStore();
-  const { isMobileView } = generalStore;
-  const { user } = authStore;
   const [pageIndex, setPageIndex] = useState(0);
-  const [scrollPosition, setScrollPosition] = useState(0);
   const contentRef = useRef<HTMLDivElement>(null);
 
   const router = useRouter();
@@ -105,7 +100,7 @@ export const ContentPage: NextPageWithLayout = () => {
                 transition={{ duration: 0.25 }}
               >
                 {pageIndex === 0 && (
-                  <BlogSection user={user} onClickArticle={goToArticle} />
+                  <BlogSection onClickArticle={goToArticle} />
                 )}
                 {pageIndex === 1 && <VideoSection />}
               </motion.div>

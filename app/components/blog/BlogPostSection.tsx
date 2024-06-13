@@ -76,7 +76,7 @@ const BlogPostSection: React.FC<BlogPostSectionProps> = ({
               {item.subItems?.map((subItem) => (
                 <BlogPostSection
                   key={subItem.id}
-                  item={{ ...subItem, expanded: true }}
+                  item={{ ...subItem }}
                   isSubItem={true}
                 />
               ))}

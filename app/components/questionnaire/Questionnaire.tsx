@@ -179,7 +179,7 @@ export default function Questionnaire(props: QuestionnaireProps) {
         nextQuestion =
           dependentQuestions.find(
             (q) => q.depensOnAnswer === currentQuestion.answer
-          ) || nextQuestion;
+          ) || questionsFull.find((q) => q.id === currentQuestion.id + 2)!;
       }
 
       if (!currentQuestions.includes(nextQuestion)) {

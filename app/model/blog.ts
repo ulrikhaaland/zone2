@@ -16,7 +16,6 @@ export interface BlogItem {
   content: string[];
   image?: string;
   link?: string;
-  expanded?: boolean;
   subItems?: BlogItem[];
   parentId?: number;
 }

@@ -17,36 +17,9 @@ const BlogPostScaffold: React.FC<BlogPostScaffoldProps> = ({ post }) => {
 
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const [expandedItemId, setExpandedItemId] = useState<number | null>(null);
-
-  useEffect(() => {
-    post.items.forEach((item) => {
-      item.expanded = true;
-    });
-  }, [post.items]);
-
   useEffect(() => {
     setScrollableContentRef(containerRef);
   }, [containerRef, setScrollableContentRef]);
-
-  useEffect(() => {
-    if (expandedItemId !== null && containerRef.current) {
-      const itemElement = document.getElementById(
-        `guide-item-${expandedItemId}`
-      );
-      if (itemElement) {
-        const itemOffsetTop = itemElement.offsetTop;
-        containerRef.current.scrollTo({
-          top: itemOffsetTop,
-          behavior: "smooth",
-        });
-      }
-    }
-  }, [expandedItemId]);
-
-  const handleExpand = (item: BlogItem) => {
-    setExpandedItemId(item.id);
-  };
 
   return (
     <HideNavbarOnScroll>

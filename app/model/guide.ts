@@ -62,22 +62,22 @@ export function jsonToGuideItem(
   }
 
   // add video link of what zone 2 looks like
-  if (guideItem.title.toLowerCase() === "what to think about during zone 2") {
-    const parent = guideItems?.find(
-      (item) => item.title.toLowerCase() === "methods for determining zone 2"
-    );
-    const item: GuideItem = {
-      id: 200,
-      title: "Video: What Zone 2 Looks Like",
-      explanation: "A video showing what Zone 2 looks like.",
-      videoLink: "https://youtu.be/1RqY5EYOM0k?si=ysR7w0_yxYtdkyJ5",
-      expanded: false,
-      parentId: guideItem.id,
-    };
-    if (parent) {
-      parent.subItems?.push(item);
-    }
-  }
+  // if (guideItem.title.toLowerCase() === "what to think about during zone 2") {
+  //   const parent = guideItems?.find(
+  //     (item) => item.title.toLowerCase() === "methods for determining zone 2"
+  //   );
+  //   const item: GuideItem = {
+  //     id: 200,
+  //     title: "Video: What Zone 2 Looks Like",
+  //     explanation: "A video showing what Zone 2 looks like.",
+  //     videoLink: "https://youtu.be/1RqY5EYOM0k?si=ysR7w0_yxYtdkyJ5",
+  //     expanded: false,
+  //     parentId: guideItem.id,
+  //   };
+  //   if (parent) {
+  //     parent.subItems?.push(item);
+  //   }
+  // }
 
   return guideItem;
 }
@@ -182,6 +182,18 @@ export function appendGuideItem(guideItems: GuideItem[], guideItem: GuideItem) {
 
   if (parentItem) {
     parentItem.subItems!.push(guideItem);
+    // add video link of what zone 2 looks like
+    if (guideItem.title.toLowerCase() === "combining methods") {
+      const item: GuideItem = {
+        id: 200,
+        title: "Video: What Zone 2 Looks Like",
+        explanation: "A video showing what Zone 2 looks like.",
+        videoLink: "https://youtu.be/1RqY5EYOM0k?si=ysR7w0_yxYtdkyJ5",
+        expanded: false,
+        parentId: parentItem.id,
+      };
+      parentItem.subItems!.push(item);
+    }
   } else {
     // Handle the case where no parent is found; depending on your logic, this might be an error or a default behavior.
     // console.warn("Parent item not found for", guideItem);
@@ -234,6 +246,36 @@ export function findParentItemByTitle(
     );
     if (effExerciseDoses) {
       return effExerciseDoses.subItems![effExerciseDoses.subItems!.length - 1];
+    }
+  } else if (title === "lactate measurement" || title === "metabolic test") {
+    const methods = guideItems.find(
+      (item) => item.title.toLowerCase() === "methods for determining zone 2"
+    );
+    if (methods) {
+      return methods.subItems!.find(
+        (item) => item.title.toLowerCase() === "professional methods"
+      );
+    }
+  } else if (
+    title === "rpe" ||
+    title === "the talk test" ||
+    title === "your zone 2 heart rate range" ||
+    title === "combining methods"
+  ) {
+    return guideItems.find(
+      (item) => item.title.toLowerCase() === "methods for determining zone 2"
+    );
+  } else if (
+    title === "when to increase duration" ||
+    title === "when to increase frequency"
+  ) {
+    const goalsNExpectations = guideItems.find(
+      (item) => item.title.toLowerCase() === "realistic goals & expectations"
+    );
+    if (goalsNExpectations) {
+      return goalsNExpectations.subItems!.find(
+        (item) => item.title === "assessing progress"
+      );
     }
   } else {
     return undefined;

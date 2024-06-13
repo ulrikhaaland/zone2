@@ -1333,7 +1333,7 @@ const mhr: BlogPost = {
 const rhr: BlogPost = {
   title: "Finding Your Resting Heart Rate",
   href: "resting-heart-rate",
-  imagePath: "/assets/images/runner/runner8.png",
+  imagePath: "/assets/images/articles/resting.png",
   items: [
     {
       id: 1,

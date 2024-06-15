@@ -109,67 +109,90 @@ const Guide = () => {
       isSubscribed.current = true;
 
       // Setup listener for guideStatus updates
-      const unsubscribe = authStore.listenToUserGuideStatus((status, items) => {
-        const guideItems = guideStore.getGuideItems();
-        if (items.length > 0) {
-          for (let i = 0; i < items.length - 1; i++) {
-            let itemToAdd = items[i];
+      const unsubscribe = authStore.listenToUserGuideStatus(
+        (status, newItems) => {
+          const guideItems = guideStore.getGuideItems();
+          // / remove all items from items that are already in guideItems
+          const items = newItems.filter((item) => {
+            return !guideItems.find((guideItem) => guideItem.id === item.id);
+          });
+          const newItem = newItems[newItems.length - 1];
 
-            if (
-              itemToAdd.subItems &&
-              itemToAdd.subItems?.length > 0 &&
-              guideItems.find((item) => item.id === itemToAdd.id) !== undefined
-            ) {
-              itemToAdd = itemToAdd.subItems![itemToAdd.subItems!.length - 1];
-              if (itemToAdd.subItems && itemToAdd.subItems?.length > 0) {
-                itemToAdd = itemToAdd.subItems![itemToAdd.subItems!.length - 1];
-              }
-            }
+          if (
+            newItem?.subItems &&
+            newItem.subItems[newItem.subItems.length - 1]?.id === 200
+          ) {
+            addGuideItem(newItem.subItems[newItem.subItems.length - 2]);
+          }
+          items.push(newItem);
+          if (items.length > 0) {
+            for (let i = 0; i <= items.length - 1; i++) {
+              let itemToAdd = items[i];
 
-            let isAlreadyAdded = false;
-            for (const item of guideItems) {
-              if (item.id === itemToAdd.id) {
-                isAlreadyAdded = true;
+              if (itemToAdd === undefined) {
                 break;
               }
-              if (item.subItems) {
-                for (const subItem of item.subItems) {
-                  if (subItem.id === itemToAdd.id) {
-                    isAlreadyAdded = true;
-                    break;
-                  }
-                  if (subItem.subItems) {
-                    for (const subSubItem of subItem.subItems) {
-                      if (subSubItem.id === itemToAdd.id) {
-                        isAlreadyAdded = true;
-                        break;
+
+              if (
+                itemToAdd.subItems &&
+                itemToAdd.subItems.length > 0 &&
+                guideItems.find((item) => item.id === itemToAdd.id) !==
+                  undefined
+              ) {
+                itemToAdd = itemToAdd.subItems![itemToAdd.subItems!.length - 1];
+                if (itemToAdd.subItems && itemToAdd.subItems?.length > 0) {
+                  itemToAdd =
+                    itemToAdd.subItems![itemToAdd.subItems!.length - 1];
+                }
+              }
+
+              let isAlreadyAdded = false;
+              for (const item of guideItems) {
+                if (item.id === itemToAdd.id) {
+                  isAlreadyAdded = true;
+                  break;
+                }
+                if (item.subItems) {
+                  for (const subItem of item.subItems) {
+                    if (subItem.id === itemToAdd.id) {
+                      isAlreadyAdded = true;
+                      break;
+                    }
+                    if (subItem.subItems) {
+                      for (const subSubItem of subItem.subItems) {
+                        if (subSubItem.id === itemToAdd.id) {
+                          isAlreadyAdded = true;
+                          break;
+                        }
                       }
                     }
                   }
                 }
               }
+
+              if (!isAlreadyAdded) {
+                addGuideItem(itemToAdd);
+              }
             }
-
-            if (!isAlreadyAdded) addGuideItem(itemToAdd);
+          } else {
+            setGuideItems([]);
           }
-        } else {
-          setGuideItems([]);
-        }
 
-        // handle guide error
-        if (status === GuideStatus.ERROR) {
-          setGuideStatus(GuideStatus.ERROR);
-          unsubscribe?.();
-          isSubscribed.current = false;
-        }
+          // handle guide error
+          if (status === GuideStatus.ERROR) {
+            setGuideStatus(GuideStatus.ERROR);
+            unsubscribe?.();
+            isSubscribed.current = false;
+          }
 
-        if (status === GuideStatus.LOADED) {
-          onGuideLoaded();
-          unsubscribe?.();
+          if (status === GuideStatus.LOADED) {
+            onGuideLoaded();
+            unsubscribe?.();
 
-          isSubscribed.current = false;
+            isSubscribed.current = false;
+          }
         }
-      });
+      );
 
       // Cleanup function to unsubscribe
       return () => {

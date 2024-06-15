@@ -17,7 +17,7 @@ export default class GuideStore {
   }
 
   addGuideItem(item: GuideItem) {
-    appendGuideItem(this.guideItems, item);
+    appendGuideItem(this.guideItems, item, true);
     this.setGuideItemsCount();
   }
 

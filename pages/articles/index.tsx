@@ -1,5 +1,6 @@
 import { ReactElement, useEffect, useRef, useState } from "react";
 import { NextPageWithLayout } from "../_app";
+import { useStore } from "@/RootStoreProvider";
 // import VideoIcon from "@mui/icons-material/YouTube";
 // import ArticleIcon from "@mui/icons-material/Article";
 import { AnimatePresence, motion } from "framer-motion";

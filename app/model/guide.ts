@@ -162,7 +162,11 @@ export function parseJsonToGuideItems(jsonResponse: string): GuideItem[] {
   return guideItems.filter((item: GuideItem) => item.parentId === null);
 }
 
-export function appendGuideItem(guideItems: GuideItem[], guideItem: GuideItem) {
+export function appendGuideItem(
+  guideItems: GuideItem[],
+  guideItem: GuideItem,
+  clientSide: boolean = false
+) {
   let parentItem: GuideItem | undefined;
 
   // set expanded === true for first 3 items
@@ -183,7 +187,7 @@ export function appendGuideItem(guideItems: GuideItem[], guideItem: GuideItem) {
   if (parentItem) {
     parentItem.subItems!.push(guideItem);
     // add video link of what zone 2 looks like
-    if (guideItem.title.toLowerCase() === "combining methods") {
+    if (!clientSide && guideItem.title.toLowerCase() === "combining methods") {
       const item: GuideItem = {
         id: 200,
         title: "Video: What Zone 2 Looks Like",

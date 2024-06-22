@@ -20,7 +20,10 @@ const BlogPostScaffold: React.FC<BlogPostScaffoldProps> = ({ post }) => {
   }, [containerRef, setScrollableContentRef]);
 
   return (
-    <div className="w-full font-custom min-h-screen flex relative bg-white">
+    <div
+      ref={containerRef}
+      className="w-full overflow-y-auto font-custom min-h-screen flex relative"
+    >
       <Head>
         <title>{post.title}</title>
       </Head>
@@ -60,8 +63,7 @@ const BlogPostScaffold: React.FC<BlogPostScaffoldProps> = ({ post }) => {
         ></div>
       </div>
       <div
-        ref={containerRef}
-        className="overflow-y-auto relative w-full flex justify-center custom-scrollbar"
+        className="relative w-full flex justify-center custom-scrollbar"
         style={{
           height: `100vh`,
           WebkitOverflowScrolling: "touch", // Enable momentum scrolling on iOS

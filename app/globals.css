@@ -20,6 +20,7 @@ html,
 body {
   height: 100%;
   margin: 0;
+  overflow-y: auto;
   overflow: hidden;
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(

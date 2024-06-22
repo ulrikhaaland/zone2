@@ -3,7 +3,7 @@ import Header from "./Header";
 import Login from "./Login";
 import { observer } from "mobx-react";
 import { useStore } from "../../RootStoreProvider";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { NextRouter, useRouter } from "next/router";
 import Head from "next/head";
 import Loading from "./loading";
@@ -19,6 +19,7 @@ function Layout({ children }: { children: React.ReactNode }) {
   const currentRoute = router.pathname;
 
   const isHome = router.pathname === "/";
+
   const isArticles = router.pathname.includes("/articles");
 
   const getShowHeader = (): boolean => {
@@ -26,8 +27,10 @@ function Layout({ children }: { children: React.ReactNode }) {
       if (!user) {
         if (isHome) return false;
       }
+
       return true;
     }
+
     return true;
   };
 
@@ -100,15 +103,14 @@ function Layout({ children }: { children: React.ReactNode }) {
           </>
         )}
       </Head>
-      {getShowHeader() && <Header />}
+      {getShowHeader() && <Header></Header>}
       <div
-        className={`font-custom bg-black text-black w-full`}
+        className={`font-custom ${"bg-black"} text-black w-full`}
         style={{
-          height: `100vh`,
-          overflow: "auto", // Enable scrolling
-          WebkitOverflowScrolling: "touch", // Momentum scrolling on iOS
+          height: `100dvh`,
           display: "flex",
           flexDirection: "column",
+          alignItems: "center",
         }}
       >
         {isLoaded ? children : <Loading />}

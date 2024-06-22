@@ -17,6 +17,7 @@ interface GuideMobileContentProps {
   generateGuide: () => void;
 }
 
+// Add this method inside your Guide component
 const GuideMobileContent: React.FC<GuideMobileContentProps> = ({
   feedbackExpanded,
   setFeedbackExpanded,
@@ -39,10 +40,7 @@ const GuideMobileContent: React.FC<GuideMobileContentProps> = ({
               key={currentItem.id + "container"}
               ref={containerRef}
               className="w-full px-4 rounded-lg md:border md:border-gray-700 items-center justify-center overflow-y-auto"
-              style={{
-                height: "calc(100vh - 150px)",
-                WebkitOverflowScrolling: "touch",
-              }}
+              style={{ height: "calc(100dvh - 150px)" }}
             >
               <ul className="list-none p-0 pb-12">
                 <MobileGuideSection
@@ -61,7 +59,7 @@ const GuideMobileContent: React.FC<GuideMobileContentProps> = ({
     return (
       <div
         className="flex justify-center items-center"
-        style={{ height: "calc(100vh - 150px)" }}
+        style={{ height: "calc(100dvh - 150px)" }}
       >
         <button
           className="flex justify-center items-center font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline transition duration-150 ease-in-out bg-whitebg text-black border border-gray-700"
@@ -78,7 +76,7 @@ const GuideMobileContent: React.FC<GuideMobileContentProps> = ({
     return (
       <div
         className="flex flex-col justify-center items-center"
-        style={{ height: "calc(100vh - 150px)" }}
+        style={{ height: "calc(100dvh - 150px)" }}
       >
         <p className="text-whitebg text-center mb-4">
           There was an error creating your guide. Please try again.

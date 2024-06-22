@@ -236,9 +236,10 @@ export default class AuthStore {
 
   async createUser(uid: string): Promise<User> {
     // Check firestore collection for amount of user documents
-    const userCollection = collection(db, "users");
-    const userCollectionSnapshot = await getCountFromServer(userCollection);
-    const userCount = userCollectionSnapshot.data().count;
+    // const userCollection = collection(db, "users");
+    // const userCollectionSnapshot = await getCountFromServer(userCollection);
+    // const userCount = userCollectionSnapshot.data().count;
+    // userCount < 1003 ? GuideStatus.FREEBIE :
 
     const userData: User = {
       uid: uid,
@@ -248,7 +249,7 @@ export default class AuthStore {
       usesKG: true,
       usesCM: true,
       hasPaid: false,
-      guideStatus: userCount < 100 ? GuideStatus.FREEBIE : GuideStatus.NONE,
+      guideStatus: GuideStatus.NONE,
       retries: 0,
       hasReviewed: false,
       hasDeclinedReview: false,

@@ -17,7 +17,6 @@ interface GuideMobileContentProps {
   generateGuide: () => void;
 }
 
-// Add this method inside your Guide component
 const GuideMobileContent: React.FC<GuideMobileContentProps> = ({
   feedbackExpanded,
   setFeedbackExpanded,
@@ -40,7 +39,10 @@ const GuideMobileContent: React.FC<GuideMobileContentProps> = ({
               key={currentItem.id + "container"}
               ref={containerRef}
               className="w-full px-4 rounded-lg md:border md:border-gray-700 items-center justify-center overflow-y-auto"
-              style={{ height: "calc(100dvh - 150px)" }}
+              style={{
+                height: "calc(100dvh - 150px)",
+                WebkitOverflowScrolling: "touch",
+              }} // Add momentum scrolling on iOS
             >
               <ul className="list-none p-0 pb-12">
                 <MobileGuideSection

@@ -61,9 +61,10 @@ const BlogPostScaffold: React.FC<BlogPostScaffoldProps> = ({ post }) => {
       </div>
       <div
         ref={containerRef}
-        className="overflow-y-auto relative w-full flex justify-center"
+        className="overflow-y-auto relative w-full flex justify-center custom-scrollbar"
         style={{
-          height: `calc(100dvh)`,
+          height: `100vh`,
+          WebkitOverflowScrolling: "touch", // Enable momentum scrolling on iOS
         }}
       >
         <div className="w-[800px] pt-24 relative flex flex-col">
@@ -82,7 +83,7 @@ const BlogPostScaffold: React.FC<BlogPostScaffoldProps> = ({ post }) => {
                         inset-0 rounded-lg md:border md:border-gray-700
                         ${isMobileView ? "mx-4" : "bg-black bg-opacity-60"}`}
               >
-                <div className="px-4 pb-4 text-whitebg" ref={containerRef}>
+                <div className="px-4 pb-4 text-whitebg">
                   <ul className="list-none">
                     {post.items.map((item, index) => (
                       <BlogSection

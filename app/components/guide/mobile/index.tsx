@@ -171,7 +171,7 @@ const GuideMobileLayout: React.FC<GuideMobileLayoutProps> = ({
           zIndex: 0, // Adjust zIndex as needed
         }}
       >
-        {!currentItem || status !== GuideStatus.LOADED && (
+        {
           <>
             <div
               style={{
@@ -196,7 +196,7 @@ const GuideMobileLayout: React.FC<GuideMobileLayoutProps> = ({
               }}
             ></div>
           </>
-        )}
+        }
         {status === GuideStatus.LOADING && !currentItem && <Loading />}
       </div>
 

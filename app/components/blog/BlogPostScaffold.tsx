@@ -52,7 +52,7 @@ const BlogPostScaffold: React.FC<BlogPostScaffoldProps> = ({ post }) => {
             ></div>
           )}
           <div
-            className={isMobileView ? "bg-blackbg" : "bg-black/80"}
+            className={isMobileView ? "bg-blackbg" : "bg-black/70"}
             style={{
               position: "absolute",
               top: 0,

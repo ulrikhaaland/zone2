@@ -1,16 +1,30 @@
-import { GetServerSideProps } from "next";
+import { GetStaticPaths, GetStaticProps } from "next";
 import { BlogPost } from "@/app/model/blog"; // Import your types
 import BlogPostScaffold from "@/app/components/blog/BlogPostScaffold";
 import { fitnessLevelOneBlogPosts } from "@/app/data/articles";
-// Assume fetchBlogPostBySlug is properly typed to return a BlogPost or null
 
 interface BlogPostPageProps {
   post: BlogPost;
 }
 
-// Define the type for the `getServerSideProps` function
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  let slug: string[] = context.params!.slug! as string[];
+export const getStaticPaths: GetStaticPaths = async () => {
+  // Generate paths for all fitnessLevelOneBlogPosts
+  const paths = fitnessLevelOneBlogPosts.map((post) => ({
+    params: {
+      slug: post.href.split("/"),
+    },
+  }));
+
+  return {
+    paths,
+    fallback: "blocking", // Use 'blocking' to server-render any missing pages at request time
+  };
+};
+
+export const getStaticProps: GetStaticProps<BlogPostPageProps> = async (
+  context
+) => {
+  let slug: string[] = context.params!.slug as string[];
 
   // Ensure 'slug' is an array (it should be, given the catch-all route)
   if (!Array.isArray(slug)) {
@@ -44,6 +58,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     props: {
       post,
     },
+    revalidate: 60, // Revalidate the page every 60 seconds to keep it fresh
   };
 };
 

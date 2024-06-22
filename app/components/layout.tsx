@@ -3,7 +3,7 @@ import Header from "./Header";
 import Login from "./Login";
 import { observer } from "mobx-react";
 import { useStore } from "../../RootStoreProvider";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { NextRouter, useRouter } from "next/router";
 import Head from "next/head";
 import Loading from "./loading";

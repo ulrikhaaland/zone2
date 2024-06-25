@@ -7,6 +7,7 @@ import { doc, updateDoc } from "firebase/firestore";
 import { db } from "@/pages/_app";
 import GuideDesktopLayout from "./desktop";
 import GuideMobileLayout from "./mobile";
+import { set } from "mobx";
 
 const Guide = () => {
   const { authStore, generalStore, guideStore } = useStore();
@@ -36,7 +37,12 @@ const Guide = () => {
     isFetching.current = true;
     setGuideStatus(GuideStatus.LOADING);
 
-    const newUser = { ...user, guideStatus: GuideStatus.LOADING };
+    const newUser = {
+      ...user,
+      guideStatus: GuideStatus.LOADING,
+      guideItems: [],
+    };
+    setGuideItems([]);
     guideStore.setGuideItems([]);
     authStore.setUser(newUser);
     setUser(newUser);
@@ -47,6 +53,7 @@ const Guide = () => {
         fitnessData: questToFitnessData(user!.questions),
         uid: user!.uid,
       });
+
       fetch("/api/generate-stream", {
         method: "POST",
         headers: {

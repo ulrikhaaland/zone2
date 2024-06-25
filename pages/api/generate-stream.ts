@@ -1,5 +1,10 @@
 import OpenAI from "openai";
-import { GuideStatus, fitnessDataToJson } from "../../app/model/user";
+import {
+  FitnessData,
+  FitnessLevel,
+  GuideStatus,
+  fitnessDataToJson,
+} from "../../app/model/user";
 import * as admin from "firebase-admin";
 import { Request, Response } from "express";
 import { GuideItem, appendGuideItem, jsonToGuideItem } from "@/app/model/guide";
@@ -38,7 +43,8 @@ export default async function handler(req: Request, res: Response) {
     return;
   }
 
-  const { fitnessData, uid } = req.body;
+  const { fitnessData, uid }: { fitnessData: FitnessData; uid: string } =
+    req.body;
   if (!fitnessData || !uid) {
     await logErrorToFirestore(uid, "Missing fitnessData or uid");
     return res.status(400).json({ error: "Missing fitnessData or uid" });
@@ -51,8 +57,21 @@ export default async function handler(req: Request, res: Response) {
       content: fitnessDataToJson(fitnessData),
     });
 
+    const fitnessLevel = fitnessData.fitnessLevel;
+    let assID;
+
+    if (fitnessLevel === FitnessLevel.SEDENTARY) {
+      assID = "asst_XL7bSzKrk6jFtFpw5PUY6kPp";
+    } else if (fitnessLevel === FitnessLevel.BEGINNER) {
+      assID = "asst_7jpum64L95UtXgEhAZeg7Iz7";
+    } else if (fitnessLevel === FitnessLevel.ACTIVE) {
+      assID = "asst_fugl0x20hYqXSapUmmX49WAR";
+    } else {
+      assID = "asst_7jpum64L95UtXgEhAZeg7Iz7";
+    }
+
     const runStream = client.beta.threads.runs.stream(thread.id, {
-      assistant_id: "asst_P04Kgk0OWercjCtYJtNzUV8G",
+      assistant_id: assID,
       max_completion_tokens: 120000,
     });
 
@@ -126,6 +145,8 @@ export default async function handler(req: Request, res: Response) {
 
       if (currentBuffer.includes("},") || currentBuffer.trim().endsWith("}]")) {
         currentBuffer = trimBuffer(currentBuffer);
+
+        console.log("Current buffer:", currentBuffer);
 
         try {
           const guideItem = jsonToGuideItem(currentBuffer, guideItems);

@@ -278,7 +278,7 @@ export function findParentItemByTitle(
     );
     if (goalsNExpectations) {
       return goalsNExpectations.subItems!.find(
-        (item) => item.title === "assessing progress"
+        (item) => item.title.toLowerCase() === "assessing progress"
       );
     }
   } else {
